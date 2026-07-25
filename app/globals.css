@@ -1,0 +1,198 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: var(--font-sans);
+    --font-sans: var(--font-sans);
+
+    /* CoArea brand tokens */
+    --color-teal: var(--teal);
+    --color-teal-600: var(--teal-600);
+    --color-teal-700: var(--teal-700);
+    --color-cream: var(--cream);
+    --color-ink: var(--ink);
+
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+  CoArea design system — verified from the bachelor-thesis presentation.
+  Teal #2D8D80 · Ink #29292A · Cream #F0EDEB · White.
+  "Grün als Primärfarbe, Weiß und Grautöne als Kontrast, dunkles Grau für Fließtext."
+*/
+:root {
+    --teal: #2d8d80;
+    --teal-600: #268075;
+    --teal-700: #1f6a61;
+    --cream: #f0edeb;
+    --ink: #29292a;
+
+    --background: var(--cream);
+    --foreground: var(--ink);
+    --card: #ffffff;
+    --card-foreground: var(--ink);
+    --popover: #ffffff;
+    --popover-foreground: var(--ink);
+    --primary: var(--teal);
+    --primary-foreground: #ffffff;
+    --secondary: #ffffff;
+    --secondary-foreground: var(--ink);
+    --muted: #e7e3e0;
+    --muted-foreground: #6b6864;
+    --accent: #e2efec;
+    --accent-foreground: var(--teal-700);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: #ddd8d3;
+    --input: #ddd8d3;
+    --ring: var(--teal);
+    --chart-1: var(--teal);
+    --chart-2: #6bbcae;
+    --chart-3: #e6b84f;
+    --chart-4: #4a7c9c;
+    --chart-5: #29292a;
+    /* CoArea is sharp-cornered — the Figma design uses right angles throughout.
+       Circles (avatars, icon chips) use rounded-full, independent of this. */
+    --radius: 0px;
+    --sidebar: #ffffff;
+    --sidebar-foreground: var(--ink);
+    --sidebar-primary: var(--teal);
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #e2efec;
+    --sidebar-accent-foreground: var(--teal-700);
+    --sidebar-border: #ddd8d3;
+    --sidebar-ring: var(--teal);
+}
+
+.dark {
+    --background: #1c2321;
+    --foreground: #f0edeb;
+    --card: #232b29;
+    --card-foreground: #f0edeb;
+    --popover: #232b29;
+    --popover-foreground: #f0edeb;
+    --primary: #3aa392;
+    --primary-foreground: #0f1413;
+    --secondary: #2a3331;
+    --secondary-foreground: #f0edeb;
+    --muted: #2a3331;
+    --muted-foreground: #a7b0ad;
+    --accent: #2a3331;
+    --accent-foreground: #eafffb;
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 12%);
+    --input: oklch(1 0 0 / 15%);
+    --ring: #3aa392;
+    --chart-1: #3aa392;
+    --chart-2: #6bbcae;
+    --chart-3: #e6b84f;
+    --chart-4: #4a7c9c;
+    --chart-5: #f0edeb;
+    --sidebar: #232b29;
+    --sidebar-foreground: #f0edeb;
+    --sidebar-primary: #3aa392;
+    --sidebar-primary-foreground: #0f1413;
+    --sidebar-accent: #2a3331;
+    --sidebar-accent-foreground: #eafffb;
+    --sidebar-border: oklch(1 0 0 / 12%);
+    --sidebar-ring: #3aa392;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv02", "cv03", "cv04";
+  }
+  html {
+    @apply font-sans;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--teal);
+    color: #fff;
+  }
+}
+
+@layer components {
+  /*
+    Schraffur — the signature diagonal hatch derived from urban/building plans.
+    Teal lines on transparent; use .hatch (teal) or .hatch-soft (faint) as a
+    background layer, or .hatch-white for white lines over teal fills.
+  */
+  .hatch {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--teal) 0,
+      var(--teal) 1.5px,
+      transparent 1.5px,
+      transparent 12px
+    );
+  }
+  .hatch-soft {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--teal) 22%, transparent) 0,
+      color-mix(in srgb, var(--teal) 22%, transparent) 1.5px,
+      transparent 1.5px,
+      transparent 12px
+    );
+  }
+  .hatch-white {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0.5) 0,
+      rgba(255, 255, 255, 0.5) 1.5px,
+      transparent 1.5px,
+      transparent 12px
+    );
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 80rem;
+  padding-inline: 1.25rem;
+}
