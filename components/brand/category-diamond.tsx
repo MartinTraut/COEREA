@@ -18,14 +18,9 @@ import { cn } from "@/lib/utils"
   that away: with everything hatched, nothing was marked. So the plate is back to
   meaning one thing, and it now covers all eight rather than three:
 
-    privat      — the Schraffur ring, as in the design
-    öffentlich  — a flat teal-50 ring, no texture
+    privat      — the Schraffur diamond, as in the design
+    öffentlich  — a flat cream diamond, no texture
     active      — filled with the brand gradient, white icon, teal glow
-
-  Idle, the plate is a ring: an inner white diamond gives the line icon a clean
-  core, which is what lets the icons be pure line work with no knockouts of their
-  own (the brand's originals had to paint white into themselves to survive the
-  hatch).
 
   Two signals, not one: below the label each entry also carries a small written
   access marker („privat" / „öffentlich") with a matching swatch, because a
@@ -41,15 +36,13 @@ import { cn } from "@/lib/utils"
   direction. `clip-path` also clips `box-shadow`, so elevation is a drop-shadow
   filter on the wrapper.
 
+  The icons paint their knockouts with `--icon-knockout`, which has to match
+  whatever is directly behind them — white over the hatch (the strip sits on
+  white), cream on the flat plate, teal-500 when the plate is filled. A mismatch
+  shows up as pale patches inside the mark.
 */
 const PLATE = "h-[clamp(3.75rem,5.4vw,6.5rem)] w-[clamp(3.75rem,5.4vw,6.5rem)]"
-/*
-  The icon has to fit the square inscribed in the inner diamond, not the diamond
-  itself: at inset 13% the core measures ~74% of the plate across its diagonals,
-  which leaves ~52% for a square. 46% keeps a margin so no corner of the drawing
-  crosses back onto the Schraffur.
-*/
-const ICON = "h-[46%] w-[46%]"
+const ICON = "h-[clamp(1.75rem,2.5vw,3rem)] w-[clamp(1.75rem,2.5vw,3rem)]"
 /* vw + rem, never vw alone: a pure-vw font size halves under 200% browser zoom
    instead of growing, which defeats the zoom entirely. Lands on 17px at 1920. */
 const LABEL = "text-[clamp(0.75rem,0.45vw+0.52rem,1.0625rem)]/[1.118]"
@@ -100,36 +93,36 @@ export function CategoryDiamond({
           )}
         />
 
-        {/*
-          Idle ground, drawn as a ring: the outer diamond carries the access
-          signal, the inner one gives the line drawing a clean core to sit on.
-          Without the core, a 2-unit stroke icon on the Schraffur is line-on-line
-          and unreadable — which is exactly why the brand's original icons had to
-          paint white knockouts into themselves. The plate does that job now, so
-          the icons stay independent of what is behind them.
-        */}
-        <span
-          aria-hidden
-          className={cn(
-            "absolute inset-0 transition-opacity duration-300",
-            DIAMOND,
-            privat ? "hatch-fine" : "bg-teal-50",
-            active ? "opacity-0" : "opacity-100",
-          )}
-        />
-        <span
-          aria-hidden
-          className={cn(
-            "absolute inset-[13%] bg-white transition-opacity duration-300",
-            DIAMOND,
-            active ? "opacity-0" : "opacity-100",
-          )}
-        />
+        {privat ? (
+          /* Private ground: the Schraffur itself, no fill behind it. */
+          <span
+            aria-hidden
+            className={cn(
+              "hatch-fine absolute inset-0 transition-opacity duration-300",
+              DIAMOND,
+              active ? "opacity-0" : "opacity-90 group-hover:opacity-100",
+            )}
+          />
+        ) : (
+          /* Public ground: flat, deliberately untextured. */
+          <span
+            aria-hidden
+            className={cn(
+              "absolute inset-0 bg-cream transition-opacity duration-300",
+              DIAMOND,
+              active ? "opacity-0" : "opacity-100",
+            )}
+          />
+        )}
 
         <Icon
           className={cn(
             "relative transition-transform duration-300 ease-out group-hover:scale-[1.06]",
-            active ? "text-white" : "text-teal",
+            active
+              ? "text-white [--icon-knockout:var(--teal-500)]"
+              : privat
+                ? "text-teal [--icon-knockout:#fff]"
+                : "text-teal [--icon-knockout:var(--cream)]",
             ICON,
           )}
         />
