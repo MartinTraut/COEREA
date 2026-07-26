@@ -1,70 +1,72 @@
 "use client"
 
-import { useState } from "react"
+import { useId, useState } from "react"
 import { ChevronDown } from "lucide-react"
+
+import { BOOKING_FAQ } from "@/lib/faq"
 import { cn } from "@/lib/utils"
 
-const FAQ = [
-  {
-    q: "Wie und wann bezahle ich?",
-    a: "Die Zahlung erfolgt sicher über CoArea, sobald der Host Deine Buchungsanfrage bestätigt hat. Du zahlst bequem online — nicht direkt an den Host.",
-  },
-  {
-    q: "Welche Zahlungsart wird akzeptiert?",
-    a: "Wir akzeptieren gängige Zahlungsmethoden wie Kreditkarte, SEPA-Lastschrift und PayPal. Weitere Optionen folgen laufend.",
-  },
-  {
-    q: "Kann ich dort parken?",
-    a: "Ob Parkmöglichkeiten vorhanden sind, findest Du in der jeweiligen Flächenbeschreibung oder Du fragst den Host direkt über die Chat-Funktion.",
-  },
-  {
-    q: "Wie kann ich eine Fläche langfristig buchen?",
-    a: "Für langfristige Nutzungen wähle einfach einen entsprechend langen Zeitraum oder sprich den Host für individuelle Konditionen direkt an.",
-  },
-  {
-    q: "Kann ich eine Buchung stornieren?",
-    a: "Ja. Die Stornobedingungen richten sich nach der jeweiligen Fläche und sind vor der Buchung transparent einsehbar.",
-  },
-  {
-    q: "Was passiert bei Beschädigungen der Fläche oder des Mobiliars?",
-    a: "Schäden werden fair zwischen Nutzer und Host geregelt. CoArea unterstützt bei der Klärung und Kommunikation.",
-  },
-  {
-    q: "Kann ich die gemietete Fläche mit weiteren Mitmenschen nutzen?",
-    a: "Ja. Wie viele Personen die Fläche gemeinsam nutzen dürfen, legt der Host in der Flächenbeschreibung fest. Bei Fragen sprich ihn einfach direkt über die Chat-Funktion an.",
-  },
-]
+/*
+  Booking FAQ. Questions and answers live in lib/faq.ts so the same source
+  feeds both this accordion and the FAQPage markup on the detail page — Google
+  only honours FAQ markup whose content is visible, so the two must never drift
+  apart.
 
+  The panels stay in the DOM and are hidden with `hidden` rather than being
+  unmounted, so the answers are findable with the browser's in-page search and
+  are picked up by crawlers that do not click.
+*/
 export function FaqAccordion() {
   const [open, setOpen] = useState<number | null>(0)
+  const uid = useId()
+
   return (
     <div className="grid gap-3 md:grid-cols-2">
-      {FAQ.map((item, i) => {
+      {BOOKING_FAQ.map((item, i) => {
         const isOpen = open === i
+        const panelId = `${uid}-panel-${i}`
+        const buttonId = `${uid}-button-${i}`
         return (
           <div
             key={item.q}
-            className="h-fit overflow-hidden border border-border bg-card"
+            className={cn(
+              "surface h-fit transition-colors",
+              /* An open panel keeps a teal left edge, so which question you are
+                 reading stays obvious in a two-column list. */
+              isOpen ? "border-l-[3px] border-l-teal" : "hover:border-teal/40",
+            )}
           >
-            <button
-              type="button"
-              onClick={() => setOpen(isOpen ? null : i)}
-              aria-expanded={isOpen}
-              className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left text-sm font-medium text-ink"
-            >
-              {item.q}
-              <ChevronDown
+            <h3>
+              <button
+                type="button"
+                id={buttonId}
+                aria-controls={panelId}
+                aria-expanded={isOpen}
+                onClick={() => setOpen(isOpen ? null : i)}
                 className={cn(
-                  "h-4 w-4 shrink-0 text-teal transition-transform",
-                  isOpen && "rotate-180",
+                  "flex w-full items-center justify-between gap-3 px-5 py-4 text-left text-[15px] font-medium transition-colors",
+                  isOpen ? "text-teal" : "text-ink-900 hover:text-teal",
                 )}
-              />
-            </button>
-            {isOpen ? (
-              <p className="px-4 pb-4 text-sm leading-relaxed text-muted-foreground">
-                {item.a}
-              </p>
-            ) : null}
+              >
+                {item.q}
+                <ChevronDown
+                  className={cn(
+                    "h-4 w-4 shrink-0 text-teal transition-transform duration-300 ease-out",
+                    isOpen && "rotate-180",
+                  )}
+                  aria-hidden
+                />
+              </button>
+            </h3>
+            <div
+              id={panelId}
+              role="region"
+              aria-labelledby={buttonId}
+              hidden={!isOpen}
+              className="px-5 pb-5 text-[15px]/[1.7] text-ink"
+            >
+              {item.a}
+            </div>
           </div>
         )
       })}

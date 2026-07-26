@@ -2,70 +2,200 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import { SITE } from "@/lib/site"
 import { cn } from "@/lib/utils"
+import { setOutsideInert } from "@/lib/inert"
 import { Logo } from "@/components/brand/logo"
 import { SlashMark } from "@/components/brand/slash-mark"
 
 export function SiteHeader() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const toggleRef = useRef<HTMLButtonElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
 
+  /*
+    The overlay used to leave the page behind it fully tabbable and readable to
+    screen readers, with no way to dismiss it from the keyboard. Escape closes
+    it, focus moves into it and back to the toggle on close, and the rest of the
+    document is marked inert while it is up.
+  */
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : ""
+
+    /*
+      This marked only `#main` inert, but `<main>` is not the whole page — the
+      footer is its sibling, so an open menu still let you tab into eleven footer
+      links hidden behind the panel. `setOutsideInert` disables everything except
+      the panel's own ancestor chain.
+    */
+    const panel = panelRef.current
+    setOutsideInert(open, panel)
+
+    if (!open) return
+    panel?.querySelector<HTMLElement>("a, button")?.focus()
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false)
+    }
+    document.addEventListener("keydown", onKey)
     return () => {
+      document.removeEventListener("keydown", onKey)
       document.body.style.overflow = ""
+      setOutsideInert(false, panel)
     }
   }, [open])
 
+  // Return focus to the control that opened the menu, not to the document.
+  const close = () => {
+    setOpen(false)
+    toggleRef.current?.focus()
+  }
+
+  /*
+    The bar's height is now CONSTANT, and that is the whole fix for the header
+    juddering on the way back to the top.
+
+    A `sticky` element still occupies space in normal flow. The previous version
+    swapped between a tall and a short bar at a scroll threshold, so crossing it
+    changed the document's layout: everything below moved by ~60px, the browser
+    corrected the scroll offset to keep the content anchored, that correction
+    pushed the offset back across the threshold, and the bar flipped again. A
+    feedback loop between layout and scroll position — visible as the header
+    rebuilding itself over and over, worst near the top where the momentum of a
+    flick keeps re-crossing the line.
+
+    So nothing about the geometry reacts to scroll any more. What remains is a
+    shadow and a border tint, which are paint-only and cannot move anything.
+    The threshold keeps a hysteresis band regardless (on above 12px, off below
+    4px) so a single pixel of trackpad drift near the boundary can't chatter.
+  */
+  useEffect(() => {
+    let raf = 0
+    const read = () => {
+      raf = 0
+      // Read from the latest state, not from a captured value, so the band works.
+      setScrolled((was) => (was ? window.scrollY > 4 : window.scrollY > 12))
+    }
+    const onScroll = () => {
+      // Coalesce a burst of scroll events into one state update per frame.
+      if (!raf) raf = requestAnimationFrame(read)
+    }
+    read()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+      if (raf) cancelAnimationFrame(raf)
+    }
+  }, [])
+
   return (
-    <header className="sticky top-0 z-50 border-b border-border/70 bg-cream/90 backdrop-blur supports-[backdrop-filter]:bg-cream/75">
-      <div className="container-page flex h-16 items-center justify-between md:h-20">
-        <Logo />
+    /*
+      Opaque white, no backdrop-filter. Blurring a full-width strip forced the
+      region behind the header to be re-rasterised on every scrolled frame — the
+      single most expensive thing here — and the brand is flat and sharp anyway,
+      so frosted glass was never part of it.
+    */
+    <header
+      className={cn(
+        "sticky top-0 z-50 bg-white transition-shadow duration-300",
+        scrolled ? "shadow-[0_10px_30px_-24px_rgba(0,101,95,0.55)]" : "shadow-none",
+      )}
+    >
+      <div className="container-page flex h-16 items-center justify-between md:h-[clamp(4.5rem,4.8vw,5.75rem)]">
+        <Link
+          href="/"
+          aria-label="CoArea — zur Startseite"
+          className="group shrink-0"
+        >
+          {/* href={null} — the wrapping Link is the anchor; nesting two would be invalid. */}
+          <Logo
+            href={null}
+            className="h-[clamp(2.1rem,2.55vw,3rem)] origin-left transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+          />
+        </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-[clamp(1rem,2.9vw,3.5rem)] md:flex">
           {SITE.nav.map((item) => {
             const active = pathname === item.href
             return (
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={active ? "page" : undefined}
+                /*
+                  The underline grows from the left on hover instead of simply
+                  appearing — it reads as one continuous movement with the
+                  colour change, and costs a transform rather than a reflow.
+                */
                 className={cn(
-                  "text-sm font-medium text-ink/80 transition-colors hover:text-teal",
-                  active && "text-teal",
+                  "group relative text-[clamp(0.8125rem,0.604vw+0.4rem,1.125rem)] font-medium whitespace-nowrap transition-colors hover:text-teal",
+                  active ? "text-teal" : "text-ink",
                 )}
               >
                 {item.label}
+                <span
+                  aria-hidden
+                  className={cn(
+                    "absolute -bottom-1.5 left-0 h-0.5 w-full origin-left bg-teal transition-transform duration-300 ease-out",
+                    active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100",
+                  )}
+                />
               </Link>
             )
           })}
           <Link
             href="/anmelden"
-            className="border-2 border-teal px-4 py-2 text-sm font-semibold text-teal transition-colors hover:bg-teal hover:text-white"
+            className="btn btn-outline px-[clamp(0.9rem,1.4vw,1.6rem)] py-[clamp(0.45rem,0.7vw,0.8rem)] text-[clamp(0.8125rem,0.604vw+0.4rem,1.0625rem)]"
           >
             anmelden
           </Link>
-          <span className="text-sm font-medium text-muted-foreground">DE</span>
+          <span className="text-[clamp(0.8125rem,0.604vw+0.4rem,1.0625rem)] font-medium text-muted-foreground">
+            DE
+          </span>
         </nav>
 
         {/* Mobile: „///" toggle */}
         <button
+          ref={toggleRef}
           type="button"
           className="-mr-2 p-2 text-teal md:hidden"
           aria-label={open ? "Menü schließen" : "Menü öffnen"}
           aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
+          aria-controls="mobile-menu"
+          onClick={() => (open ? close() : setOpen(true))}
         >
-          <SlashMark className={cn("h-6 transition-transform", open && "-scale-x-100")} />
+          <SlashMark className={cn("h-6 transition-transform duration-300", open && "-scale-x-100")} />
         </button>
+      </div>
+
+      {/*
+        The bottom rule doubles as the reading-progress indicator. The teal bar
+        is scaled by a scroll-driven CSS animation (see .scroll-progress) — no
+        listener, no state, no per-frame work on the main thread.
+      */}
+      <div aria-hidden className="relative h-[3px] w-full overflow-hidden">
+        <div
+          className={cn(
+            "absolute inset-0 transition-colors duration-300",
+            scrolled ? "bg-teal/15" : "bg-[#e6e6e6]",
+          )}
+        />
+        <div className="scroll-progress absolute inset-0 [background:var(--grad-teal-bright)]" />
       </div>
 
       {/* Mobile full-screen teal overlay */}
       {open ? (
-        <div className="fixed inset-x-0 top-16 bottom-0 z-40 flex flex-col bg-teal text-white md:hidden">
+        <div
+          id="mobile-menu"
+          ref={panelRef}
+          /* top-16 matches the mobile bar, which no longer changes height. */
+          className="fixed inset-x-0 top-16 bottom-0 z-40 flex flex-col bg-teal text-white motion-safe:animate-[coarea-fade-up_240ms_ease-out] md:hidden"
+        >
           <nav className="flex flex-1 flex-col items-center justify-center gap-7 px-6">
             {SITE.nav.map((item) => (
               <Link

@@ -42,9 +42,7 @@ export default function JobsPage() {
 
       {/* Werte */}
       <section className="container-page py-16 md:py-20">
-        <TabHeading className="text-[clamp(1.4rem,2vw+0.5rem,2rem)]">
-          Warum CoArea
-        </TabHeading>
+        <h2 className="h-plain">Warum CoArea</h2>
         <div className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
           {VALUES.map((v) => (
             <div key={v.title} className="flex flex-col gap-3">
@@ -60,9 +58,7 @@ export default function JobsPage() {
 
       {/* Offene Stellen */}
       <section className="container-page pb-20">
-        <TabHeading className="text-[clamp(1.4rem,2vw+0.5rem,2rem)]">
-          Offene Stellen
-        </TabHeading>
+        <h2 className="h-plain">Offene Stellen</h2>
 
         {OPENINGS.length > 0 ? (
           <ul className="mt-8 space-y-4">
@@ -82,7 +78,7 @@ export default function JobsPage() {
                 </div>
                 <Link
                   href={`mailto:${contact.email}?subject=Bewerbung: ${job.title}`}
-                  className="inline-flex items-center gap-2 rounded-md bg-teal px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-teal-600"
+                  className="btn btn-teal sheen px-5 py-2.5 text-sm"
                 >
                   Jetzt bewerben <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -91,7 +87,7 @@ export default function JobsPage() {
           </ul>
         ) : (
           <div className="mt-8 rounded-xl border border-dashed border-border bg-card p-8 text-center">
-            <p className="text-ink/80">
+            <p className="text-ink">
               Aktuell sind keine Stellen ausgeschrieben — aber wir wachsen. Überzeuge
               uns mit einer Initiativbewerbung.
             </p>
@@ -108,7 +104,7 @@ export default function JobsPage() {
           </div>
           <Link
             href={`mailto:${contact.email}?subject=Initiativbewerbung`}
-            className="inline-flex shrink-0 items-center gap-2 rounded-md bg-white px-6 py-3 text-sm font-semibold text-teal transition-transform hover:-translate-y-0.5"
+            className="btn min-h-11 bg-white px-6 py-3 text-sm text-teal shadow-[var(--shadow-sm)] hover:-translate-y-0.5"
           >
             Initiativ bewerben <ArrowRight className="h-4 w-4" />
           </Link>

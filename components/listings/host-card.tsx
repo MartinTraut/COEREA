@@ -1,7 +1,6 @@
 import { MessageSquare } from "lucide-react"
 
 import type { Host } from "@/lib/listings"
-import { TabHeading } from "@/components/brand/tab-heading"
 
 /*
   „Host dieser CoArea" — diagonal schraffur band with a flat white card inside:
@@ -25,49 +24,57 @@ export function HostCard({ host }: { host: Host }) {
   ]
 
   return (
-    <div className="hatch relative overflow-hidden py-8 md:py-12">
+    /*
+      The Schraffur used to run at full strength across this whole band, which
+      made everything sitting on it — including the framed heading — fight for
+      legibility. It is now the soft variant over cream: still unmistakably the
+      motif, no longer the loudest thing on the page.
+    */
+    <div className="hatch-soft relative overflow-hidden bg-cream py-[clamp(2.5rem,3.5vw,4rem)]">
       <div className="container-page">
-        <TabHeading className="bg-cream text-[clamp(1.15rem,1.6vw+0.5rem,1.6rem)]">
-          Host dieser CoArea
-        </TabHeading>
+        <h2 className="h-plain">Host dieser CoArea</h2>
 
-        <div className="mt-6 grid items-center gap-8 border border-border bg-card px-6 py-8 sm:px-8 md:grid-cols-[auto_1fr_auto] md:gap-12">
+        <div className="surface mt-7 grid items-center gap-8 px-6 py-8 shadow-[var(--shadow-md)] sm:px-8 md:grid-cols-[auto_1fr_auto] md:gap-12">
           {/* avatar + identity */}
           <div className="flex flex-col items-center text-center">
-            <span className="grid h-20 w-20 place-items-center rounded-full bg-teal text-xl font-semibold text-white">
+            <span className="grid h-[clamp(4.5rem,5vw,5.5rem)] w-[clamp(4.5rem,5vw,5.5rem)] place-items-center rounded-full text-xl font-semibold text-white [background:var(--grad-teal)] shadow-[var(--shadow-md)]">
               {initials}
             </span>
-            <p className="mt-3 font-semibold text-ink">{host.name}</p>
-            <p className="text-sm text-ink/60">{host.age} Jahre alt</p>
+            <p className="mt-4 font-semibold text-ink-900">{host.name}</p>
+            <p className="text-sm text-muted-foreground">{host.age} Jahre alt</p>
           </div>
 
           {/* stat box */}
-          <div className="mx-auto w-full max-w-sm border border-border">
-            {stats.map((s, i) => (
-              <div
-                key={s.label}
-                className={i > 0 ? "border-t border-border" : undefined}
-              >
-                <div className="px-4 py-3 text-center">
-                  <p className="text-sm font-medium text-teal">{s.label}</p>
-                  <p className="text-sm text-ink">{s.value}</p>
-                </div>
+          <div className="mx-auto grid w-full max-w-md grid-cols-3 divide-x divide-border border border-border">
+            {stats.map((s) => (
+              <div key={s.label} className="px-3 py-4 text-center">
+                <p className="text-[10px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">
+                  {s.label}
+                </p>
+                <p className="mt-1.5 text-[1.0625rem] font-bold text-teal">{s.value}</p>
               </div>
             ))}
           </div>
 
           {/* get in touch */}
           <div className="text-center md:text-left">
-            <p className="mx-auto max-w-[16rem] text-sm text-ink/80 md:mx-0">
+            <p className="mx-auto max-w-[16rem] text-sm text-ink md:mx-0">
               Setze Dich mit Deinem Host in Verbindung!
             </p>
-            <button
-              type="button"
-              className="mt-4 inline-flex items-center gap-2 bg-teal px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-teal-600"
+            {/*
+              There is no chat yet, and a button that does nothing next to the
+              words "get in touch" is the worst place to have one. Mail is the
+              channel that genuinely works today.
+            */}
+            <a
+              href={`mailto:info@coarea.de?subject=${encodeURIComponent(
+                `Anfrage an Host ${host.name}`,
+              )}`}
+              className="btn btn-teal sheen mt-5 min-h-11 px-5 text-sm"
             >
               <MessageSquare className="h-4 w-4" />
               Nachricht an Host
-            </button>
+            </a>
           </div>
         </div>
       </div>

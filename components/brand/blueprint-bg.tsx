@@ -5,19 +5,32 @@ import { cn } from "@/lib/utils"
   bands) — mirrors the cadastral / building-footprint linework in the Figma
   design. Pure inline SVG, no assets, tiled seamlessly. Decorative only.
 */
-export function BlueprintBg({ className }: { className?: string }) {
+export function BlueprintBg({
+  className,
+  /** "white" draws solid white footprints — the treatment used on grey bands. */
+  tone = "ink",
+}: {
+  className?: string
+  tone?: "ink" | "white"
+}) {
+  const id = `coarea-plan-${tone}`
+  const paint =
+    tone === "white"
+      ? { fill: "#ffffff", stroke: "#ffffff", strokeOpacity: 1 }
+      : { fill: "none", stroke: "#29292a", strokeOpacity: 0.06 }
+
   return (
     <div className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)} aria-hidden>
       <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern
-            id="coarea-plan"
+            id={id}
             width="320"
             height="320"
             patternUnits="userSpaceOnUse"
             patternTransform="rotate(-8)"
           >
-            <g fill="none" stroke="#29292a" strokeOpacity="0.06" strokeWidth="1.5">
+            <g {...paint} strokeWidth="1.5">
               {/* plot / building footprints */}
               <rect x="18" y="24" width="86" height="58" />
               <rect x="34" y="40" width="54" height="26" />
@@ -34,7 +47,7 @@ export function BlueprintBg({ className }: { className?: string }) {
             </g>
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#coarea-plan)" />
+        <rect width="100%" height="100%" fill={`url(#${id})`} />
       </svg>
     </div>
   )

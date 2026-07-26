@@ -1,10 +1,10 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { notFound } from "next/navigation"
 
 import { LISTINGS, listingBySlug } from "@/lib/listings"
-import { categoryBySlug } from "@/lib/categories"
+import { categoryBySlug, USAGE_OPTIONS } from "@/lib/categories"
 import { TabHeading } from "@/components/brand/tab-heading"
+import { BookingForm } from "@/components/listings/booking-form"
 import { DetailSections } from "@/components/listings/detail-sections"
 
 export function generateStaticParams() {
@@ -16,27 +16,44 @@ export const metadata: Metadata = {
   robots: { index: false },
 }
 
+/**
+ * The booking summary. Period, party size and intended use arrive as query
+ * parameters from the availability widget on the detail page, so the numbers
+ * shown here are the ones the visitor actually chose rather than a fixed
+ * example — everything interactive lives in `BookingForm`.
+ */
 export default async function BuchenPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>
+  searchParams: Promise<Record<string, string | string[] | undefined>>
 }) {
   const { slug } = await params
   const listing = listingBySlug(slug)
   if (!listing) notFound()
 
-  const period = listing.from ? `${listing.from} bis ${listing.to}` : listing.dateText ?? "auf Anfrage"
+  const q = await searchParams
+  const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v)
 
-  const summary = [
-    { label: "Gebuchte CoArea", value: listing.title },
-    { label: "Gebuchter Zeitraum", value: period },
-    { label: "Anzahl der User", value: "2" },
-    {
-      label: "Art der Flächennutzung",
-      value: categoryBySlug(listing.category)?.usage ?? "auf Anfrage",
-      change: true,
-    },
-  ]
+  /*
+    `users` and `nutzung` used to go straight from the URL into the visible
+    booking summary and into the stored BookingRecord, so
+    `?users=<anything>&nutzung=<anything>` displayed attacker-chosen text under
+    the heading "Deine Buchung". They are validated against what they are
+    allowed to be: a party size of 1–99, and one of the usage options the widget
+    actually offers.
+  */
+  const usersRaw = Number.parseInt(one(q.users) ?? "", 10)
+  const users = String(
+    Number.isFinite(usersRaw) ? Math.min(99, Math.max(1, usersRaw)) : 2,
+  )
+
+  const usageRaw = one(q.nutzung)
+  const usage =
+    usageRaw && USAGE_OPTIONS.includes(usageRaw)
+      ? usageRaw
+      : (categoryBySlug(listing.category)?.usage ?? "auf Anfrage")
 
   return (
     <div className="pb-6">
@@ -45,98 +62,23 @@ export default async function BuchenPage({
           Buchungsanfrage abschließen
         </TabHeading>
 
-        {/* login / register */}
-        <div className="mt-8 border border-border bg-card px-6 py-7 sm:px-8">
-          <p className="text-sm text-ink/80">
-            <Link href="/anmelden" className="font-semibold text-teal hover:underline">
-              Melde Dich an
-            </Link>
-            , um mit Deinen gespeicherten Daten zu buchen, oder{" "}
-            <Link href="/anmelden" className="font-semibold text-teal hover:underline">
-              registriere Dich
-            </Link>
-            , um Teil der CoArea Community zu werden!
-          </p>
-
-          <div className="mt-6 grid max-w-xl gap-4">
-            <label className="grid gap-1.5 sm:grid-cols-[12rem_1fr] sm:items-center sm:gap-4">
-              <span className="text-sm text-ink">Vor- &amp; Nachname*</span>
-              <input
-                type="text"
-                className="border border-border bg-white px-3.5 py-2.5 text-sm text-ink outline-none focus-visible:border-teal focus-visible:ring-2 focus-visible:ring-teal/40"
-              />
-            </label>
-            <label className="grid gap-1.5 sm:grid-cols-[12rem_1fr] sm:items-center sm:gap-4">
-              <span className="text-sm text-ink">E-Mail Adresse*</span>
-              <input
-                type="email"
-                className="border border-border bg-white px-3.5 py-2.5 text-sm text-ink outline-none focus-visible:border-teal focus-visible:ring-2 focus-visible:ring-teal/40"
-              />
-            </label>
-          </div>
-        </div>
-
-        {/* summary */}
-        <div className="mt-8 border border-border bg-card px-6 py-8 sm:px-10">
-          <h2 className="text-xl font-semibold text-teal">Zusammenfassung</h2>
-
-          <dl className="mt-6 grid gap-4">
-            {summary.map((row) => (
-              <div key={row.label} className="grid gap-1 sm:grid-cols-[16rem_1fr] sm:gap-6">
-                <dt className="text-sm text-ink/70">{row.label}</dt>
-                <dd className="text-sm font-medium text-ink">
-                  {row.value}
-                  {row.change ? (
-                    <>
-                      <br />
-                      <Link
-                        href={`/flaechen/${listing.slug}`}
-                        className="text-xs text-ink/60 underline underline-offset-2 hover:text-teal"
-                      >
-                        ändern
-                      </Link>
-                    </>
-                  ) : null}
-                </dd>
-              </div>
-            ))}
-          </dl>
-
-          <div className="mt-6 grid gap-3 border-t border-border pt-6">
-            <PriceRow label="x 14 Tage" value={listing.price.amount} />
-            <PriceRow label="Servicegebühr" value="00,00 €" />
-            <PriceRow label="Umsatzsteuer" value="19 %" />
-          </div>
-
-          <div className="mt-6 flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <div className="grid gap-1 sm:grid-cols-[16rem_auto] sm:items-center sm:gap-6">
-              <span className="text-sm text-ink/70">Gesamtbetrag</span>
-              <span className="text-base font-bold text-ink">{listing.price.amount}</span>
-            </div>
-            <Link
-              href={`/flaechen/${listing.slug}/erfolgreich`}
-              className="inline-flex items-center justify-center border-2 border-teal px-6 py-2.5 text-sm font-semibold text-teal transition-colors hover:bg-teal hover:text-white"
-            >
-              Buchungsanfrage senden
-            </Link>
-          </div>
-
-          <p className="mt-4 text-xs text-ink/60">
-            Der Bezahlvorgang erfolgt nach der Buchungsbestätigung des Hosts.
-          </p>
-        </div>
+        <BookingForm
+          listing={listing}
+          von={one(q.von)}
+          bis={one(q.bis)}
+          users={users}
+          usage={usage}
+        />
       </div>
 
-      <DetailSections listing={listing} />
-    </div>
-  )
-}
-
-function PriceRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="grid gap-1 sm:grid-cols-[16rem_1fr] sm:gap-6">
-      <span className="text-sm text-ink underline underline-offset-2">{label}</span>
-      <span className="text-sm font-medium text-ink">{value}</span>
+      {/*
+        Only the FAQ here: this screen exists to get the request sent, and the
+        host band, the four other-area cards and the reviews all sat between the
+        summary and that goal — while repeating what the visitor just scrolled
+        past on the detail page. The booking questions are the one block that
+        earns its place at the moment of committing.
+      */}
+      <DetailSections listing={listing} only={["faq"]} />
     </div>
   )
 }

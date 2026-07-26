@@ -27,7 +27,7 @@ function Photo({
   sizes?: string
 }) {
   return (
-    <div className={cn("relative overflow-hidden border border-border", className)}>
+    <div className={cn("media-zoom relative overflow-hidden border border-border", className)}>
       <Image src={src} alt={alt} fill sizes={sizes ?? "(max-width: 1024px) 100vw, 50vw"} className="object-cover" />
     </div>
   )
@@ -62,7 +62,7 @@ export default function UeberUnsPage() {
             <h2 className="text-xl font-semibold text-teal">
               CoArea — die Revolution der Flächennutzung
             </h2>
-            <p className="mt-4 max-w-xl leading-relaxed text-ink/85">
+            <p className="mt-4 max-w-xl leading-relaxed text-ink">
               CoArea ist eine Plattform, die es Menschen ermöglicht, ihre ungenutzten
               Flächen wie beispielsweise Gärten, Parkplätze oder Veranstaltungsräume mit
               anderen Menschen zu teilen. Dieses Konzept der gemeinsamen Nutzung ist
@@ -81,9 +81,7 @@ export default function UeberUnsPage() {
 
         {/* Founders */}
         <section className="mt-16">
-          <TabHeading className="text-[clamp(1.4rem,2vw+0.5rem,2rem)]">
-            Die Gründer von CoArea
-          </TabHeading>
+          <h2 className="h-plain">Die Gründer von CoArea</h2>
           <div className="mx-auto mt-8 grid max-w-2xl gap-8 sm:grid-cols-2">
             {FOUNDERS.map((f) => (
               <div key={f.name}>
@@ -95,7 +93,7 @@ export default function UeberUnsPage() {
                 />
                 <p className="mt-3 text-sm font-medium text-teal">{f.role}</p>
                 <p className="font-semibold text-ink">{f.name}</p>
-                <p className="text-sm text-ink/70">{f.credential}</p>
+                <p className="text-sm text-ink">{f.credential}</p>
               </div>
             ))}
           </div>
@@ -110,10 +108,8 @@ export default function UeberUnsPage() {
         {/* Mission */}
         <section className="mt-16 grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-center">
           <div>
-            <TabHeading className="text-[clamp(1.4rem,2vw+0.5rem,2rem)]">
-              Unsere Mission
-            </TabHeading>
-            <div className="mt-6 space-y-4 leading-relaxed text-ink/85">
+            <h2 className="h-plain">Unsere Mission</h2>
+            <div className="mt-6 max-w-[60ch] space-y-4 text-[0.9375rem]/[1.7] text-ink">
               <p>
                 Bei CoArea ist unsere Mission klar: Wir wollen eine Plattform schaffen,
                 auf der Gemeinschaften, Organisationen und Einzelpersonen zusammenkommen,
@@ -146,10 +142,8 @@ export default function UeberUnsPage() {
             className="aspect-[4/3] lg:order-1"
           />
           <div className="lg:order-2">
-            <TabHeading className="text-[clamp(1.4rem,2vw+0.5rem,2rem)]">
-              Unsere Vision
-            </TabHeading>
-            <p className="mt-6 leading-relaxed text-ink/85">
+            <h2 className="h-plain">Unsere Vision</h2>
+            <p className="mt-6 max-w-[60ch] text-[0.9375rem]/[1.7] text-ink">
               Unsere Vision bietet eine Welt, in der Freiflächen optimal genutzt und
               geschützt werden, um nachhaltige und blühende Gemeinschaften zu schaffen.
               Wir glauben daran, dass gemeinsame Ressourcen die Grundlage für eine
@@ -167,9 +161,21 @@ export default function UeberUnsPage() {
       {/* Das sagen unsere Hosts & User */}
       <Testimonials />
 
-      {/* CTA band */}
-      <section className="bg-teal text-white">
-        <div className="container-page py-14 md:py-16">
+      {/*
+        CTA band. This was a flat `bg-teal` div with a hand-built button, and it
+        sat directly above the teal newsletter strip and the deep-teal footer —
+        three untreated teal blocks in a row that merged into one mass of colour
+        with no edges. It now gets the same deep gradient, blooms, grain and
+        Schraffur as every other band, so the sequence reads
+        deep → bright → deep: alternation rather than mush.
+
+        The hatch runs through the whole band (client's instruction,
+        2026-07-26) rather than as a 24px edge; at 20% it stays under the white
+        type sitting on top of it.
+      */}
+      <section className="mesh mesh-dark grain relative isolate overflow-hidden [background:var(--grad-teal-deep)] text-white">
+        <span aria-hidden className="hatch-white absolute inset-0 opacity-20" />
+        <div className="relative container-page py-[clamp(3rem,5vw,5.5rem)]">
           <p className="max-w-3xl text-[clamp(1.3rem,2vw+0.5rem,2rem)] leading-snug font-semibold text-balance">
             Du hast eine leerstehende Fläche und weißt nicht was Du mit ihr anfangen
             sollst? Dann lade noch heute deine CoArea hoch und teile sie mit der
@@ -177,7 +183,7 @@ export default function UeberUnsPage() {
           </p>
           <Link
             href="/host-werden"
-            className="mt-7 inline-flex items-center bg-white px-6 py-3 text-sm font-semibold text-teal transition-colors hover:bg-white/90"
+            className="btn mt-8 bg-white px-7 py-3.5 text-[15px] text-teal shadow-[var(--shadow-md)] hover:-translate-y-0.5"
           >
             Fläche inserieren
           </Link>

@@ -10,10 +10,17 @@
 
     /* CoArea brand tokens */
     --color-teal: var(--teal);
+    --color-teal-50: var(--teal-50);
+    --color-teal-100: var(--teal-100);
+    --color-teal-300: var(--teal-300);
+    --color-teal-500: var(--teal-500);
     --color-teal-600: var(--teal-600);
     --color-teal-700: var(--teal-700);
+    --color-teal-900: var(--teal-900);
     --color-cream: var(--cream);
     --color-ink: var(--ink);
+    --color-ink-900: var(--ink-900);
+    --color-gold: var(--gold);
 
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
@@ -56,18 +63,94 @@
 }
 
 /*
-  CoArea design system — verified from the bachelor-thesis presentation.
-  Teal #2D8D80 · Ink #29292A · Cream #F0EDEB · White.
+  CoArea design system — sampled pixel-exact from the Figma frame exports
+  (band fills, footer, heading frames and body copy all agree):
+    Teal    #008A84  brand, CTAs, heading frames, full-bleed bands
+    Grey    #707070  every piece of running copy, titles and meta included
+    Surface #FFFFFF  page background; #F6F6F6 for the quiet section bands
+    Gold    #FECA24  rating stars
   "Grün als Primärfarbe, Weiß und Grautöne als Kontrast, dunkles Grau für Fließtext."
 */
 :root {
-    --teal: #2d8d80;
-    --teal-600: #268075;
-    --teal-700: #1f6a61;
-    --cream: #f0edeb;
-    --ink: #29292a;
+    /*
+      The brand teal is unchanged — it is what every border, heading frame and
+      piece of teal type is drawn in, and it is the colour that clears contrast
+      on white. What is new is a full scale around it. Flat #008A84 reads dull
+      across a large fill; a fill that runs from the brighter --teal-500 into
+      --teal-700 reads as the same colour, only saturated and lit. The light end
+      (50/100) gives quiet tints for chips and hovers that used to be grey.
+    */
+    --teal: #008a84;
+    --teal-50: #eefaf8;
+    --teal-100: #d3f1ee;
+    --teal-300: #56c8bf;
+    --teal-500: #00a89f;
+    --teal-600: #007a75;
+    --teal-700: #00655f;
+    --teal-900: #013b37;
+    --cream: #f6f6f6;
+    --ink: #707070;
+    /* Headline grey. #707070 at display size looks washed out; this keeps the
+       family but gives titles the weight they need against a teal accent. */
+    --ink-900: #3d4442;
+    --gold: #feca24;
 
-    --background: var(--cream);
+    /*
+      Gradients live as tokens so the same light falls on every teal surface —
+      buttons, bands, the footer. 135deg throughout, matching the -45deg of the
+      Schraffur, so the sheen runs parallel to the brand's own diagonal.
+    */
+    /*
+      Two teal gradients, split by whether text sits on them.
+
+      `--grad-teal` used to start at --teal-500 (#00a89f), against which white
+      reaches only 2.96:1 — below even the 3:1 floor for large text, on every
+      primary button, the newsletter band and the host avatar. It now starts at
+      --teal-600 (5.20:1) and ends at --teal-700 (6.94:1), so every point of it
+      clears AA for body text while staying a lit gradient rather than a flat
+      fill.
+    */
+    --grad-teal: linear-gradient(
+        135deg,
+        var(--teal-600) 0%,
+        var(--teal-600) 40%,
+        var(--teal-700) 100%
+    );
+    /*
+      The bright end of the scale, kept for surfaces that never carry text:
+      3px accent edges, the scroll-progress hairline, the TabHeading border.
+      There it is a highlight, not a background.
+    */
+    --grad-teal-bright: linear-gradient(
+        135deg,
+        var(--teal-500) 0%,
+        var(--teal) 48%,
+        var(--teal-700) 100%
+    );
+    --grad-teal-deep: linear-gradient(
+        160deg,
+        var(--teal) 0%,
+        var(--teal-700) 45%,
+        var(--teal-900) 100%
+    );
+    /* Hairline that fades out at both ends — replaces flat 1px section rules. */
+    --grad-rule: linear-gradient(
+        90deg,
+        transparent,
+        color-mix(in srgb, var(--teal) 45%, transparent) 18%,
+        color-mix(in srgb, var(--teal) 45%, transparent) 82%,
+        transparent
+    );
+
+    /* Elevation. Teal-tinted rather than neutral black, so shadows read as
+       part of the palette instead of as dirt on the page. */
+    --shadow-sm: 0 2px 10px -6px rgba(0, 101, 95, 0.28);
+    --shadow-md: 0 14px 34px -22px rgba(0, 101, 95, 0.45);
+    --shadow-lg: 0 26px 64px -30px rgba(0, 101, 95, 0.5);
+    --shadow-glow: 0 0 0 1px color-mix(in srgb, var(--teal) 30%, transparent),
+        0 22px 56px -26px rgba(0, 138, 132, 0.55);
+
+    --background: #ffffff;
     --foreground: var(--ink);
     --card: #ffffff;
     --card-foreground: var(--ink);
@@ -77,13 +160,16 @@
     --primary-foreground: #ffffff;
     --secondary: #ffffff;
     --secondary-foreground: var(--ink);
-    --muted: #e7e3e0;
-    --muted-foreground: #6b6864;
-    --accent: #e2efec;
+    --muted: #f6f6f6;
+    /* #8f8f8f gave 3.2:1 on white and 3.0:1 on the cream bands — below AA for
+       the form labels and secondary copy that use it. The brand grey clears it
+       on both (4.8:1 / 4.6:1) without introducing a new tone. */
+    --muted-foreground: #707070;
+    --accent: #e0f0ef;
     --accent-foreground: var(--teal-700);
     --destructive: oklch(0.577 0.245 27.325);
-    --border: #ddd8d3;
-    --input: #ddd8d3;
+    --border: #ededed;
+    --input: #dbdbdb;
     --ring: var(--teal);
     --chart-1: var(--teal);
     --chart-2: #6bbcae;
@@ -148,10 +234,144 @@
   html {
     @apply font-sans;
     -webkit-font-smoothing: antialiased;
+    /*
+      Deliberately NOT `scroll-behavior: smooth`. On the root it also animates
+      scroll restoration and browser-driven scroll anchoring, which fights the
+      trackpad's own momentum and feels like the page is stuttering. The two
+      places that genuinely want a glide (pagination, jump-to-availability) pass
+      `behavior: "smooth"` themselves, which still works without this.
+    */
+    /* The sticky header would otherwise cover the top of an anchored section. */
+    scroll-padding-top: 7rem;
   }
   ::selection {
     background: var(--teal);
     color: #fff;
+  }
+  /*
+    Headings break into even lines instead of leaving one orphaned word on the
+    last line, and paragraphs avoid a single-word final line. Both are pure
+    typesetting wins with no layout cost we control.
+  */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  /*
+    One focus ring for the whole site. Keyboard users get a visible, on-brand
+    indicator everywhere, including on elements whose own styles forgot one.
+  */
+  :focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+  }
+  /*
+    Anyone who has asked their system to reduce motion gets the end state
+    immediately — no reveals, no parallax, no easing.
+  */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    /*
+      Zeroing the durations alone does not honour the request — it only makes the
+      same movement instantaneous, so a photo still snapped to 1.045 scale, a
+      card still jumped 4px up and the arrow still hopped sideways. Reduced
+      motion means no motion, so the transformed states are dropped outright.
+      Colour, border and shadow changes stay: those are not movement, and
+      removing them would cost the hover feedback entirely.
+    */
+    .media-zoom:hover img,
+    .media-zoom:focus-within img,
+    .surface-hover:hover,
+    .surface-hover:focus-within,
+    .group:hover .arrow-nudge svg,
+    .arrow-nudge:hover svg {
+      transform: none !important;
+    }
+  }
+}
+
+/*
+  Motion vocabulary. Timings sit in the 180–450ms band the brand guide calls
+  for, on a single decelerating curve so everything feels like one hand.
+*/
+@theme inline {
+  /* The house curve: quick departure, long settle. Used for anything that moves. */
+  --ease-brand: cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* Sharper deceleration for entrances that should feel decisive, not soft. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  /* A single overshoot — only for small, deliberate confirmations. */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes coarea-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes coarea-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/*
+  Reading-progress hairline under the header.
+
+  Driven by a scroll-driven animation, not by a scroll listener: the browser
+  runs it on the compositor against the document's own scroll offset, so it
+  costs nothing per frame and cannot fall behind the scroll the way a React
+  state update does. Where `animation-timeline` is unsupported the bar simply
+  stays at scaleX(0) — invisible, no fallback needed.
+*/
+.scroll-progress {
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: coarea-progress linear forwards;
+    animation-timeline: scroll(root block);
+  }
+}
+
+/* Slow drift of the hero's light blooms. Transform only — no layout, no paint. */
+@keyframes coarea-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -2.5%, 0) scale(1.06);
+  }
+}
+
+/* Sheen that crosses a surface once on hover. */
+@keyframes coarea-sheen {
+  from {
+    transform: translate3d(-120%, 0, 0) skewX(-18deg);
+  }
+  to {
+    transform: translate3d(320%, 0, 0) skewX(-18deg);
   }
 }
 
@@ -179,6 +399,103 @@
       transparent 12px
     );
   }
+  /*
+    Fine Schraffur used behind the category icons. The frame draws it at a ~2px
+    pitch; 3px is the tightest that still renders cleanly on screen instead of
+    turning into moiré.
+  */
+  .hatch-fine {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--teal) 55%, transparent) 0,
+      color-mix(in srgb, var(--teal) 55%, transparent) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+  /*
+    Scroll reveal. The element starts shifted and transparent and settles once
+    it enters the viewport; `data-shown` is flipped by the Reveal component.
+    Written as a transition rather than an animation so an element that is
+    already in view on load can be revealed without a replay.
+  */
+  .reveal {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+    transition:
+      opacity 420ms var(--ease-brand),
+      transform 420ms var(--ease-brand);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /*
+    Failsafe: never let a script decide whether content is visible at all.
+
+    Every reveal starts at `opacity: 0` and waits for the IntersectionObserver
+    in `Reveal` to set `data-shown`. Measured with script execution disabled,
+    that left 23 of 23 blocks on the homepage permanently invisible — starting
+    with the hero eyebrow and headline. A bundle that fails to parse, a blocked
+    CDN or a slow enough connection therefore produced a blank page.
+
+    Two independent guards, neither of which needs JS:
+
+    · `scripting: none` — no JS at all: show the end state immediately.
+    · a one-frame animation on a long delay — JS present but late or broken.
+      If the observer has already fired, `[data-shown="true"]` has won on
+      opacity/transform anyway, so this is invisible in the normal case.
+  */
+  @media (scripting: none) {
+    .reveal,
+    .reveal-clip,
+    .reveal-scale {
+      opacity: 1;
+      transform: none;
+      clip-path: none;
+    }
+  }
+  @keyframes coarea-reveal-failsafe {
+    to {
+      opacity: 1;
+      transform: none;
+      clip-path: inset(0);
+    }
+  }
+  .reveal:not([data-shown="true"]),
+  .reveal-clip:not([data-shown="true"]),
+  .reveal-scale:not([data-shown="true"]) {
+    animation: coarea-reveal-failsafe 1ms linear 2600ms forwards;
+  }
+
+  /*
+    Photo tiles. The image sits slightly over-scaled and eases back on hover —
+    a transform on the child only, so nothing around it reflows.
+  */
+  /*
+    No `will-change` here. It promotes every photo on the page to its own
+    compositor layer permanently — twelve cards in the discover grid meant
+    twelve layers held in memory, which is a scroll-jank source, not a cure.
+    A transform transition composites fine without the hint.
+  */
+  .media-zoom img {
+    /* 600ms read as the photo lagging behind the cursor; the brand band is
+       180-450ms and this is the most-hovered motion on the site. */
+    transition: transform 420ms var(--ease-brand);
+  }
+  .media-zoom:hover img,
+  .media-zoom:focus-within img {
+    transform: scale(1.045);
+  }
+
   .hatch-white {
     background-image: repeating-linear-gradient(
       -45deg,
@@ -188,11 +505,465 @@
       transparent 12px
     );
   }
+
+  /* ── Surfaces ──────────────────────────────────────────────────────────── */
+
+  /*
+    The standard card. Everything that used `border border-border bg-card` by
+    hand now shares one surface, so a change to elevation or hover happens in
+    one place instead of fifteen. Only transform, border-colour and shadow
+    animate — none of the three costs a reflow.
+  */
+  .surface {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    transition:
+      transform 320ms var(--ease-brand),
+      border-color 320ms var(--ease-brand),
+      box-shadow 320ms var(--ease-brand);
+  }
+  .surface-hover:hover,
+  .surface-hover:focus-within {
+    transform: translate3d(0, -4px, 0);
+    border-color: color-mix(in srgb, var(--teal) 45%, transparent);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /*
+    Clipped top-right corner — the one shape move in the whole system. It keeps
+    every angle a right angle (the brand is sharp-cornered) while making a
+    rectangle read as drawn rather than as a default div. Note that clip-path
+    also clips box-shadow, so notched surfaces carry their elevation with
+    `filter: drop-shadow` instead; it is used sparingly for that reason.
+  */
+  .notch {
+    --notch: clamp(0.75rem, 1.6vw, 1.5rem);
+    clip-path: polygon(
+      0 0,
+      calc(100% - var(--notch)) 0,
+      100% var(--notch),
+      100% 100%,
+      0 100%
+    );
+  }
+  .notch-lg {
+    --notch: clamp(1.25rem, 3vw, 3rem);
+  }
+
+  /*
+    Light. Two soft teal blooms behind a section — this is what makes the cream
+    bands read as lit instead of flat grey. Sits on a pseudo-element so the
+    host keeps its own background, and drifts slowly so a long hero is never
+    completely static.
+  */
+  .mesh::before {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        38% 42% at 12% 18%,
+        color-mix(in srgb, var(--teal-300) 46%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        44% 46% at 88% 72%,
+        color-mix(in srgb, var(--teal-500) 30%, transparent),
+        transparent 72%
+      );
+    /*
+      Scroll-bound, not endless.
+
+      This was `coarea-drift 22s infinite`, which kept running on every `.mesh`
+      surface on the page — including the footer, which is present on every
+      route — whether or not any of them was on screen. Measured at idle at the
+      top of the homepage: 46–59ms of style recalculation and ~260ms of
+      main-thread work per 5 seconds, against 0ms and ~67ms with the drift
+      removed. Roughly four times the idle cost, for movement nobody was looking
+      at.
+
+      Where `animation-timeline: view()` is supported the drift is driven by the
+      section's own progress through the viewport: it costs exactly nothing while
+      the page is still, runs only for the section in view, and stays on the
+      compositor because it is transform-only. Everywhere else the bloom simply
+      holds its start position — the gradient is the point, the movement is a
+      bonus.
+    */
+    animation: coarea-drift 22s var(--ease-brand) infinite;
+    animation-play-state: paused;
+  }
+  @supports (animation-timeline: view()) {
+    .mesh::before {
+      animation: coarea-drift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+      animation-play-state: running;
+    }
+  }
+  .mesh-dark::before {
+    background:
+      radial-gradient(
+        40% 44% at 8% 10%,
+        rgba(255, 255, 255, 0.16),
+        transparent 70%
+      ),
+      radial-gradient(
+        46% 48% at 92% 88%,
+        color-mix(in srgb, var(--teal-300) 30%, transparent),
+        transparent 72%
+      );
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mesh::before,
+    .mesh-dark::before {
+      animation: none;
+    }
+  }
+
+  /*
+    Film grain. A flat teal band at this scale bands visibly on cheap panels and
+    looks like plastic on good ones; a 4% noise overlay is the difference
+    between "a coloured div" and "a printed surface". Generated inline as SVG
+    turbulence — no request, no asset.
+  */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.045;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ── Type ──────────────────────────────────────────────────────────────── */
+
+  /*
+    Section eyebrow. Small caps label + a short teal rule, so a heading arrives
+    with a hierarchy above it instead of starting cold.
+  */
+  .eyebrow {
+    /*
+      Block-level, not inline-flex. The heading it introduces is an inline-block
+      (the framed motif), so an inline eyebrow flowed onto the same line and
+      collided with the frame. `fit-content` keeps it from stretching.
+    */
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+  }
+  .eyebrow::before {
+    content: "";
+    width: clamp(1.25rem, 2.2vw, 2.25rem);
+    height: 2px;
+    background: var(--teal);
+  }
+
+  /*
+    One fluid size for every section heading. It lives here rather than as a
+    clamp repeated at eight call sites — and as a plain class it also sidesteps
+    tailwind-merge, which would treat a `text-[…]` utility as conflicting with
+    the line-height the heading component sets.
+  */
+  .h-section {
+    font-size: clamp(1.6rem, 2.2vw + 0.55rem, 3rem);
+  }
+
+  /*
+    Form error text.
+
+    Every error message on the site was `text-teal font-medium` — the same
+    colour as the success confirmation, the brand itself and the focus ring, so
+    "Bitte gib eine gültige E-Mail-Adresse an." was indistinguishable from
+    "Notiert." at a glance. The `--destructive` token existed and was used
+    nowhere. Errors are now destructive-coloured and carry a leading marker, so
+    they are not signalled by colour alone (WCAG 1.4.1).
+  */
+  .field-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.375rem;
+    font-weight: 500;
+    color: var(--destructive);
+  }
+  .field-error::before {
+    content: "!";
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.05rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    background: var(--destructive);
+    border-radius: 50%;
+  }
+
+  /*
+    Unframed section heading.
+
+    The framed TabHeading is the brand's signature, but it was opening every
+    single section — six times on the homepage alone, all at the same size, all
+    in the same teal box. Repeated that often a signature stops being a
+    signature and becomes wallpaper, and the page loses its levels: nothing can
+    be more important than anything else.
+
+    The frame is now reserved for the page's H1 and for headings sitting on a
+    teal band, where it is the one white shape on colour. Ordinary content
+    sections use this instead — bigger and heavier than the body, in the
+    headline grey, carrying hierarchy through weight and scale rather than
+    through a box.
+  */
+  /*
+    2026-07-26, on the client's instruction: section headings are framed and
+    teal, not dark grey. The grey unframed variant that used to live here was
+    rejected outright („nicht schwarz, das passt absolut nicht"), so the frame is
+    no longer rationed to the page's H1 — it is the heading style of the brand
+    and every section heading wears it.
+
+    Geometry is identical to the TabHeading component (same rule width, same air,
+    same gradient-lit outline), so a heading written as `<h2 class="h-plain">`
+    and one rendered through <TabHeading> cannot drift apart.
+  */
+  .h-plain {
+    display: inline-block;
+    max-width: 100%;
+    font-size: clamp(1.45rem, 1.55vw + 0.72rem, 2.35rem);
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--teal);
+    border: clamp(3px, 0.26vw, 5px) solid var(--teal);
+    border-image: var(--grad-teal-bright) 1;
+    padding: clamp(0.4rem, 0.52vw, 0.625rem) clamp(0.625rem, 1.04vw, 1.25rem);
+    text-wrap: balance;
+  }
+
+  /* One accent word per headline, filled with the brand gradient. */
+  .text-gradient {
+    background: var(--grad-teal);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Section divider that fades at both ends rather than butting into the gutter. */
+  .rule-fade {
+    height: 1px;
+    border: 0;
+    background: var(--grad-rule);
+  }
+
+  /* ── Controls ──────────────────────────────────────────────────────────── */
+
+  /*
+    The primary action. The gradient fill wipes across on hover via a
+    pseudo-element transform rather than by animating background-position,
+    which cannot be composited and repaints the button every frame.
+  */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    overflow: hidden;
+    font-weight: 600;
+    white-space: nowrap;
+    isolation: isolate;
+    transition:
+      transform 220ms var(--ease-brand),
+      box-shadow 320ms var(--ease-brand),
+      color 220ms var(--ease-brand),
+      border-color 220ms var(--ease-brand);
+  }
+  .btn:active {
+    transform: translate3d(0, 1px, 0);
+  }
+  .btn-teal {
+    background: var(--grad-teal);
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-teal::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--grad-teal-deep);
+    opacity: 0;
+    transition: opacity 320ms var(--ease-brand);
+  }
+  .btn-teal:hover {
+    box-shadow: var(--shadow-md);
+  }
+  .btn-teal:hover::before {
+    opacity: 1;
+  }
+  /*
+    Outline variant: the fill grows from the bottom edge.
+
+    Three things made the earlier version feel cheap, all of them timing rather
+    than shape:
+
+    · one symmetric 320ms curve for both directions. A fill that arrives and
+      leaves at the same speed reads as a state flip; entering wants to be
+      slower and decelerating, leaving wants to be quick.
+    · the label turned white at the same instant the fill started, so for the
+      first ~100ms there was white text on a white ground. The colour now waits
+      until the fill is roughly a third up, and snaps back immediately on leave.
+    · the fill is drawn 1px past the top edge (`inset: -1px 0 0`), because a
+      transform-scaled edge lands on a fractional pixel and left a hairline of
+      background showing along the top at the end of the travel.
+
+    `scaleY` on a pseudo-element stays on the compositor — no layout, no repaint
+    of the label — so this is free even on a header that is sticky.
+  */
+  .btn-outline {
+    border: 2px solid var(--teal);
+    color: var(--teal);
+    background: transparent;
+    transition:
+      transform 220ms var(--ease-brand),
+      box-shadow 320ms var(--ease-brand),
+      color 150ms var(--ease-brand),
+      border-color 220ms var(--ease-brand);
+  }
+  .btn-outline::before {
+    content: "";
+    position: absolute;
+    inset: -1px 0 0;
+    z-index: -1;
+    background: var(--grad-teal);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    will-change: transform;
+    /* Leaving: quick and out of the way. */
+    transition: transform 240ms var(--ease-brand);
+  }
+  .btn-outline:hover,
+  .btn-outline:focus-visible {
+    color: #fff;
+    transition-delay: 0ms, 0ms, 110ms, 0ms;
+  }
+  .btn-outline:hover::before,
+  .btn-outline:focus-visible::before {
+    transform: scaleY(1);
+    /* Entering: long decelerating travel, so the fill reads as rising. */
+    transition: transform 480ms var(--ease-out-expo);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn-outline::before,
+    .btn-outline:hover::before,
+    .btn-outline:focus-visible::before {
+      transition-duration: 120ms;
+    }
+  }
+
+  /* A single sheen crossing a surface on hover — for the two or three hero-level
+     elements only, never for a grid of cards. */
+  .sheen {
+    position: relative;
+    overflow: hidden;
+  }
+  .sheen::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 28%;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.42),
+      transparent
+    );
+    transform: translate3d(-120%, 0, 0) skewX(-18deg);
+  }
+  .sheen:hover::after {
+    animation: coarea-sheen 620ms var(--ease-out-expo);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sheen:hover::after {
+      animation: none;
+    }
+  }
+
+  /* Arrow that steps forward with its label. */
+  .arrow-nudge svg {
+    transition: transform 260ms var(--ease-brand);
+  }
+  .group:hover .arrow-nudge svg,
+  .arrow-nudge:hover svg {
+    transform: translate3d(4px, 0, 0);
+  }
+
+  /* ── Reveal variants ───────────────────────────────────────────────────── */
+
+  /* A wipe rather than a fade — reads as the block being drawn, not appearing. */
+  .reveal-clip {
+    clip-path: inset(0 0 100% 0);
+    opacity: 1;
+    transform: none;
+    transition: clip-path 400ms var(--ease-out-expo);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal-clip[data-shown="true"] {
+    clip-path: inset(0 0 0 0);
+  }
+  /* Settles from very slightly small — for single hero-level elements only. */
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.965);
+    transition:
+      opacity 320ms var(--ease-out-expo),
+      transform 420ms var(--ease-out-expo);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal-scale[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-clip,
+    .reveal-scale {
+      clip-path: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
+/*
+  Page container. The Figma frames are 1920px wide with content running from
+  x=200 to x=1720 — a 1520px column with 200px side margins. Measured on the
+  Homepage, Flächen-entdecken, Über-uns and Dashboard frames alike.
+*/
 @utility container-page {
   width: 100%;
   margin-inline: auto;
-  max-width: 80rem;
-  padding-inline: 1.25rem;
+  max-width: 97.5rem;
+  /*
+    The gutter used to be a flat 1.25rem, so on a 1440 laptop — the most common
+    desktop size there is — every card, heading and footer column sat 20px from
+    the window edge. Nothing signals "cheap" faster than content touching the
+    frame. It now opens up with the viewport: 20px on a phone, ~65px at 1440,
+    80px once there is room, while the 1520px content column is unchanged on
+    large screens.
+  */
+  padding-inline: clamp(1.25rem, 4.5vw, 5rem);
 }

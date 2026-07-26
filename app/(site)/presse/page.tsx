@@ -25,7 +25,7 @@ export default function PressePage() {
       <TabHeading as="h1" className="text-[clamp(1.6rem,3vw+0.5rem,2.5rem)]">
         Presse
       </TabHeading>
-      <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink/80">
+      <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink">
         Du berichtest über nachhaltige Flächennutzung, Sharing Economy oder
         StartUps aus Köln? Hier findest Du Fakten, Zitate und Materialien rund um
         CoArea. Für Interviews und O-Töne sind wir gern für Dich da.
@@ -79,7 +79,7 @@ export default function PressePage() {
           </p>
           <a
             href={`mailto:${contact.email}?subject=Presseanfrage`}
-            className="mt-6 inline-flex items-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-semibold text-teal transition-transform hover:-translate-y-0.5"
+            className="mt-6 btn min-h-11 bg-white px-5 py-3 text-sm text-teal shadow-[var(--shadow-sm)] hover:-translate-y-0.5"
           >
             <Mail className="h-4 w-4" /> {contact.email}
           </a>

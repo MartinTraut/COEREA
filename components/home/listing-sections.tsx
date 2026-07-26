@@ -1,26 +1,39 @@
 import Link from "next/link"
-import { ArrowRight, MapPin, Clock, Share2, Heart } from "lucide-react"
+import { ArrowRight, MapPin, Clock } from "lucide-react"
 
 import { LISTINGS, listingBySlug } from "@/lib/listings"
 import type { Listing } from "@/lib/listings"
 import { categoryBySlug } from "@/lib/categories"
-import { TabHeading } from "@/components/brand/tab-heading"
+import { Reveal } from "@/components/brand/reveal"
 import { ListingCard } from "@/components/listings/listing-card"
 import { ListingImage } from "@/components/brand/listing-image"
+import { SaveButton } from "@/components/listings/save-button"
+import { ShareButton } from "@/components/listings/share-button"
 
-function SectionHead({ title }: { title: string }) {
+/*
+  Section header. An eyebrow above the heading gives the block a hierarchy
+  instead of starting cold on a framed title, and the fading rule underneath
+  ties the header to the grid below it without drawing a hard box.
+*/
+function SectionHead({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
-    <div className="mb-8 flex items-end justify-between gap-4">
-      <TabHeading className="text-[clamp(1.4rem,2vw+0.5rem,2rem)]">
-        {title}
-      </TabHeading>
-      <Link
-        href="/flaechen"
-        className="hidden shrink-0 items-center gap-1.5 bg-teal px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-teal-600 sm:inline-flex"
-      >
-        Flächen entdecken
-        <ArrowRight className="h-4 w-4" />
-      </Link>
+    <div className="mb-[clamp(1.75rem,2.6vw,3rem)]">
+      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
+        <div>
+          <span className="eyebrow">{eyebrow}</span>
+          <h2 className="h-plain mt-4">{title}</h2>
+        </div>
+        <Link
+          href="/flaechen"
+          className="btn btn-outline group h-11 px-5 text-sm max-sm:hidden"
+        >
+          Flächen entdecken
+          <span className="arrow-nudge inline-flex">
+            <ArrowRight className="h-4 w-4" />
+          </span>
+        </Link>
+      </div>
+      <hr className="rule-fade mt-[clamp(1.25rem,1.8vw,2rem)]" />
     </div>
   )
 }
@@ -31,74 +44,95 @@ function FeatureCard({ listing }: { listing: Listing }) {
   const date =
     listing.dateText ?? (listing.from ? `${listing.from} bis ${listing.to}` : undefined)
   return (
-    <article className="grid overflow-hidden border border-border bg-card md:grid-cols-2">
+    <article className="surface group grid overflow-hidden md:grid-cols-[1.15fr_1fr]">
       <Link
         href={`/flaechen/${listing.slug}`}
         aria-label={listing.title}
-        className="relative block"
+        className="media-zoom relative block overflow-hidden"
       >
         <ListingImage
           category={listing.category}
           tone={listing.tone}
           image={listing.image}
           alt={listing.title}
-          sizes="(max-width: 768px) 100vw, 50vw"
+          sizes="(max-width: 768px) 100vw, 55vw"
           priority
-          className="aspect-[16/10] h-full md:aspect-auto md:min-h-[22rem]"
+          className="aspect-[16/10] h-full md:aspect-auto md:min-h-[26rem]"
         />
-        <span className="absolute top-3 left-3 z-10 bg-teal px-2.5 py-1 text-xs font-semibold tracking-wide text-white uppercase">
+        <span className="absolute top-0 left-0 z-10 bg-teal px-3 py-1.5 text-xs font-semibold tracking-[0.08em] text-white uppercase">
           {listing.badge ?? "Neu"}
         </span>
-        <span className="absolute right-3 bottom-3 z-10 border border-teal bg-white px-2 py-0.5 text-xs font-semibold text-teal">
-          {listing.size}
-        </span>
+        {listing.size ? (
+          <span className="absolute right-3 bottom-3 z-10 bg-white/95 px-2.5 py-1 text-xs font-semibold text-teal">
+            {listing.size}
+          </span>
+        ) : null}
       </Link>
 
-      <div className="flex flex-col justify-center gap-3 p-7 lg:p-10">
-        <div className="flex items-start justify-between">
-          <span className="text-sm font-bold tracking-wide text-teal uppercase">
-            {listing.badge ?? "Neu"}
-          </span>
+      {/*
+        The copy side sits on the quiet cream so the two halves read as a
+        deliberate pairing rather than as a photo taped onto a white box, and a
+        Schraffur edge runs down the seam between them.
+      */}
+      <div className="relative flex flex-col justify-center gap-4 bg-cream p-[clamp(1.5rem,2.6vw,3rem)]">
+        <span
+          aria-hidden
+          className="hatch-soft absolute inset-y-0 left-0 hidden w-3 md:block"
+        />
+
+        <div className="flex items-start justify-between gap-4">
+          <span className="eyebrow">{cat?.label}</span>
+          {/*
+            These were two decorative glyphs: the heart did not respond, so an
+            area saved on the discover page showed up unsaved here. Both are
+            real controls now, sharing the same wishlist store as the cards.
+          */}
           <div className="-mt-1 flex gap-1">
-            <span aria-hidden className="grid h-9 w-9 place-items-center text-teal">
-              <Share2 className="h-4 w-4" />
-            </span>
-            <span aria-hidden className="grid h-9 w-9 place-items-center text-ink/40">
-              <Heart className="h-4 w-4" />
-            </span>
+            <ShareButton slug={listing.slug} title={listing.title} />
+            <SaveButton slug={listing.slug} defaultSaved={listing.saved} />
           </div>
         </div>
 
-        <span className="text-sm font-semibold text-teal">{cat?.label}</span>
-        <h3 className="text-[clamp(1.15rem,1.4vw+0.5rem,1.6rem)] leading-tight font-semibold text-ink">
-          <Link href={`/flaechen/${listing.slug}`} className="hover:underline">
+        <h3 className="text-[clamp(1.25rem,1.5vw+0.5rem,2rem)]/[1.2] font-semibold text-ink-900">
+          <Link
+            href={`/flaechen/${listing.slug}`}
+            className="transition-colors duration-200 hover:text-teal"
+          >
             {listing.title}
           </Link>
         </h3>
 
-        <div className="flex flex-col gap-1.5 text-sm text-ink/70">
-          <span className="inline-flex items-center gap-1.5">
-            <MapPin className="h-4 w-4 text-teal" /> {listing.city}
+        {/* Meta as chips — reads as data, not as another line of prose. */}
+        <div className="flex flex-wrap gap-2">
+          <span className="inline-flex items-center gap-1.5 bg-white px-2.5 py-1.5 text-xs font-medium text-ink">
+            <MapPin className="h-3.5 w-3.5 text-teal" /> {listing.city}
           </span>
           {date ? (
-            <span className="inline-flex items-center gap-1.5">
-              <Clock className="h-4 w-4 text-teal" /> {date}
+            <span className="inline-flex items-center gap-1.5 bg-white px-2.5 py-1.5 text-xs font-medium text-ink">
+              <Clock className="h-3.5 w-3.5 text-teal" /> {date}
             </span>
           ) : null}
         </div>
 
-        <p className="max-w-md text-sm leading-relaxed text-ink/70">{listing.excerpt}</p>
+        <p className="max-w-md text-[0.9375rem] leading-relaxed text-ink">
+          {listing.excerpt}
+        </p>
 
-        <div className="mt-3 flex items-end justify-between gap-4">
+        <div className="mt-2 flex flex-wrap items-end justify-between gap-4 border-t border-teal/15 pt-5">
           <Link
             href={`/flaechen/${listing.slug}`}
-            className="inline-flex items-center gap-1.5 bg-teal px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-teal-600"
+            className="btn btn-teal h-12 px-6 text-sm"
           >
-            mehr erfahren <ArrowRight className="h-4 w-4" />
+            mehr erfahren
+            <span className="arrow-nudge inline-flex">
+              <ArrowRight className="h-4 w-4" />
+            </span>
           </Link>
-          <span className="text-right text-lg font-bold text-ink">
+          <span className="text-right text-[clamp(1.25rem,1vw+0.7rem,1.75rem)] leading-none font-bold text-ink-900">
             {listing.price.amount}
-            <span className="block text-sm font-normal text-ink/60">/ {listing.price.unit}</span>
+            <span className="mt-1 block text-xs font-medium text-ink">
+              pro {listing.price.unit}
+            </span>
           </span>
         </div>
       </div>
@@ -113,9 +147,15 @@ const bySlug = (slugs: string[]) =>
 export function NewListings() {
   const feature = listingBySlug("parzelle-ackerflaeche-bornheim") ?? LISTINGS[0]
   return (
-    <section className="container-page py-16 md:py-20">
-      <SectionHead title="Neu inserierte Flächen" />
-      <FeatureCard listing={feature} />
+    <section className="container-page py-[clamp(2.75rem,3.6vw,4.25rem)]">
+      <Reveal>
+        <SectionHead eyebrow="Frisch dabei" title="Neu inserierte Flächen" />
+      </Reveal>
+      {/* The feature card wipes open rather than fading — it is one large block,
+          and a fade at that size looks like a slow image load. */}
+      <Reveal variant="clip" delay={80}>
+        <FeatureCard listing={feature} />
+      </Reveal>
     </section>
   )
 }
@@ -128,11 +168,16 @@ export function PopularListings() {
     "volleyballfeld-koeln",
   ])
   return (
-    <section className="container-page pb-4">
-      <SectionHead title="Derzeitig beliebt" />
-      <div className="grid gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
-        {items.map((l) => (
-          <ListingCard key={l.slug} listing={l} />
+    <section className="container-page pb-[clamp(2rem,3vw,3.5rem)]">
+      <Reveal>
+        <SectionHead eyebrow="Von der Community gewählt" title="Derzeitig beliebt" />
+      </Reveal>
+      {/* Cards fade in one after another rather than as one block. */}
+      <div className="grid gap-[clamp(1rem,1.6vw,1.75rem)] sm:grid-cols-2 lg:grid-cols-4">
+        {items.map((l, i) => (
+          <Reveal key={l.slug} delay={i * 70} className="h-full">
+            <ListingCard listing={l} />
+          </Reveal>
         ))}
       </div>
     </section>

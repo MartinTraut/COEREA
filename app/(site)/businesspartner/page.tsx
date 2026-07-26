@@ -41,7 +41,7 @@ export default function BusinesspartnerPage() {
           </p>
           <Link
             href="#kontakt"
-            className="mt-8 inline-flex items-center gap-2 rounded-md bg-white px-6 py-3.5 text-sm font-semibold text-teal transition-transform hover:-translate-y-0.5"
+            className="mt-8 btn min-h-11 bg-white px-6 py-3.5 text-sm text-teal shadow-[var(--shadow-sm)] hover:-translate-y-0.5"
           >
             Partner werden <ArrowRight className="h-4 w-4" />
           </Link>
@@ -50,9 +50,7 @@ export default function BusinesspartnerPage() {
 
       {/* Für wen */}
       <section className="container-page py-16 md:py-20">
-        <TabHeading className="text-[clamp(1.4rem,2vw+0.5rem,2rem)]">
-          Für wen ist das gedacht?
-        </TabHeading>
+        <h2 className="h-plain">Für wen ist das gedacht?</h2>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {PARTNERS.map((p) => (
             <div key={p.title} className="rounded-xl border border-border bg-card p-7">
@@ -69,9 +67,7 @@ export default function BusinesspartnerPage() {
       {/* Warum */}
       <section className="border-y border-border bg-card/60">
         <div className="container-page py-16 md:py-20">
-          <TabHeading className="text-[clamp(1.4rem,2vw+0.5rem,2rem)]">
-            Eure Vorteile
-          </TabHeading>
+          <h2 className="h-plain">Eure Vorteile</h2>
           <div className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
             {REASONS.map((r) => (
               <div key={r.title} className="flex flex-col gap-3">
@@ -100,7 +96,7 @@ export default function BusinesspartnerPage() {
           </div>
           <a
             href={`mailto:${contact.email}?subject=Businesspartner werden`}
-            className="inline-flex shrink-0 items-center gap-2 rounded-md bg-white px-6 py-3.5 text-sm font-semibold text-teal transition-transform hover:-translate-y-0.5"
+            className="btn min-h-11 bg-white px-6 py-3.5 text-sm text-teal shadow-[var(--shadow-sm)] hover:-translate-y-0.5"
           >
             {contact.email} <ArrowRight className="h-4 w-4" />
           </a>

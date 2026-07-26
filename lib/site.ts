@@ -2,6 +2,16 @@
  * Central site configuration for CoArea.
  * Company facts verified from the bachelor-thesis brand documents.
  */
+/*
+  One source of truth for the phone number. The display form used to be
+  "+49 02131-…" — a country code followed by the national trunk "0", which is
+  not a dialable number — and the tel: form was maintained as a second literal
+  that had drifted by a digit, so every phone link called the wrong line.
+  The dial form is derived here, so the two can no longer disagree.
+*/
+const PHONE = "+49 2131 430 04 400"
+const PHONE_HREF = PHONE.replace(/[^\d+]/g, "")
+
 export const SITE = {
   name: "CoArea",
   legalName: "CoArea GmbH",
@@ -11,8 +21,8 @@ export const SITE = {
     "Die Plattform für die gemeinschaftliche Nutzung ungenutzter Freiflächen.",
   contact: {
     email: "info@coarea.de",
-    phone: "+49 02131-430 04 400",
-    phoneHref: "+4921343004400",
+    phone: PHONE,
+    phoneHref: PHONE_HREF,
     street: "Baacher Str. 46",
     zip: "50999",
     city: "Köln",

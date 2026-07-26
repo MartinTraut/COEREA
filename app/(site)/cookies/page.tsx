@@ -43,12 +43,24 @@ export default function CookiesPage() {
 
       <h2>Deine Einwilligung verwalten</h2>
       <p>
-        Du kannst Deine Cookie-Einstellungen jederzeit über den Button „Cookie-
-        Einstellungen&quot; im Footer anpassen oder widerrufen. Zusätzlich kannst Du
-        Cookies in den Einstellungen Deines Browsers löschen oder blockieren.
+        Aktuell setzt diese Website <strong>keine</strong> Analyse- oder
+        Marketing-Cookies. Schriften werden lokal von unserem eigenen Server
+        ausgeliefert, es werden keine Inhalte von Drittanbietern nachgeladen, und
+        es findet keine Reichweitenmessung statt. Eine Einwilligung ist deshalb
+        derzeit nicht erforderlich — und aus demselben Grund gibt es bewusst kein
+        Cookie-Banner.
       </p>
       <p>
-        <Todo>Consent-Management-Tool (Cookie-Banner) einbinden und hier verlinken</Todo>
+        Technisch notwendige Angaben — etwa Deine gemerkten Flächen — speichern wir
+        ausschließlich lokal in Deinem Browser (localStorage). Sie verlassen Dein
+        Gerät nicht und lassen sich über die Einstellungen Deines Browsers jederzeit
+        löschen.
+      </p>
+      <p>
+        <Todo>
+          Sobald Analyse- oder Marketing-Tools eingeführt werden: Consent-Management-
+          Tool einbinden, Widerrufs-Button im Footer ergänzen und hier verlinken
+        </Todo>
       </p>
 
       <h2>Weitere Informationen</h2>

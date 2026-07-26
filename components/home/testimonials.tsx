@@ -1,5 +1,6 @@
-import { Quote, Star, ChevronLeft, ChevronRight } from "lucide-react"
-import { TabHeading } from "@/components/brand/tab-heading"
+import { Quote, Star } from "lucide-react"
+
+import { Reveal } from "@/components/brand/reveal"
 
 const TESTIMONIALS = [
   {
@@ -16,56 +17,58 @@ const TESTIMONIALS = [
   },
 ]
 
+/*
+  Quotes on the quiet cream band. Two white cards on cream separate far better
+  than two outlined boxes on white did — the surface itself now does the work a
+  border was being asked to do.
+*/
 export function Testimonials() {
   return (
-    <section className="container-page py-16 md:py-20">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <TabHeading className="text-[clamp(1.4rem,2vw+0.5rem,2rem)]">
-          Das sagen unsere Hosts &amp; User
-        </TabHeading>
-        <div className="flex items-center gap-1.5">
-          <button
-            type="button"
-            aria-label="Vorherige Bewertung"
-            className="grid h-10 w-10 place-items-center rounded-full border border-border text-teal transition-colors hover:bg-teal/10"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            aria-label="Nächste Bewertung"
-            className="grid h-10 w-10 place-items-center rounded-full bg-teal text-white transition-colors hover:bg-teal-600"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </button>
-        </div>
-      </div>
+    <section className="mesh relative isolate overflow-hidden bg-cream">
+      <div className="relative container-page py-[clamp(2.75rem,3.6vw,4.25rem)]">
+        {/*
+          Both quotes sit side by side, so the two carousel arrows that used to
+          flank this heading had nothing to page through and have been dropped.
+        */}
+        <Reveal>
+          <span className="eyebrow">Stimmen aus der Community</span>
+          <h2 className="h-plain mt-4">
+            Das sagen unsere Hosts &amp; User
+          </h2>
+        </Reveal>
 
-      <div className="mt-10 grid gap-6 md:grid-cols-2">
-        {TESTIMONIALS.map((t) => (
-          <figure
-            key={t.name}
-            className="flex flex-col border border-border bg-card p-7"
-          >
-            <Quote className="h-8 w-8 text-teal/30" />
-            <blockquote className="mt-3 flex-1 text-[0.95rem] leading-relaxed text-ink/85">
-              {t.quote}
-            </blockquote>
-            <figcaption className="mt-6 flex items-center justify-between border-t border-border pt-4">
-              <span>
-                <span className="block text-xs font-medium text-teal">
-                  {t.role}
-                </span>
-                <span className="font-semibold text-ink">{t.name}</span>
-              </span>
-              <span className="flex gap-0.5" aria-label="5 von 5 Sternen">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-[#e6b84f] text-[#e6b84f]" />
-                ))}
-              </span>
-            </figcaption>
-          </figure>
-        ))}
+        <div className="mt-[clamp(2rem,3vw,3.5rem)] grid gap-[clamp(1.25rem,2vw,2rem)] md:grid-cols-2">
+          {TESTIMONIALS.map((t, i) => (
+            <Reveal key={t.name} delay={i * 100} className="h-full">
+              <figure className="surface surface-hover flex h-full flex-col p-[clamp(1.5rem,2.2vw,2.5rem)]">
+                {/* Teal top edge — the accent that says which brand is speaking. */}
+                <span
+                  aria-hidden
+                  className="absolute inset-x-0 top-0 h-[3px] [background:var(--grad-teal-bright)]"
+                />
+                <Quote className="h-9 w-9 text-teal/20" strokeWidth={1.5} aria-hidden />
+                <blockquote className="mt-4 flex-1 text-[clamp(0.9375rem,0.35vw+0.8rem,1.0625rem)]/[1.7] text-ink">
+                  {t.quote}
+                </blockquote>
+                <figcaption className="mt-7 flex items-center justify-between gap-4 border-t border-teal/15 pt-5">
+                  <span>
+                    <span className="block text-[11px] font-semibold tracking-[0.12em] text-teal uppercase">
+                      {t.role}
+                    </span>
+                    <span className="text-[1.0625rem] font-semibold text-ink-900">
+                      {t.name}
+                    </span>
+                  </span>
+                  <span className="flex gap-0.5" aria-label="5 von 5 Sternen">
+                    {Array.from({ length: 5 }).map((_, s) => (
+                      <Star key={s} className="h-4 w-4 fill-gold text-gold" aria-hidden />
+                    ))}
+                  </span>
+                </figcaption>
+              </figure>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   )

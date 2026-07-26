@@ -28,7 +28,7 @@ export default function HilfePage() {
       <TabHeading as="h1" className="text-[clamp(1.6rem,3vw+0.5rem,2.5rem)]">
         Wie können wir helfen?
       </TabHeading>
-      <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink/80">
+      <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink">
         Hier findest Du Antworten auf die häufigsten Fragen. Ist Deine Frage nicht
         dabei? Unser Team ist persönlich für Dich da.
       </p>
@@ -55,9 +55,7 @@ export default function HilfePage() {
 
       {/* FAQ */}
       <section className="mt-16">
-        <TabHeading as="h2" className="text-[clamp(1.4rem,2vw+0.5rem,2rem)]">
-          Häufige Fragen
-        </TabHeading>
+        <h2 className="h-plain">Häufige Fragen</h2>
         <div className="mt-8 max-w-3xl">
           <FaqAccordion />
         </div>
@@ -77,19 +75,19 @@ export default function HilfePage() {
           <div className="flex flex-wrap gap-3">
             <a
               href={`mailto:${contact.email}`}
-              className="inline-flex items-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-semibold text-teal transition-transform hover:-translate-y-0.5"
+              className="btn min-h-11 bg-white px-5 py-3 text-sm text-teal shadow-[var(--shadow-sm)] hover:-translate-y-0.5"
             >
               <Mail className="h-4 w-4" /> E-Mail
             </a>
             <a
               href={`tel:${contact.phoneHref}`}
-              className="inline-flex items-center gap-2 rounded-md border border-white/40 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-teal"
+              className="btn min-h-11 border-2 border-white/50 px-5 py-3 text-sm text-white transition-colors hover:bg-white hover:text-teal"
             >
               <Phone className="h-4 w-4" /> Anrufen
             </a>
             <Link
               href="/kontakt"
-              className="inline-flex items-center gap-2 rounded-md border border-white/40 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-teal"
+              className="btn min-h-11 border-2 border-white/50 px-5 py-3 text-sm text-white transition-colors hover:bg-white hover:text-teal"
             >
               Kontaktformular
             </Link>

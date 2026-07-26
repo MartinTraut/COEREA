@@ -6,7 +6,7 @@ import { categoryBySlug } from "@/lib/categories"
 /*
   Listing visual. When a real photo is provided it is rendered edge-to-edge
   (object-cover); otherwise we fall back to an on-brand gradient + schraffur +
-  faint category icon. The optional size badge sits bottom-left as in the design.
+  faint category icon. The optional size badge sits bottom-right as in the design.
 */
 const TONES = [
   "from-[#6ea06a] to-[#3f6f47]", // field
@@ -62,12 +62,20 @@ export function ListingImage({
         <>
           <div className="hatch-white absolute inset-0 opacity-30" aria-hidden />
           {Icon ? (
-            <Icon className="relative h-16 w-16 text-white/45" strokeWidth={1.25} />
+            <Icon className="relative h-16 w-16 text-white/45 [--icon-knockout:transparent]" />
           ) : null}
         </>
       )}
+      {/*
+        Size badge. Measured on the "Flächen entdecken" frame: on a 360px card
+        the 110x45 box sits 34px in from the right edge and 30px up from the
+        bottom, with a 3px rule. Expressed as a percentage of the card so it
+        holds in both the 360px overview grid and the 496px category grid —
+        `right-0` used to push the right border under `overflow-hidden`, which
+        clipped it away.
+      */}
       {size ? (
-        <span className="absolute bottom-2 left-2 z-10 border border-teal bg-white px-2 py-0.5 text-xs font-semibold text-teal">
+        <span className="absolute right-[9.4%] bottom-[8.3%] z-10 border-[length:clamp(2px,0.22vw,3px)] border-teal bg-white px-3 py-1 text-base text-teal lg:px-3.5 lg:py-1.5 lg:text-xl">
           {size}
         </span>
       ) : null}

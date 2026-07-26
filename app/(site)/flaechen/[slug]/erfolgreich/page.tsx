@@ -1,9 +1,9 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { MessageSquare } from "lucide-react"
 
 import { LISTINGS, listingBySlug } from "@/lib/listings"
 import { TabHeading } from "@/components/brand/tab-heading"
+import { BookingConfirmation } from "@/components/listings/booking-confirmation"
 import { DetailSections } from "@/components/listings/detail-sections"
 
 export function generateStaticParams() {
@@ -31,26 +31,15 @@ export default async function ErfolgreichPage({
           Buchungsanfrage abgeschlossen
         </TabHeading>
 
-        <div className="mt-8 border border-border bg-card px-6 py-9 sm:px-10">
-          <h2 className="text-2xl font-semibold text-teal">
-            Deine Buchungsanfrage war erfolgreich!
-          </h2>
-          <p className="mt-4 max-w-2xl leading-relaxed text-ink/80">
-            Wir haben Deine Buchungsanfrage an Deinen Host verschickt.{" "}
-            {listing.host.name} wird sich umgehend bei Dir melden. Hast Du Fragen an
-            Deinen Host? Dann nutze gerne unsere Chat-Funktion!
-          </p>
-          <button
-            type="button"
-            className="mt-6 inline-flex items-center gap-2 bg-teal px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-teal-600"
-          >
-            <MessageSquare className="h-4 w-4" />
-            Nachricht an Host
-          </button>
-        </div>
+        <BookingConfirmation listing={listing} />
       </div>
 
-      <DetailSections listing={listing} />
+      {/*
+        The request is sent, so the useful question is "what now": who the host
+        is and what else they offer. The booking FAQ and the reviews would only
+        repeat the two screens the visitor just came through.
+      */}
+      <DetailSections listing={listing} only={["host", "more"]} />
     </div>
   )
 }

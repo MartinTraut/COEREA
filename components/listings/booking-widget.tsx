@@ -1,61 +1,173 @@
-import Link from "next/link"
-import { ChevronDown } from "lucide-react"
+"use client"
+
+import { useMemo, useState } from "react"
+import { useRouter } from "next/navigation"
 
 import type { Listing } from "@/lib/listings"
-import { categoryBySlug } from "@/lib/categories"
-import { TabHeading } from "@/components/brand/tab-heading"
+import { categoryBySlug, USAGE_OPTIONS } from "@/lib/categories"
+import {
+  eur,
+  isPriceUnit,
+  listingRange,
+  parseIsoDate,
+  quote,
+  toIso,
+  unitsBetween,
+} from "@/lib/pricing"
 
 /*
-  „Verfügbarkeit" — the flat availability form from the Figma detail screen.
-  Label on the left, field on the right; the „Verfügbarkeit prüfen" action
-  carries the user to the booking-request summary. Sharp, calm, no card shadow.
+  „Verfügbarkeit" — the availability form on the detail screen.
+
+  This was a static picture: two disabled pseudo-selects, an input nobody read,
+  and a "total" that was simply the unit price. It now works end to end without
+  a backend — pick a range, pick a use, see the real total, and carry all of it
+  into the booking summary as query parameters.
 */
+const fieldCls =
+  "w-full border border-input bg-white px-3.5 py-3 text-sm text-ink-900 outline-none transition-colors hover:border-teal/50 focus-visible:border-teal focus-visible:outline-none"
+
 export function BookingWidget({ listing }: { listing: Listing }) {
-  const period = listing.from ? `${listing.from} bis ${listing.to}` : "Zeitraum wählen"
-  const usage = categoryBySlug(listing.category)?.usage ?? "Nutzung wählen"
+  const router = useRouter()
+  const range = listingRange(listing)
+  const unit = isPriceUnit(listing.price.unit) ? listing.price.unit : null
+
+  const [from, setFrom] = useState(range ? toIso(range.from) : "")
+  const [to, setTo] = useState(range ? toIso(range.from) : "")
+  const [users, setUsers] = useState("2")
+  const [usage, setUsage] = useState(
+    categoryBySlug(listing.category)?.usage ?? USAGE_OPTIONS[0]!,
+  )
+  const [touched, setTouched] = useState(false)
+
+  const fromDate = parseIsoDate(from)
+  const toDate = parseIsoDate(to)
+  const rangeInvalid = Boolean(fromDate && toDate && toDate < fromDate)
+
+  const current = useMemo(() => {
+    if (!unit || !fromDate || !toDate || rangeInvalid) return null
+    return quote(listing, unitsBetween(fromDate, toDate, unit))
+  }, [listing, unit, fromDate, toDate, rangeInvalid])
+
+  const min = range ? toIso(range.from) : undefined
+  const max = range ? toIso(range.to) : undefined
+
+  function submit(e: React.FormEvent) {
+    e.preventDefault()
+    setTouched(true)
+    if (!fromDate || !toDate || rangeInvalid) return
+    const params = new URLSearchParams({ von: from, bis: to, users, nutzung: usage })
+    router.push(`/flaechen/${listing.slug}/buchen?${params}`)
+  }
 
   return (
-    <section id="verfuegbarkeit" className="container-page mt-14">
-      <TabHeading className="text-[clamp(1.25rem,2vw+0.5rem,1.75rem)]">
-        Verfügbarkeit
-      </TabHeading>
+    <section
+      id="verfuegbarkeit"
+      className="container-page mt-[clamp(2.5rem,4vw,4.5rem)] scroll-mt-28"
+    >
+      <span className="eyebrow">Buchung anfragen</span>
+      <h2 className="h-plain mt-4">Verfügbarkeit</h2>
 
-      <div className="mt-6 border border-border bg-card px-6 py-7 sm:px-8">
+      <form
+        onSubmit={submit}
+        noValidate
+        className="surface mt-7 px-6 py-7 shadow-[var(--shadow-md)] sm:px-8"
+      >
+        <span
+          aria-hidden
+          className="absolute inset-x-0 top-0 h-[3px] [background:var(--grad-teal-bright)]"
+        />
         <div className="grid gap-6">
           <Row label="In welchem Zeitraum möchtest Du buchen?">
-            <SelectField defaultText={period} />
+            <div className="grid grid-cols-2 gap-3">
+              <label className="grid gap-1">
+                <span className="text-xs text-ink">von</span>
+                <input
+                  type="date"
+                  value={from}
+                  min={min}
+                  max={max}
+                  onChange={(e) => {
+                    setFrom(e.target.value)
+                    // Keep the end from lagging behind a newly picked start.
+                    if (to && e.target.value > to) setTo(e.target.value)
+                  }}
+                  className={fieldCls}
+                />
+              </label>
+              <label className="grid gap-1">
+                <span className="text-xs text-ink">bis</span>
+                <input
+                  type="date"
+                  value={to}
+                  min={from || min}
+                  max={max}
+                  onChange={(e) => setTo(e.target.value)}
+                  className={fieldCls}
+                />
+              </label>
+            </div>
           </Row>
 
           <Row label="Für wieviele User?">
             <input
-              type="text"
-              inputMode="numeric"
-              placeholder="Anzahl der User angeben"
-              className="w-full border border-border bg-white px-3.5 py-2.5 text-sm text-ink outline-none focus:border-teal"
+              type="number"
+              min={1}
+              max={99}
+              value={users}
+              onChange={(e) => setUsers(e.target.value)}
+              className={fieldCls}
+              aria-label="Anzahl der User"
             />
           </Row>
 
           <Row label="Für was benötigst Du diese Fläche?">
-            <SelectField defaultText={usage} />
+            <select
+              value={usage}
+              onChange={(e) => setUsage(e.target.value)}
+              className={fieldCls}
+              aria-label="Art der Flächennutzung"
+            >
+              {USAGE_OPTIONS.map((o) => (
+                <option key={o} value={o}>
+                  {o}
+                </option>
+              ))}
+            </select>
           </Row>
 
-          {/* total + submit */}
-          <div className="mt-2 flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-10">
-              <span className="text-sm text-ink/70">Gesamtbetrag</span>
-              <span className="text-base font-semibold text-ink">
-                {listing.price.amount}
+          {touched && (!fromDate || !toDate || rangeInvalid) ? (
+            <p role="alert" className="field-error text-sm">
+              {rangeInvalid
+                ? "Das Enddatum liegt vor dem Startdatum."
+                : "Bitte wähle einen Zeitraum aus."}
+            </p>
+          ) : null}
+
+          {/*
+            The total is the outcome of the whole form, so it gets its own
+            surface at the foot of the card rather than sitting as one more line
+            of body copy.
+          */}
+          <div className="-mx-6 -mb-7 mt-2 flex flex-col gap-4 bg-cream px-6 py-6 sm:-mx-8 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+            <div>
+              <span className="text-[11px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">
+                Gesamtbetrag
               </span>
+              <p className="mt-1 text-[clamp(1.375rem,1vw+0.9rem,1.875rem)] leading-none font-bold text-ink-900">
+                {current ? eur(current.total) : "auf Anfrage"}
+              </p>
+              {current ? (
+                <p className="mt-1.5 text-xs text-muted-foreground">
+                  {current.unitsLabel} · inkl. Servicegebühr &amp; MwSt.
+                </p>
+              ) : null}
             </div>
-            <Link
-              href={`/flaechen/${listing.slug}/buchen`}
-              className="inline-flex items-center justify-center border-2 border-teal px-6 py-2.5 text-sm font-semibold text-teal transition-colors hover:bg-teal hover:text-white"
-            >
+            <button type="submit" className="btn btn-teal sheen min-h-12 px-7 text-sm">
               Verfügbarkeit prüfen
-            </Link>
+            </button>
           </div>
         </div>
-      </div>
+      </form>
     </section>
   )
 }
@@ -63,21 +175,8 @@ export function BookingWidget({ listing }: { listing: Listing }) {
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="grid gap-2 sm:grid-cols-[1fr_20rem] sm:items-center">
-      <span className="text-sm text-ink">{label}</span>
+      <span className="text-sm font-medium text-ink-900">{label}</span>
       {children}
     </div>
-  )
-}
-
-function SelectField({ defaultText }: { defaultText: string }) {
-  return (
-    <span
-      title="Auswahl folgt in Kürze"
-      aria-disabled
-      className="flex w-full cursor-not-allowed items-center justify-between border border-border bg-white px-3.5 py-2.5 text-sm text-ink/70"
-    >
-      {defaultText}
-      <ChevronDown className="h-4 w-4 text-ink/40" />
-    </span>
   )
 }

@@ -34,3 +34,13 @@ yarn-error.log*
 *.pdf
 Homepage Desktop.png
 dev-iphone.html
+
+# Lokales Quellmaterial — bleibt auf der Platte, gehört nicht ins Repo.
+# Der Drive-Ordner ist 1,6 GB (Icons.ai allein 167 MB, über GitHubs 100-MB-Limit),
+# die Bachelorarbeit-PDFs, das Referenz-Video und die Figma-PNG-Exporte kommen
+# zusammen auf weitere ~170 MB. Alles davon ist Referenz, nichts davon baut mit.
+/drive-download-*/
+/coarea/
+*.pdf
+*.mp4
+/Homepage Desktop.png
