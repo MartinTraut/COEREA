@@ -15,6 +15,23 @@ import {
  */
 export type CategoryIcon = (props: { className?: string }) => React.JSX.Element
 
+/**
+ * Who the land belongs to. This is the one distinction the eight categories keep
+ * blurring: „Öffentl. Sport- & Freizeitflächen" and „Private Sport- &
+ * Freizeitflächen" are drawn with almost the same mark (a ball), and so are the
+ * two Plätze categories, so the icon alone cannot tell them apart.
+ *
+ * It is what the Schraffur was for in the original design — the hatched diamond
+ * sat behind the private categories only. That signal is carried here as data so
+ * both the plate and a written label can be driven from it.
+ *
+ * Agrar-, Forst- und Gewerbeflächen count as `privat`: they are in private
+ * ownership, even though they are not the „innerstädtisch privat" of the three
+ * categories the frame hatched. That makes the pair total — every category is
+ * either private or public ground — which is what makes it readable at a glance.
+ */
+export type CategoryAccess = "privat" | "oeffentlich"
+
 export type Category = {
   slug: string
   label: string
@@ -22,9 +39,12 @@ export type Category = {
   /** Typical usage phrase shown on detail/booking screens (branchengerecht). */
   usage: string
   icon: CategoryIcon
+  /** Private or public ground — see CategoryAccess. */
+  access: CategoryAccess
   /**
-   * The three private categories sit on a Schraffur diamond in every frame —
-   * a fixed property of the category, not a selected state.
+   * The three private categories sit on a Schraffur diamond in every frame.
+   * Superseded by `access`, which covers all eight; kept because it records what
+   * the frame actually drew.
    */
   hatchedPlate?: boolean
 }
@@ -40,6 +60,7 @@ export const CATEGORIES: Category[] = [
     short: "Private Gärten",
     usage: "Urban Gardening",
     icon: PrivateGaertenIcon,
+    access: "privat",
     hatchedPlate: true,
   },
   {
@@ -48,6 +69,7 @@ export const CATEGORIES: Category[] = [
     short: "Agrar & Forst",
     usage: "landwirtschaftliche Nutzung",
     icon: AgrarForstIcon,
+    access: "privat",
   },
   {
     slug: "oeffentlicher-sport",
@@ -55,6 +77,7 @@ export const CATEGORIES: Category[] = [
     short: "Öffentl. Sport",
     usage: "Sport & Freizeit",
     icon: OeffentlicherSportIcon,
+    access: "oeffentlich",
   },
   {
     slug: "privater-sport",
@@ -62,6 +85,7 @@ export const CATEGORIES: Category[] = [
     short: "Privater Sport",
     usage: "Sport & Freizeit",
     icon: PrivaterSportIcon,
+    access: "privat",
     hatchedPlate: true,
   },
   {
@@ -70,6 +94,7 @@ export const CATEGORIES: Category[] = [
     short: "Gewerbe",
     usage: "gewerbliche Nutzung",
     icon: GewerbeIcon,
+    access: "privat",
   },
   {
     slug: "private-plaetze",
@@ -77,6 +102,7 @@ export const CATEGORIES: Category[] = [
     short: "Private Plätze",
     usage: "private Veranstaltungen",
     icon: PrivatePlaetzeIcon,
+    access: "privat",
     hatchedPlate: true,
   },
   {
@@ -85,6 +111,7 @@ export const CATEGORIES: Category[] = [
     short: "Öffentl. Plätze",
     usage: "öffentliche Veranstaltungen",
     icon: OeffentlichePlaetzeIcon,
+    access: "oeffentlich",
   },
   {
     slug: "gruenanlagen",
@@ -92,6 +119,7 @@ export const CATEGORIES: Category[] = [
     short: "Grünanlagen",
     usage: "Erholung & Freizeit",
     icon: GruenanlagenIcon,
+    access: "oeffentlich",
   },
 ]
 

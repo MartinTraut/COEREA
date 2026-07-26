@@ -69,9 +69,19 @@ export function Benefits() {
               className="group relative flex flex-col gap-4 border-t border-white/25 pt-6 transition-colors duration-300 hover:border-white/70"
             >
               <div className="flex items-center justify-between">
-                {/* Icon in a hatched square — the motif applied at component scale. */}
-                <span className="hatch-white relative grid h-12 w-12 place-items-center bg-white/10 transition-transform duration-300 ease-out group-hover:-translate-y-1">
-                  <b.icon className="h-6 w-6 text-white" strokeWidth={1.5} />
+                {/*
+                  The icon used to sit on a hatched square, which since the
+                  Schraffur now runs across the whole band meant hatch on hatch:
+                  a 1.5px white line drawing lost inside a field of 1px white
+                  lines, at 24px. It gets a clean, quiet ground instead — the
+                  band already carries the motif — and the mark itself is drawn
+                  a step heavier so it holds up against the stripes behind it.
+                */}
+                <span className="relative grid h-12 w-12 place-items-center bg-white/12 ring-1 ring-white/25 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:bg-white group-hover:ring-white">
+                  <b.icon
+                    className="h-[1.625rem] w-[1.625rem] text-white transition-colors duration-300 group-hover:text-teal"
+                    strokeWidth={1.75}
+                  />
                 </span>
                 {/*
                   The counter used to be 24px against a 17px title — the

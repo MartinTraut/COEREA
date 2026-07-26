@@ -470,17 +470,28 @@ export function Discover({
                 ))}
               </div>
             </Reveal>
+            {/*
+              The photo used to bleed to the right viewport edge via
+              `lg:mr-[calc(50%-50vw)]`. That formula only lands on the edge when
+              the column is exactly half the container: `50%` resolves against
+              the column, and the grid's gap makes each column narrower than
+              half, so the bleed undershot — at 1024px the photo stopped about
+              250px short and the whole block read as shifted out of place. It is
+              contained in its column now, with the clipped corner and the
+              elevation the story photo has, so both blocks are built the same
+              way and neither depends on width arithmetic.
+            */}
             <Reveal
               variant="scale"
               delay={90}
-              className="relative aspect-[952/664] lg:mr-[calc(50%-50vw)]"
+              className="relative aspect-[952/664] [filter:drop-shadow(0_20px_40px_rgba(0,101,95,0.14))]"
             >
               <Image
                 src={page.introImage}
                 alt={cat.label}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
+                className="notch object-cover"
                 priority
               />
             </Reveal>

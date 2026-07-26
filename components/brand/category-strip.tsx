@@ -27,7 +27,7 @@ export function CategoryStrip({
             key={c.slug}
             icon={c.icon}
             label={c.label}
-            hatchedPlate={c.hatchedPlate}
+            access={c.access}
             active={active === c.slug}
             href={
               hrefFor
