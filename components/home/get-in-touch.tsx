@@ -44,7 +44,7 @@ export function GetInTouch() {
                 href={`mailto:${contact.email}`}
                 className="surface surface-hover group flex h-full flex-col gap-2 p-4"
               >
-                <span className="grid h-9 w-9 place-items-center bg-teal-50 text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white">
+                <span className="grid h-9 w-9 place-items-center rounded-[var(--radius-control)] bg-teal-50 text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white">
                   <Mail className="h-4 w-4" />
                 </span>
                 <span className="text-[11px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">
@@ -60,7 +60,7 @@ export function GetInTouch() {
                 href={`tel:${contact.phoneHref}`}
                 className="surface surface-hover group flex h-full flex-col gap-2 p-4"
               >
-                <span className="grid h-9 w-9 place-items-center bg-teal-50 text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white">
+                <span className="grid h-9 w-9 place-items-center rounded-[var(--radius-control)] bg-teal-50 text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white">
                   <Phone className="h-4 w-4" />
                 </span>
                 <span className="text-[11px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">
@@ -70,7 +70,7 @@ export function GetInTouch() {
               </a>
             </li>
             <li className="surface flex flex-col gap-2 p-4">
-              <span className="grid h-9 w-9 place-items-center bg-teal-50 text-teal">
+              <span className="grid h-9 w-9 place-items-center rounded-[var(--radius-control)] bg-teal-50 text-teal">
                 <MapPin className="h-4 w-4" />
               </span>
               <span className="text-[11px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">

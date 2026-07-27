@@ -92,7 +92,7 @@ export function ListingGallery({
           type="button"
           onClick={() => setLightbox(true)}
           aria-label="Foto vergrößern"
-          className="media-zoom block w-full overflow-hidden lg:h-full"
+          className="media-zoom block w-full overflow-hidden rounded-[var(--radius)] lg:h-full"
         >
           <ListingImage
             category={category}
@@ -117,7 +117,7 @@ export function ListingGallery({
                     if (src) setActive(photos.indexOf(src))
                     setLightbox(true)
                   }}
-                  className="media-zoom block h-full w-full overflow-hidden"
+                  className="media-zoom block h-full w-full overflow-hidden rounded-[var(--radius)]"
                   aria-label={`Foto ${i + 2} vergrößern`}
                 >
                   <ListingImage
@@ -153,7 +153,7 @@ export function ListingGallery({
               aria-label={`Foto ${i + 1} anzeigen`}
               aria-current={i === active ? "true" : undefined}
               onClick={() => setActive(i)}
-              className="grid h-11 w-11 place-items-center"
+              className="grid h-11 w-11 place-items-center rounded-[var(--radius-control)]"
             >
               {/*
                 The indicator used to animate `width` from w-1.5 to w-6, which
@@ -189,7 +189,7 @@ export function ListingGallery({
               autoFocus
               onClick={() => setLightbox(false)}
               aria-label="Galerie schließen"
-              className="grid h-11 w-11 place-items-center text-white transition-colors hover:text-gold"
+              className="grid h-11 w-11 place-items-center rounded-[var(--radius-control)] text-white transition-colors hover:text-gold"
             >
               <X className="h-6 w-6" />
             </button>
@@ -204,7 +204,7 @@ export function ListingGallery({
                 type="button"
                 onClick={() => step(-1)}
                 aria-label="Vorheriges Foto"
-                className="absolute left-2 grid h-12 w-12 place-items-center bg-white/10 text-white transition-colors hover:bg-white/25 sm:left-6"
+                className="absolute left-2 grid h-12 w-12 place-items-center rounded-[var(--radius-control)] bg-white/10 text-white transition-colors hover:bg-white/25 sm:left-6"
               >
                 <ChevronLeft className="h-6 w-6" />
               </button>
@@ -225,7 +225,7 @@ export function ListingGallery({
                 type="button"
                 onClick={() => step(1)}
                 aria-label="Nächstes Foto"
-                className="absolute right-2 grid h-12 w-12 place-items-center bg-white/10 text-white transition-colors hover:bg-white/25 sm:right-6"
+                className="absolute right-2 grid h-12 w-12 place-items-center rounded-[var(--radius-control)] bg-white/10 text-white transition-colors hover:bg-white/25 sm:right-6"
               >
                 <ChevronRight className="h-6 w-6" />
               </button>

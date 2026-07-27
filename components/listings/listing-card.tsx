@@ -49,7 +49,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
         />
 
         {listing.badge ? (
-          <span className="absolute top-0 left-0 bg-teal px-2.5 py-1 text-[11px] font-semibold tracking-[0.08em] text-white uppercase">
+          <span className="absolute top-3 left-3 rounded-[var(--radius-control)] bg-teal/95 px-2.5 py-1 text-[11px] font-semibold tracking-[0.08em] text-white uppercase backdrop-blur-sm">
             {listing.badge}
           </span>
         ) : null}
@@ -59,7 +59,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
           It gets a white chip because the heart's unsaved grey and its saved
           teal both have to stay legible over an arbitrary photograph.
         */}
-        <div className="absolute top-2 right-2 bg-white/92 p-1.5">
+        <div className="absolute top-2 right-2 rounded-full bg-white/92 p-1.5 backdrop-blur-sm">
           <SaveButton
             slug={listing.slug}
             defaultSaved={listing.saved}
@@ -75,7 +75,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
             </span>
           </span>
           {listing.size ? (
-            <span className="bg-white/95 px-1.5 py-0.5 text-[11px] font-semibold text-teal">
+            <span className="rounded-[var(--radius-control)] bg-white/95 px-2 py-0.5 text-[11px] font-semibold text-teal backdrop-blur-sm">
               {listing.size}
             </span>
           ) : null}
@@ -140,7 +140,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
       */}
       <span
         aria-hidden
-        className="pointer-events-none absolute right-0 bottom-0 grid h-9 w-9 translate-y-full place-items-center bg-teal text-white transition-transform duration-300 ease-out group-hover:translate-y-0"
+        className="pointer-events-none absolute right-0 bottom-0 grid h-9 w-9 translate-y-full place-items-center rounded-[var(--radius-control)] bg-teal text-white transition-transform duration-300 ease-out group-hover:translate-y-0"
       >
         <ArrowUpRight className="h-4 w-4" />
       </span>

@@ -77,7 +77,7 @@ export function Benefits() {
                   band already carries the motif — and the mark itself is drawn
                   a step heavier so it holds up against the stripes behind it.
                 */}
-                <span className="relative grid h-12 w-12 place-items-center bg-white/12 ring-1 ring-white/25 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:bg-white group-hover:ring-white">
+                <span className="relative grid h-12 w-12 place-items-center rounded-[var(--radius-control)] bg-white/12 ring-1 ring-white/25 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:bg-white group-hover:ring-white">
                   <b.icon
                     className="h-[1.625rem] w-[1.625rem] text-white transition-colors duration-300 group-hover:text-teal"
                     strokeWidth={1.75}

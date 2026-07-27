@@ -33,7 +33,7 @@ export function SaveButton({
       aria-label={active ? "Aus Merkliste entfernen" : "Zur Merkliste hinzufügen"}
       aria-pressed={active}
       className={cn(
-        "grid min-h-11 min-w-11 place-items-center transition-colors hover:text-teal",
+        "grid min-h-11 min-w-11 place-items-center rounded-[var(--radius-control)] transition-colors hover:text-teal",
         active ? "text-teal" : "text-ink/20",
         className,
       )}

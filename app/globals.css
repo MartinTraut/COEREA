@@ -142,13 +142,24 @@
         transparent
     );
 
-    /* Elevation. Teal-tinted rather than neutral black, so shadows read as
-       part of the palette instead of as dirt on the page. */
-    --shadow-sm: 0 2px 10px -6px rgba(0, 101, 95, 0.28);
-    --shadow-md: 0 14px 34px -22px rgba(0, 101, 95, 0.45);
-    --shadow-lg: 0 26px 64px -30px rgba(0, 101, 95, 0.5);
-    --shadow-glow: 0 0 0 1px color-mix(in srgb, var(--teal) 30%, transparent),
-        0 22px 56px -26px rgba(0, 138, 132, 0.55);
+    /*
+      Elevation. Teal-tinted rather than neutral black, so shadows read as part
+      of the palette instead of as dirt on the page.
+
+      Each level is two shadows, not one: a tight contact shadow that seats the
+      edge, plus a wide soft one that carries the height. A single large blur —
+      what these used to be — reads as a grey halo pinned behind a card; the
+      pair reads as an object resting on the page, which is the whole difference
+      between "boxes with shadows" and depth.
+    */
+    --shadow-sm: 0 1px 2px -1px rgba(0, 101, 95, 0.1),
+        0 4px 14px -8px rgba(0, 101, 95, 0.2);
+    --shadow-md: 0 2px 6px -3px rgba(0, 101, 95, 0.12),
+        0 16px 40px -20px rgba(0, 101, 95, 0.32);
+    --shadow-lg: 0 4px 12px -5px rgba(0, 101, 95, 0.12),
+        0 34px 74px -34px rgba(0, 101, 95, 0.38);
+    --shadow-glow: 0 0 0 1px color-mix(in srgb, var(--teal) 24%, transparent),
+        0 24px 60px -28px rgba(0, 138, 132, 0.5);
 
     --background: #ffffff;
     --foreground: var(--ink);
@@ -176,9 +187,30 @@
     --chart-3: #e6b84f;
     --chart-4: #4a7c9c;
     --chart-5: #29292a;
-    /* CoArea is sharp-cornered — the Figma design uses right angles throughout.
-       Circles (avatars, icon chips) use rounded-full, independent of this. */
-    --radius: 0px;
+    /*
+      Corner radius.
+
+      This was 0px, because the Figma frames are drawn with right angles
+      throughout. On screen the result read as dated rather than as
+      architectural — a page of hard rectangles has no softness anywhere for the
+      eye to rest on, and every surface, button and input announced its bounding
+      box. Rejected by the client on 2026-07-27 („zu kantig … sieht sehr
+      altmodisch aus").
+
+      So the site has a radius now, and it is deliberately graduated rather than
+      applied at one value everywhere: the larger the surface, the larger the
+      corner. A 16px corner on a card and the same 16px on a 40px chip look like
+      two different design languages.
+
+      What stays sharp: the Schraffur, the diamonds and the framed heading motif
+      keep their geometry — those carry the brand, and rounding them off would
+      cost the identity that the hard rectangles were only imitating.
+    */
+    --radius: 1rem;
+    /* Controls: smaller than a card, so a button never reads as a pill. */
+    --radius-control: 0.75rem;
+    /* Chips, badges, counters — small enough that only a full round reads. */
+    --radius-pill: 999px;
     --sidebar: #ffffff;
     --sidebar-foreground: var(--ink);
     --sidebar-primary: var(--teal);
@@ -257,9 +289,26 @@
   h2,
   h3 {
     text-wrap: balance;
+    /*
+      Headlines set tighter than body text. Montserrat is drawn on a generous
+      sidebearing, and at display sizes the default tracking leaves the words
+      looking spaced out — the single cheapest tell of an untouched web font.
+    */
+    letter-spacing: -0.021em;
   }
   p {
     text-wrap: pretty;
+  }
+  /*
+    Every text input on the site in one rule, so a field in the hero, in the
+    newsletter and in the contact form cannot end up with three different
+    corners. Each of them sets its own border and padding; only the corner is
+    shared.
+  */
+  input,
+  textarea,
+  select {
+    border-radius: var(--radius-control);
   }
   /*
     One focus ring for the whole site. Keyboard users get a visible, on-brand
@@ -294,6 +343,7 @@
     .media-zoom:focus-within img,
     .surface-hover:hover,
     .surface-hover:focus-within,
+    .btn-teal:hover,
     .group:hover .arrow-nudge svg,
     .arrow-nudge:hover svg {
       transform: none !important;
@@ -302,12 +352,23 @@
 }
 
 /*
-  Motion vocabulary. Timings sit in the 180–450ms band the brand guide calls
-  for, on a single decelerating curve so everything feels like one hand.
+  Motion vocabulary.
+
+  Two speeds, and the distinction between them is the whole point:
+
+  · Interactions — hover, focus, press. The user is waiting for these, so they
+    stay in the 200–400ms band. Anything slower feels unresponsive.
+  · Entrances — scroll reveals, a section arriving. Nobody is waiting for these,
+    and here the earlier timings were the mistake: 420ms over 18px is a short,
+    brisk hop, and a page of short brisk hops reads as a template. Given twice
+    the distance and twice the duration on a deeply decelerating curve, the same
+    movement reads as weight settling.
+
+  All of it on one family of curves so the whole site moves like one hand.
 */
 @theme inline {
   /* The house curve: quick departure, long settle. Used for anything that moves. */
-  --ease-brand: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
   /* Sharper deceleration for entrances that should feel decisive, not soft. */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   /* A single overshoot — only for small, deliberate confirmations. */
@@ -419,12 +480,18 @@
     Written as a transition rather than an animation so an element that is
     already in view on load can be revealed without a replay.
   */
+  /*
+    The distance and the duration are both roughly doubled against the earlier
+    values, and opacity finishes well before the movement does — so the element
+    is already legible while it is still settling, instead of fading in and
+    arriving at the same instant the way a stock fade-up does.
+  */
   .reveal {
     opacity: 0;
-    transform: translate3d(0, 18px, 0);
+    transform: translate3d(0, 32px, 0);
     transition:
-      opacity 420ms var(--ease-brand),
-      transform 420ms var(--ease-brand);
+      opacity 620ms var(--ease-out-expo),
+      transform 900ms var(--ease-out-expo);
     transition-delay: var(--reveal-delay, 0ms);
   }
   .reveal[data-shown="true"] {
@@ -487,13 +554,17 @@
     A transform transition composites fine without the hint.
   */
   .media-zoom img {
-    /* 600ms read as the photo lagging behind the cursor; the brand band is
-       180-450ms and this is the most-hovered motion on the site. */
-    transition: transform 420ms var(--ease-brand);
+    /*
+      Slower than an interaction, on purpose. A photo is not a control — nobody
+      is waiting for it to finish — and a long, barely-perceptible drift is the
+      difference between a picture that zooms and a picture that breathes. The
+      earlier 420ms/1.045 snapped, which is what made a hovered card feel cheap.
+    */
+    transition: transform 900ms var(--ease-out-expo);
   }
   .media-zoom:hover img,
   .media-zoom:focus-within img {
-    transform: scale(1.045);
+    transform: scale(1.06);
   }
 
   .hatch-white {
@@ -518,37 +589,47 @@
     position: relative;
     background: var(--card);
     border: 1px solid var(--border);
+    border-radius: var(--radius);
+    /*
+      Cards clip their own content. Nearly every one of these holds a photo
+      bleeding to its top edge, and without this the picture keeps its square
+      corners inside a rounded card — the single most obvious way a retrofitted
+      radius gives itself away.
+    */
+    overflow: hidden;
     transition:
-      transform 320ms var(--ease-brand),
-      border-color 320ms var(--ease-brand),
-      box-shadow 320ms var(--ease-brand);
+      transform 480ms var(--ease-out-expo),
+      border-color 480ms var(--ease-brand),
+      box-shadow 480ms var(--ease-brand);
   }
   .surface-hover:hover,
   .surface-hover:focus-within {
-    transform: translate3d(0, -4px, 0);
-    border-color: color-mix(in srgb, var(--teal) 45%, transparent);
+    transform: translate3d(0, -6px, 0);
+    border-color: color-mix(in srgb, var(--teal) 38%, transparent);
     box-shadow: var(--shadow-lg);
   }
 
   /*
-    Clipped top-right corner — the one shape move in the whole system. It keeps
-    every angle a right angle (the brand is sharp-cornered) while making a
-    rectangle read as drawn rather than as a default div. Note that clip-path
-    also clips box-shadow, so notched surfaces carry their elevation with
-    `filter: drop-shadow` instead; it is used sparingly for that reason.
+    This used to cut the top-right corner off with a clip-path polygon — the one
+    shape move in a system that was otherwise all right angles. It was the most
+    angular thing on the site, and it is what the whole page was hanging its
+    "designed" feeling on.
+
+    The name is kept because it marks exactly the right elements: the two or
+    three raised surfaces per page that are meant to read as the important one.
+    They now do it with a deeper corner than an ordinary card instead of with a
+    diagonal cut — the same hierarchy, without the sharp edge.
+
+    A welcome side effect: `clip-path` also clipped `box-shadow`, which is why
+    every one of these carries `filter: drop-shadow(...)` at its call site. Those
+    still work, and normal shadows work here again too.
   */
   .notch {
-    --notch: clamp(0.75rem, 1.6vw, 1.5rem);
-    clip-path: polygon(
-      0 0,
-      calc(100% - var(--notch)) 0,
-      100% var(--notch),
-      100% 100%,
-      0 100%
-    );
+    border-radius: calc(var(--radius) * 1.5);
+    overflow: hidden;
   }
   .notch-lg {
-    --notch: clamp(1.25rem, 3vw, 3rem);
+    border-radius: calc(var(--radius) * 2);
   }
 
   /*
@@ -657,7 +738,7 @@
     gap: 0.625rem;
     font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--teal);
   }
@@ -665,7 +746,14 @@
     content: "";
     width: clamp(1.25rem, 2.2vw, 2.25rem);
     height: 2px;
-    background: var(--teal);
+    border-radius: var(--radius-pill);
+    /* Fades away from the label rather than stopping dead — the rule is a lead-in
+       to the words, not a bar of equal weight beside them. */
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--teal) 25%, transparent),
+      var(--teal)
+    );
   }
 
   /*
@@ -737,17 +825,33 @@
     same gradient-lit outline), so a heading written as `<h2 class="h-plain">`
     and one rendered through <TabHeading> cannot drift apart.
   */
+  /*
+    2026-07-27: the frame stays — it is the client's explicit instruction and it
+    is the brand's own motif — but it was drawn as a 5px hard-cornered wire, and
+    a page opening every section with one of those is where most of the „zu
+    kantig" came from. Three changes, none of which give up the motif:
+
+    · the rule is thinner. At 5px the box shouted louder than its own text; at
+      2–3px it frames rather than encloses.
+    · it has a corner, matching the controls, and a barely-there teal wash so it
+      reads as a plate the heading sits on rather than as a wire around it.
+    · `border-image` had to go. A gradient border and a border-radius are
+      mutually exclusive in CSS — border-image ignores the radius and paints
+      square corners — so the outline is flat teal now, and the light that used
+      to run along it comes from the wash instead.
+  */
   .h-plain {
     display: inline-block;
     max-width: 100%;
     font-size: clamp(1.45rem, 1.55vw + 0.72rem, 2.35rem);
-    line-height: 1.15;
+    line-height: 1.18;
     font-weight: 600;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.024em;
     color: var(--teal);
-    border: clamp(3px, 0.26vw, 5px) solid var(--teal);
-    border-image: var(--grad-teal-bright) 1;
-    padding: clamp(0.4rem, 0.52vw, 0.625rem) clamp(0.625rem, 1.04vw, 1.25rem);
+    border: clamp(2px, 0.17vw, 3px) solid color-mix(in srgb, var(--teal) 72%, transparent);
+    border-radius: calc(var(--radius) * 0.85);
+    background: color-mix(in srgb, var(--teal) 4%, transparent);
+    padding: clamp(0.45rem, 0.6vw, 0.75rem) clamp(0.75rem, 1.15vw, 1.375rem);
     text-wrap: balance;
   }
 
@@ -780,14 +884,16 @@
     justify-content: center;
     gap: 0.5rem;
     overflow: hidden;
+    border-radius: var(--radius-control);
     font-weight: 600;
+    letter-spacing: -0.005em;
     white-space: nowrap;
     isolation: isolate;
     transition:
-      transform 220ms var(--ease-brand),
-      box-shadow 320ms var(--ease-brand),
+      transform 320ms var(--ease-brand),
+      box-shadow 420ms var(--ease-brand),
       color 220ms var(--ease-brand),
-      border-color 220ms var(--ease-brand);
+      border-color 320ms var(--ease-brand);
   }
   .btn:active {
     transform: translate3d(0, 1px, 0);
@@ -796,6 +902,14 @@
     background: var(--grad-teal);
     color: #fff;
     box-shadow: var(--shadow-sm);
+  }
+  /* The primary action lifts very slightly under the cursor — a millimetre of
+     travel is enough to make it feel like an object rather than a colour. */
+  .btn-teal:hover {
+    transform: translate3d(0, -2px, 0);
+  }
+  .btn-teal:active {
+    transform: translate3d(0, 0, 0);
   }
   .btn-teal::before {
     content: "";

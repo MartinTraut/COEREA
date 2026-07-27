@@ -59,11 +59,11 @@ function FeatureCard({ listing }: { listing: Listing }) {
           priority
           className="aspect-[16/10] h-full md:aspect-auto md:min-h-[26rem]"
         />
-        <span className="absolute top-0 left-0 z-10 bg-teal px-3 py-1.5 text-xs font-semibold tracking-[0.08em] text-white uppercase">
+        <span className="absolute top-4 left-4 z-10 rounded-[var(--radius-control)] bg-teal/95 px-3 py-1.5 text-xs font-semibold tracking-[0.08em] text-white uppercase backdrop-blur-sm">
           {listing.badge ?? "Neu"}
         </span>
         {listing.size ? (
-          <span className="absolute right-3 bottom-3 z-10 bg-white/95 px-2.5 py-1 text-xs font-semibold text-teal">
+          <span className="absolute right-4 bottom-4 z-10 rounded-[var(--radius-control)] bg-white/95 px-2.5 py-1 text-xs font-semibold text-teal backdrop-blur-sm">
             {listing.size}
           </span>
         ) : null}

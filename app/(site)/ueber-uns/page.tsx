@@ -27,7 +27,7 @@ function Photo({
   sizes?: string
 }) {
   return (
-    <div className={cn("media-zoom relative overflow-hidden border border-border", className)}>
+    <div className={cn("media-zoom relative overflow-hidden rounded-[var(--radius)] border border-border", className)}>
       <Image src={src} alt={alt} fill sizes={sizes ?? "(max-width: 1024px) 100vw, 50vw"} className="object-cover" />
     </div>
   )
@@ -75,7 +75,7 @@ export default function UeberUnsPage() {
           <Photo
             src="/images/ueberuns-hero.jpg"
             alt="Gemeinsames Fest auf einer CoArea-Fläche"
-            className="aspect-[16/10]"
+            className="aspect-[16/10] rounded-[var(--radius)]"
           />
         </div>
 
@@ -98,7 +98,7 @@ export default function UeberUnsPage() {
             ))}
           </div>
 
-          <blockquote className="mx-auto mt-10 max-w-2xl border border-teal px-6 py-5 text-center text-[clamp(1.1rem,1.6vw+0.5rem,1.5rem)] leading-snug font-semibold text-teal text-balance">
+          <blockquote className="mx-auto mt-10 max-w-2xl rounded-[var(--radius)] border border-teal/60 bg-teal/[0.04] px-8 py-7 text-center text-[clamp(1.1rem,1.6vw+0.5rem,1.5rem)] leading-snug font-semibold text-teal text-balance">
             „Kreativ, smart und innovativ — Mit CoArea erschaffen wir unbeachtete
             Flächenpotenziale
             neu.&quot;
@@ -130,7 +130,7 @@ export default function UeberUnsPage() {
           <Photo
             src="/images/ueberuns-mission.jpg"
             alt="Belebter Stadtraum mit Grünflächen"
-            className="aspect-[4/3]"
+            className="aspect-[4/3] rounded-[var(--radius)]"
           />
         </section>
 
@@ -139,7 +139,7 @@ export default function UeberUnsPage() {
           <Photo
             src="/images/ueberuns-vision.jpg"
             alt="Luftaufnahme einer gewachsenen Gemeinde"
-            className="aspect-[4/3] lg:order-1"
+            className="aspect-[4/3] rounded-[var(--radius)] lg:order-1"
           />
           <div className="lg:order-2">
             <h2 className="h-plain">Unsere Vision</h2>

@@ -75,7 +75,7 @@ export function ListingImage({
         clipped it away.
       */}
       {size ? (
-        <span className="absolute right-[9.4%] bottom-[8.3%] z-10 border-[length:clamp(2px,0.22vw,3px)] border-teal bg-white px-3 py-1 text-base text-teal lg:px-3.5 lg:py-1.5 lg:text-xl">
+        <span className="absolute right-[9.4%] bottom-[8.3%] z-10 rounded-[var(--radius-control)] border-[length:clamp(2px,0.22vw,3px)] border-teal bg-white px-3 py-1 text-base font-semibold text-teal lg:px-3.5 lg:py-1.5 lg:text-xl">
           {size}
         </span>
       ) : null}

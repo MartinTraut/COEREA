@@ -62,7 +62,7 @@ export function News() {
                   className="object-cover"
                 />
                 {/* The tag sits on the image, flush into the corner. */}
-                <span className="absolute top-0 left-0 bg-teal px-2.5 py-1 text-[11px] font-semibold tracking-[0.08em] text-white uppercase">
+                <span className="absolute top-3 left-3 rounded-[var(--radius-control)] bg-teal/95 px-2.5 py-1 text-[11px] font-semibold tracking-[0.08em] text-white uppercase backdrop-blur-sm">
                   {n.tag}
                 </span>
               </Link>

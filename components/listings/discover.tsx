@@ -226,7 +226,7 @@ export function Discover({
               <ListFilter className="h-4 w-4 text-teal" strokeWidth={1.9} />
               Filter
               {activeFilters ? (
-                <span className="grid h-5 min-w-5 place-items-center bg-teal px-1 text-xs font-semibold text-white">
+                <span className="grid h-5 min-w-5 place-items-center rounded-[var(--radius-control)] bg-teal px-1 text-xs font-semibold text-white">
                   {activeFilters}
                 </span>
               ) : null}
@@ -512,7 +512,7 @@ export function Discover({
               map itself is still to come.
             */}
             <div className="hatch-soft relative min-h-[420px] overflow-hidden border border-border bg-cream lg:sticky lg:top-24 lg:h-[calc(100svh-8rem)]">
-              <div className="absolute inset-0 grid place-items-center p-8">
+              <div className="absolute inset-0 grid place-items-center rounded-[var(--radius-control)] p-8">
                 <div className="max-w-sm bg-white/95 px-6 py-6 text-center">
                   <p className="text-[17px] font-semibold text-teal">
                     Entdecke CoArea in Deiner Nähe
@@ -709,13 +709,13 @@ function ViewTab({
 /* An active filter, with its own remove control. */
 function FilterChip({ label, onClear }: { label: string; onClear: () => void }) {
   return (
-    <span className="inline-flex items-center gap-1.5 border border-teal/30 bg-teal-50 py-1.5 pr-1.5 pl-3 text-xs font-semibold text-teal">
+    <span className="inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] border border-teal/30 bg-teal-50 py-1.5 pr-1.5 pl-3 text-xs font-semibold text-teal">
       {label}
       <button
         type="button"
         onClick={onClear}
         aria-label={`Filter „${label}“ entfernen`}
-        className="grid h-8 w-8 place-items-center transition-colors hover:bg-teal hover:text-white"
+        className="grid h-8 w-8 place-items-center rounded-[var(--radius-control)] transition-colors hover:bg-teal hover:text-white"
       >
         <X className="h-3 w-3" />
       </button>
@@ -832,7 +832,7 @@ function Pagination({
         aria-label="Vorherige Seite"
         disabled={page === 1}
         onClick={() => go(page - 1)}
-        className="grid h-11 w-11 place-items-center border border-input text-teal transition-colors hover:border-teal hover:bg-teal-50 disabled:pointer-events-none disabled:opacity-30"
+        className="grid h-11 w-11 place-items-center rounded-[var(--radius-control)] border border-input text-teal transition-colors hover:border-teal hover:bg-teal-50 disabled:pointer-events-none disabled:opacity-30"
       >
         <ChevronLeft className="h-4 w-4" />
       </button>
@@ -844,7 +844,7 @@ function Pagination({
           aria-label={`Seite ${p}`}
           onClick={() => go(p)}
           className={cn(
-            "grid h-11 w-11 place-items-center border transition-colors",
+            "grid h-11 w-11 place-items-center rounded-[var(--radius-control)] border transition-colors",
             p === page
               ? "border-teal bg-teal font-semibold text-white"
               : "border-transparent text-ink hover:border-teal/40 hover:text-teal",
@@ -858,7 +858,7 @@ function Pagination({
         aria-label="Nächste Seite"
         disabled={page === pageCount}
         onClick={() => go(page + 1)}
-        className="grid h-11 w-11 place-items-center border border-input text-teal transition-colors hover:border-teal hover:bg-teal-50 disabled:pointer-events-none disabled:opacity-30"
+        className="grid h-11 w-11 place-items-center rounded-[var(--radius-control)] border border-input text-teal transition-colors hover:border-teal hover:bg-teal-50 disabled:pointer-events-none disabled:opacity-30"
       >
         <ChevronRight className="h-4 w-4" />
       </button>

@@ -53,7 +53,7 @@ export function WelcomePanel() {
               ].map((row) => (
                 <div
                   key={row.term}
-                  className="border-2 border-teal px-6 py-5 text-center"
+                  className="rounded-[var(--radius)] border-2 border-teal/70 bg-teal/[0.04] px-6 py-5 text-center"
                 >
                   <dt className="text-[19px] text-teal">{row.term}</dt>
                   <dd className="mt-1.5 text-[17px] text-ink">{row.value}</dd>

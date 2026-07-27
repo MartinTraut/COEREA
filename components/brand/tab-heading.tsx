@@ -19,14 +19,18 @@ export function TabHeading({
   className?: string
 }) {
   /*
-    The teal frame is drawn with a gradient rather than a flat rule: the same
-    light that falls on every teal fill runs along the outline, so the motif
-    reads as lit instead of printed. `border-image` needs a border-style and a
-    slice of 1 to paint a gradient across all four edges.
+    The frame used to be drawn with `border-image` so the brand gradient ran
+    along the outline. That had to go when the motif got a corner: a gradient
+    border and a border-radius are mutually exclusive in CSS — border-image
+    ignores the radius and paints square corners regardless.
+
+    The light comes from a faint wash inside the frame instead, which does the
+    same job of stopping the box reading as a printed wire, and works on all
+    three skins.
   */
   const skin = {
-    teal: "border-solid border-teal text-teal [border-image:var(--grad-teal-bright)_1]",
-    white: "border-white text-white",
+    teal: "border-teal/70 bg-teal/[0.04] text-teal",
+    white: "border-white/70 bg-white/[0.08] text-white",
     solid: "border-white bg-white text-teal shadow-[var(--shadow-md)]",
   }[variant]
 
@@ -45,7 +49,12 @@ export function TabHeading({
           group, so a `text-…` class from the call site silently dropped it and
           the frame grew by a line-height's worth on every wrapped heading.
         */
-        "inline-block max-w-full border-[length:clamp(3px,0.26vw,5px)] px-[clamp(0.625rem,1.04vw,1.25rem)] py-[clamp(0.4rem,0.52vw,0.625rem)] font-semibold tracking-tight [line-height:1.15]",
+        /*
+          Thinner rule and a corner, matching `.h-plain` — see the note there.
+          At the old 5px the frame outweighed its own headline, which is most of
+          what made the motif read as hard.
+        */
+        "inline-block max-w-full rounded-[calc(var(--radius)*0.85)] border-[length:clamp(2px,0.17vw,3px)] border-solid px-[clamp(0.75rem,1.15vw,1.375rem)] py-[clamp(0.45rem,0.6vw,0.75rem)] font-semibold tracking-[-0.024em] [line-height:1.18]",
         skin,
         className,
       )}

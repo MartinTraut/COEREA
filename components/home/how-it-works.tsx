@@ -90,14 +90,9 @@ export function HowItWorks() {
           transaction seen from either end, and a hairline says that far better
           than a gap does.
 
-          `filter: drop-shadow` rather than `box-shadow`, because clip-path also
-          clips the shadow off a notched surface.
-        */}
-        {/*
-          The reveal has to stay on the outside: `.reveal-clip` animates a
-          clip-path of its own, and a second clip-path from `.notch` on the same
-          element would simply replace it — and would cut the drop-shadow off
-          besides.
+          `.notch` gives it a deeper corner than an ordinary card, which is how
+          the one important surface per section is marked since the diagonal cut
+          was dropped.
         */}
         <Reveal delay={120} className="mt-[clamp(2.25rem,3.4vw,3.5rem)] block">
           <div className="notch notch-lg grid bg-white [filter:drop-shadow(0_26px_50px_rgba(0,101,95,0.14))] lg:grid-cols-2">
@@ -135,14 +130,14 @@ export function HowItWorks() {
                         />
                       ) : null}
 
-                      <span className="relative grid h-[clamp(2.75rem,3.4vw,3.25rem)] w-[clamp(2.75rem,3.4vw,3.25rem)] shrink-0 place-items-center bg-teal-50 text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white">
+                      <span className="relative grid h-[clamp(2.75rem,3.4vw,3.25rem)] w-[clamp(2.75rem,3.4vw,3.25rem)] shrink-0 place-items-center rounded-[var(--radius-control)] bg-teal-50 text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white">
                         <step.icon
                           className="h-[1.375rem] w-[1.375rem]"
                           strokeWidth={1.75}
                         />
                         {/* Step number, tucked into the corner of the plate —
                             small, because the icon is the thing being read. */}
-                        <span className="absolute -top-1.5 -right-1.5 grid h-[1.125rem] w-[1.125rem] place-items-center bg-teal text-[0.625rem] leading-none font-bold text-white transition-colors duration-300 group-hover:bg-ink-900">
+                        <span className="absolute -top-1.5 -right-1.5 grid h-[1.125rem] w-[1.125rem] place-items-center rounded-full bg-teal text-[0.625rem] leading-none font-bold text-white transition-colors duration-300 group-hover:bg-ink-900">
                           {i + 1}
                         </span>
                       </span>

@@ -43,7 +43,7 @@ export function ContactForm() {
 
   if (handedOff) {
     return (
-      <div className="flex flex-col items-start gap-3 border border-teal bg-accent p-8">
+      <div className="flex flex-col items-start gap-3 rounded-[var(--radius)] border border-teal/60 bg-accent p-8">
         <span className="grid h-11 w-11 place-items-center rounded-full bg-teal text-white">
           <Mail className="h-5 w-5" aria-hidden />
         </span>

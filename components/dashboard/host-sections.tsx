@@ -150,14 +150,14 @@ export function ContactPerson() {
                   {href ? (
                     <Link
                       href={href}
-                      className="group flex items-center gap-6 border-2 border-teal px-6 py-4 transition-colors duration-300 hover:bg-teal hover:text-white"
+                      className="group flex items-center gap-6 rounded-[var(--radius)] border-2 border-teal/70 px-6 py-4 transition-colors duration-300 hover:bg-teal hover:text-white"
                     >
                       {body}
                     </Link>
                   ) : (
                     <p
                       title="Chat folgt"
-                      className="flex items-center gap-6 border-2 border-teal/40 px-6 py-4"
+                      className="flex items-center gap-6 rounded-[var(--radius)] border-2 border-teal/40 px-6 py-4"
                     >
                       {body}
                     </p>
