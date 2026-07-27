@@ -4,25 +4,39 @@ import { useId, useState } from "react"
 import { ChevronDown } from "lucide-react"
 
 import { BOOKING_FAQ } from "@/lib/faq"
+import type { FaqItem } from "@/lib/faq"
 import { cn } from "@/lib/utils"
 
 /*
-  Booking FAQ. Questions and answers live in lib/faq.ts so the same source
-  feeds both this accordion and the FAQPage markup on the detail page — Google
-  only honours FAQ markup whose content is visible, so the two must never drift
-  apart.
+  FAQ accordion. Questions and answers live in lib/faq.ts and lib/home-faq.ts so
+  the same source feeds both this accordion and the FAQPage markup on the page —
+  Google only honours FAQ markup whose content is visible, so the two must never
+  drift apart. Which set is shown is passed in; the booking set is the default
+  because the listing detail page is where this started.
 
   The panels stay in the DOM and are hidden with `hidden` rather than being
   unmounted, so the answers are findable with the browser's in-page search and
   are picked up by crawlers that do not click.
 */
-export function FaqAccordion() {
+export function FaqAccordion({
+  items = BOOKING_FAQ,
+  columns = 2,
+}: {
+  items?: readonly FaqItem[]
+  /**
+   * Two columns pack a long list into less height, but every grid row is as
+   * tall as its tallest cell — so an opened answer leaves a hole beside it. Use
+   * one column wherever the answers are long enough for that hole to be
+   * conspicuous.
+   */
+  columns?: 1 | 2
+}) {
   const [open, setOpen] = useState<number | null>(0)
   const uid = useId()
 
   return (
-    <div className="grid gap-3 md:grid-cols-2">
-      {BOOKING_FAQ.map((item, i) => {
+    <div className={cn("grid gap-3", columns === 2 && "md:grid-cols-2")}>
+      {items.map((item, i) => {
         const isOpen = open === i
         const panelId = `${uid}-panel-${i}`
         const buttonId = `${uid}-button-${i}`

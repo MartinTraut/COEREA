@@ -3,7 +3,15 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { ArrowRight, CalendarDays, MapPin, Search } from "lucide-react"
+import {
+  ArrowRight,
+  CalendarDays,
+  CircleCheck,
+  MapPin,
+  Search,
+  Tag,
+  UserCheck,
+} from "lucide-react"
 
 import { Reveal } from "@/components/brand/reveal"
 import { TabHeading } from "@/components/brand/tab-heading"
@@ -176,8 +184,43 @@ export function Hero() {
             </div>
           </form>
         </Reveal>
+
+        {/*
+          The three things a first-time visitor is actually unsure about, said
+          immediately under the control that would commit them to something.
+
+          All three are statements about how the product works, not marketing
+          claims — the enquiry really is free and non-binding, the host really
+          does confirm every booking one by one, and listing really is free. A
+          row of invented figures ("1.200 Flächen", "4,9 Sterne") would sit here
+          more comfortably and would be a lie.
+        */}
+        <Reveal
+          delay={300}
+          className="mt-[clamp(1.25rem,2vw,2rem)] flex flex-wrap items-center gap-x-[clamp(1.25rem,2.4vw,2.75rem)] gap-y-3"
+        >
+          <Promise icon={CircleCheck} text="Anfragen ist kostenlos und unverbindlich" />
+          <Promise icon={UserCheck} text="Jede Buchung bestätigt der Host persönlich" />
+          <Promise icon={Tag} text="Eigene Fläche inserieren: gratis" />
+        </Reveal>
       </div>
     </section>
+  )
+}
+
+/* One line of the reassurance row under the search bar. */
+function Promise({
+  icon: Icon,
+  text,
+}: {
+  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>
+  text: string
+}) {
+  return (
+    <span className="flex items-center gap-2 text-[clamp(0.75rem,0.22vw+0.7rem,0.8125rem)] font-semibold tracking-[0.04em] text-ink">
+      <Icon className="h-4 w-4 shrink-0 text-teal" strokeWidth={2} />
+      {text}
+    </span>
   )
 }
 
