@@ -176,9 +176,15 @@ export function SiteHeader() {
               </Link>
             )
           })}
+          {/*
+            Filled, not outlined. It is the only action in the bar, so an
+            outline gave it the weight of a secondary control while still
+            drawing the eye — and a hollow button at this size showed its ring
+            more clearly than its label.
+          */}
           <Link
             href="/anmelden"
-            className="btn btn-outline px-[clamp(0.9rem,1.4vw,1.6rem)] py-[clamp(0.45rem,0.7vw,0.8rem)] text-[clamp(0.8125rem,0.604vw+0.4rem,1.0625rem)]"
+            className="btn btn-teal sheen px-[clamp(1rem,1.5vw,1.75rem)] py-[clamp(0.5rem,0.75vw,0.85rem)] text-[clamp(0.8125rem,0.604vw+0.4rem,1.0625rem)]"
           >
             anmelden
           </Link>
@@ -238,7 +244,7 @@ export function SiteHeader() {
             <Link
               href="/anmelden"
               onClick={() => setOpen(false)}
-              className="mt-2 border-2 border-white px-8 py-3 text-lg font-semibold transition-colors hover:bg-white hover:text-teal"
+              className="mt-2 rounded-[var(--radius-control)] bg-white px-8 py-3 text-lg font-semibold text-teal shadow-[0_10px_30px_-14px_rgba(0,0,0,0.5)] transition-colors hover:bg-cream"
             >
               anmelden
             </Link>

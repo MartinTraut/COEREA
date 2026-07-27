@@ -356,6 +356,8 @@
     .surface-hover:hover,
     .surface-hover:focus-within,
     .btn-teal:hover,
+    .btn-outline:hover,
+    .btn-outline:focus-visible,
     .group:hover .arrow-nudge svg,
     .arrow-nudge:hover svg,
     .group:hover .icon-plate-hover,
@@ -1120,20 +1122,35 @@
     `scaleY` on a pseudo-element stays on the compositor — no layout, no repaint
     of the label — so this is free even on a header that is sticky.
   */
+  /*
+    The ring is an inset shadow, not a border, and the button has a real white
+    ground instead of `transparent`.
+
+    With a 2px border the fill could only ever reach the *padding* box, whose
+    radius is 2px tighter than the outer one — so a filled outline button showed
+    two concentric rounded rectangles in two slightly different teals, read most
+    clearly as a stray line along the bottom edge. An inset shadow shares the
+    element's own radius, and because it paints with the background it sits
+    below the negative-z fill: once the fill is up there is exactly one shape.
+
+    The white ground matters as much. On cream, a transparent secondary button
+    is a floating outline; filled, it is an object next to the primary one.
+  */
   .btn-outline {
-    border: 2px solid var(--teal);
     color: var(--teal);
-    background: transparent;
+    background: #fff;
+    box-shadow:
+      inset 0 0 0 2px var(--teal),
+      var(--shadow-sm);
     transition:
       transform 220ms var(--ease-brand),
       box-shadow 320ms var(--ease-brand),
-      color 150ms var(--ease-brand),
-      border-color 220ms var(--ease-brand);
+      color 150ms var(--ease-brand);
   }
   .btn-outline::before {
     content: "";
     position: absolute;
-    inset: -1px 0 0;
+    inset: 0;
     z-index: -1;
     background: var(--grad-teal);
     transform: scaleY(0);
@@ -1145,7 +1162,14 @@
   .btn-outline:hover,
   .btn-outline:focus-visible {
     color: #fff;
-    transition-delay: 0ms, 0ms, 110ms, 0ms;
+    box-shadow:
+      inset 0 0 0 2px var(--teal),
+      var(--shadow-md);
+    transform: translate3d(0, -2px, 0);
+    transition-delay: 0ms, 0ms, 110ms;
+  }
+  .btn-outline:active {
+    transform: translate3d(0, 0, 0);
   }
   .btn-outline:hover::before,
   .btn-outline:focus-visible::before {

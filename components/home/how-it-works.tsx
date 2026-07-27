@@ -109,18 +109,35 @@ export function HowItWorks() {
           was dropped.
         */}
         <Reveal delay={120} className="mt-[clamp(2.25rem,3.4vw,3.5rem)] block">
-          <div className="notch notch-lg grid bg-white [filter:drop-shadow(0_26px_50px_rgba(0,101,95,0.14))] lg:grid-cols-2">
+          <div className="notch notch-lg grid overflow-hidden bg-white [filter:drop-shadow(0_26px_50px_rgba(0,101,95,0.14))] lg:grid-cols-2">
             {PATHS.map((path, p) => (
               <div
                 key={path.title}
                 className={
-                  /* The seam: a rule between the two halves, horizontal when
-                     stacked, vertical once they sit side by side. */
+                  /*
+                    The two halves used to be identical white columns separated
+                    by a hairline, so which side you were reading was carried by
+                    a 12px eyebrow and nothing else — at a glance the card read
+                    as one six-step list.
+
+                    The host half now sits on a teal wash and carries filled
+                    plates; the renter half stays white with light plates. Same
+                    structure, two clearly different surfaces, and the wash also
+                    tells you where the seam runs without the hairline having to
+                    do that work alone.
+                  */
                   p === 1
-                    ? "border-t border-border p-[clamp(1.5rem,2.6vw,3rem)] lg:border-t-0 lg:border-l"
+                    ? "relative bg-[linear-gradient(180deg,color-mix(in_srgb,var(--teal)_11%,#fff),color-mix(in_srgb,var(--teal)_5%,#fff))] p-[clamp(1.5rem,2.6vw,3rem)]"
                     : "p-[clamp(1.5rem,2.6vw,3rem)]"
                 }
               >
+                {/* The seam: horizontal while stacked, vertical side by side. */}
+                {p === 1 ? (
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-0 top-0 h-px bg-teal/20 lg:inset-y-0 lg:right-auto lg:left-0 lg:h-auto lg:w-px"
+                  />
+                ) : null}
                 <span className="eyebrow">{path.role}</span>
                 <h3 className="mt-4 text-[clamp(1.25rem,1vw+0.8rem,1.75rem)]/[1.2] font-semibold text-ink-900">
                   {path.title}
@@ -158,7 +175,9 @@ export function HowItWorks() {
                         part of what read as "komisch". The number belongs with
                         the step title anyway — that is what it numbers.
                       */}
-                      <span className="icon-plate icon-plate-hover">
+                      <span
+                        className={`icon-plate icon-plate-hover${p === 1 ? " icon-plate-solid" : ""}`}
+                      >
                         <step.icon strokeWidth={1.5} />
                       </span>
 
