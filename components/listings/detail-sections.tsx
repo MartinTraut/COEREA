@@ -2,6 +2,7 @@ import { Quote, Star } from "lucide-react"
 
 import type { Listing } from "@/lib/listings"
 import { LISTINGS, otherListingsByHost } from "@/lib/listings"
+import { Reveal } from "@/components/brand/reveal"
 import { ListingCard } from "@/components/listings/listing-card"
 import { HostCard } from "@/components/listings/host-card"
 import { FaqAccordion } from "@/components/listings/faq-accordion"
@@ -78,57 +79,103 @@ export function DetailSections({
         {/* User reviews */}
         {show("reviews") && (
         <section className="mt-16">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <h2 className="h-plain">Das sagen unsere User</h2>
-            {/*
-              Both reviews are rendered directly below and there is no reviews
-              page to page through, so the "alle Bewertungen" button and the two
-              arrows were controls with nothing behind them. The rating summary
-              says more in the same space.
-            */}
-            <p className="text-sm text-ink">
-              <span className="font-semibold text-teal">
-                {listing.rating.toFixed(1).replace(".", ",")} / 5
-              </span>{" "}
-              aus {listing.reviews} Bewertungen
-            </p>
-          </div>
+          {/*
+            The section used to open with a heading and a one-line rating in
+            8pt grey at the far right — the single hardest fact here, set as
+            the quietest thing on the row. It is now a block: the figure at
+            display size, the stars it stands for, and the count underneath.
+            Somebody scanning the page reads the score without reading a word.
+          */}
+          <Reveal className="flex flex-wrap items-end justify-between gap-x-6 gap-y-5">
+            <div>
+              <span className="eyebrow">Bewertungen</span>
+              <h2 className="h-plain mt-4">Das sagen unsere User</h2>
+            </div>
+            <div className="flex items-center gap-4 rounded-[var(--radius)] bg-cream px-5 py-3.5">
+              <span className="text-[2rem] leading-none font-bold text-teal tabular-nums">
+                {listing.rating.toFixed(1).replace(".", ",")}
+              </span>
+              <span>
+                <span
+                  className="stars-pop flex gap-0.5"
+                  aria-label={`${listing.rating.toFixed(1).replace(".", ",")} von 5 Sternen`}
+                >
+                  {Array.from({ length: 5 }).map((_, s) => (
+                    <Star key={s} className="h-4 w-4 fill-gold text-gold" aria-hidden />
+                  ))}
+                </span>
+                <span className="mt-1.5 block text-xs text-ink">
+                  aus {listing.reviews} Bewertungen
+                </span>
+              </span>
+            </div>
+          </Reveal>
 
-          <div className="mt-8 grid gap-6 md:grid-cols-2">
+          {/*
+            One reveal around the pair, not one per card: two cards at the same
+            height read as a single row, and staggering them makes the row
+            arrive crooked.
+
+            The cards themselves were pull-quotes — a gold quote mark, a
+            headline, the text, and the person hidden in a footer under a rule.
+            A review is read the other way round: who said it, how they rated
+            it, then what they said. So the person comes first, with initials
+            standing in for a photo we do not have, and the score sits on the
+            same line instead of at the bottom of the card.
+          */}
+          <Reveal delay={110} className="mt-[clamp(1.75rem,2.4vw,2.5rem)] grid gap-6 md:grid-cols-2">
             {USER_REVIEWS.map((r) => (
               <figure
                 key={r.name}
-                className="surface surface-hover flex flex-col p-[clamp(1.5rem,2vw,2.25rem)]"
+                className="surface surface-hover group flex flex-col overflow-hidden p-[clamp(1.5rem,2vw,2.25rem)]"
               >
-                <span
+                {/*
+                  Oversized quote glyph as a watermark rather than an icon in
+                  the flow: it gives the card a diagonal to sit against, and
+                  because it is behind the text it cannot push anything around.
+                  Gold at 14% — visible as a shape, never as a mark to read.
+                */}
+                <Quote
                   aria-hidden
-                  className="absolute inset-x-0 top-0 h-[3px] [background:var(--grad-teal-bright)]"
+                  strokeWidth={1.25}
+                  className="pointer-events-none absolute -right-7 -bottom-8 h-28 w-28 rotate-6 fill-gold/[0.12] text-transparent transition-transform duration-500 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 />
-                <Quote className="h-8 w-8 fill-gold text-gold" strokeWidth={1.5} aria-hidden />
-                <figcaption className="mt-4 text-[1.0625rem] font-semibold text-ink-900">
-                  {r.title}
-                </figcaption>
-                <blockquote className="mt-3 flex-1 text-[0.9375rem]/[1.7] text-ink">
-                  {r.body}
-                </blockquote>
-                <div className="mt-7 flex items-center justify-between border-t border-teal/15 pt-5">
-                  <span>
-                    <span className="block text-[11px] font-semibold tracking-[0.12em] text-teal uppercase">
-                      {r.role}
-                    </span>
-                    <span className="text-[1.0625rem] font-semibold text-ink-900">
+
+                <div className="relative flex items-center gap-3.5">
+                  <span
+                    aria-hidden
+                    className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-teal-50 text-sm font-semibold text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white"
+                  >
+                    {r.name
+                      .split(" ")
+                      .map((p) => p.charAt(0))
+                      .join("")}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-[1.0625rem] leading-tight font-semibold text-ink-900">
                       {r.name}
                     </span>
+                    <span className="caps mt-1 block text-teal">{r.role}</span>
                   </span>
-                  <span className="flex gap-0.5" aria-label="5 von 5 Sternen">
+                  <span
+                    className="stars-pop ms-auto flex shrink-0 gap-0.5"
+                    aria-label="5 von 5 Sternen"
+                  >
                     {Array.from({ length: 5 }).map((_, s) => (
                       <Star key={s} className="h-4 w-4 fill-gold text-gold" aria-hidden />
                     ))}
                   </span>
                 </div>
+
+                <figcaption className="relative mt-6 text-[clamp(1.0625rem,0.5vw+0.85rem,1.1875rem)]/[1.35] font-semibold text-balance text-ink-900">
+                  {r.title}
+                </figcaption>
+                <blockquote className="relative mt-3 flex-1 text-[0.9375rem]/[1.7] text-ink">
+                  {r.body}
+                </blockquote>
               </figure>
             ))}
-          </div>
+          </Reveal>
         </section>
         )}
 

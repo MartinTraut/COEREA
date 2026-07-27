@@ -1235,6 +1235,41 @@
     }
   }
 
+  /*
+    Stars that settle in one after another once their block has been revealed.
+
+    Keyed off `[data-shown="true"]`, which the Reveal component sets, so the
+    row animates when it is actually looked at rather than while it is still
+    two screens below the fold. There is deliberately no hidden start state on
+    the stars themselves: the animation begins from `from`, so with no script
+    at all the row is simply there, fully drawn.
+  */
+  @keyframes coarea-star-pop {
+    from {
+      opacity: 0;
+      transform: scale(0.55);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  [data-shown="true"] .stars-pop > * {
+    animation: coarea-star-pop 380ms var(--ease-out-expo) backwards;
+  }
+  .stars-pop > *:nth-child(2) {
+    animation-delay: 70ms;
+  }
+  .stars-pop > *:nth-child(3) {
+    animation-delay: 140ms;
+  }
+  .stars-pop > *:nth-child(4) {
+    animation-delay: 210ms;
+  }
+  .stars-pop > *:nth-child(5) {
+    animation-delay: 280ms;
+  }
+
   /* Arrow that steps forward with its label. */
   .arrow-nudge svg {
     transition: transform 260ms var(--ease-brand);

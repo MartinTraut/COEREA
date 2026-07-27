@@ -1,10 +1,11 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Mail, MessageSquare, Phone, Star } from "lucide-react"
+import { Mail, MessageSquare, Phone, Quote, Star } from "lucide-react"
 
 import { HOST_REVIEWS, HOST_SUPPORT, LISTED_AREA_SLUGS } from "@/lib/dashboard"
 import { listingBySlug } from "@/lib/listings"
 import { Carousel } from "@/components/brand/carousel"
+import { Reveal } from "@/components/brand/reveal"
 import { TabHeading } from "@/components/brand/tab-heading"
 import { ListingCard } from "@/components/listings/listing-card"
 
@@ -215,51 +216,56 @@ export function HostReviews() {
             "alle anzeigen" action to lead until there are more of them. */}
         <SectionHead title="Deine Bewertungen" />
 
-        <div className="mt-14 grid gap-10 lg:grid-cols-2">
+        <Reveal delay={90} className="mt-14 grid gap-10 lg:grid-cols-2">
           {HOST_REVIEWS.map((r) => (
+            /*
+              Same card as the reviews on a listing page — who wrote it and how
+              they rated it first, the text after, and the quote glyph as a
+              gold watermark in the corner rather than as two bars sitting on
+              top of the headline.
+            */
             <figure
               key={r.title}
-              className="surface surface-hover p-8 shadow-[var(--shadow-sm)] lg:p-10"
+              className="surface surface-on-cream surface-hover group flex flex-col overflow-hidden p-8 lg:p-10"
             >
-              {/*
-                The quote mark used to be two teal bars hanging above the first
-                card only — an asymmetry that read as a rendering fault rather
-                than as emphasis. Both cards now carry the same teal top edge.
-              */}
-              <span
+              <Quote
                 aria-hidden
-                className="absolute inset-x-0 top-0 h-[3px] [background:var(--grad-teal-bright)]"
+                strokeWidth={1.25}
+                className="pointer-events-none absolute -right-7 -bottom-8 h-28 w-28 rotate-6 fill-gold/[0.12] text-transparent transition-transform duration-500 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
               />
-              <span className="flex gap-1.5 text-gold" aria-hidden>
-                <span className="block h-9 w-2.5 bg-current" />
-                <span className="block h-9 w-2.5 bg-current" />
-              </span>
 
-              <figcaption className="mt-6 text-[clamp(1.0625rem,0.5vw+0.85rem,1.25rem)] font-semibold text-ink-900">
-                {r.title}
-              </figcaption>
-              <blockquote className="mt-4 text-[clamp(0.9375rem,0.4vw+0.8rem,1.0625rem)]/[1.7] text-ink">
-                {r.body}
-              </blockquote>
-
-              <div className="mt-8 flex items-end justify-between border-t border-teal/15 pt-5">
-                <p className="leading-snug">
-                  <span className="block text-[11px] font-semibold tracking-[0.12em] text-teal uppercase">
-                    {r.role}
-                  </span>
-                  <span className="block text-[1.0625rem] font-semibold text-ink-900">
+              <div className="relative flex items-center gap-3.5">
+                <span
+                  aria-hidden
+                  className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-teal-50 text-sm font-semibold text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white"
+                >
+                  {r.author
+                    .split(" ")
+                    .map((p) => p.charAt(0))
+                    .join("")}
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-[1.0625rem] leading-tight font-semibold text-ink-900">
                     {r.author}
                   </span>
-                </p>
-                <span className="flex gap-1" aria-label="5 von 5 Sternen">
+                  <span className="caps mt-1 block text-teal">{r.role}</span>
+                </span>
+                <span className="stars-pop ms-auto flex shrink-0 gap-0.5" aria-label="5 von 5 Sternen">
                   {Array.from({ length: 5 }).map((_, s) => (
-                    <Star key={s} className="h-5 w-5 fill-gold text-gold" aria-hidden />
+                    <Star key={s} className="h-4 w-4 fill-gold text-gold" aria-hidden />
                   ))}
                 </span>
               </div>
+
+              <figcaption className="relative mt-6 text-[clamp(1.0625rem,0.5vw+0.85rem,1.25rem)]/[1.35] font-semibold text-balance text-ink-900">
+                {r.title}
+              </figcaption>
+              <blockquote className="relative mt-3 text-[clamp(0.9375rem,0.4vw+0.8rem,1.0625rem)]/[1.7] text-ink">
+                {r.body}
+              </blockquote>
             </figure>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   )
