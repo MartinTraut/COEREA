@@ -3,6 +3,7 @@ import Link from "next/link"
 
 import { TabHeading } from "@/components/brand/tab-heading"
 import { BlueprintBg } from "@/components/brand/blueprint-bg"
+import { HostGreeting } from "@/components/dashboard/host-greeting"
 import { HOST_PROFILE, QUICK_LINKS } from "@/lib/dashboard"
 
 /** Greeting band: profile card, three key figures and the quick-access list. */
@@ -16,7 +17,7 @@ export function WelcomePanel() {
           as="h1"
           className="max-w-[700px] bg-white text-[clamp(1.8rem,2.4vw+0.8rem,3.25rem)]/[1.15]"
         >
-          Willkommen zurück, {HOST_PROFILE.name}!
+          Willkommen zurück, <HostGreeting fallback={HOST_PROFILE.name} />!
         </TabHeading>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-[1.35fr_1fr] lg:gap-8">

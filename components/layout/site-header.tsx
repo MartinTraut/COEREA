@@ -3,9 +3,10 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, LogOut } from "lucide-react"
 
 import { SITE } from "@/lib/site"
+import { initials, signOut, useDemoSession } from "@/lib/demo-session"
 import { cn } from "@/lib/utils"
 import { setOutsideInert } from "@/lib/inert"
 import { Logo } from "@/components/brand/logo"
@@ -16,6 +17,9 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const onHome = pathname === "/"
+  /* `null` during SSR and on the first paint — see useDemoSession. Both states
+     occupy the same slot in the bar, so the swap does not move anything. */
+  const user = useDemoSession()
   const toggleRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
 
@@ -177,17 +181,50 @@ export function SiteHeader() {
             )
           })}
           {/*
-            Filled, not outlined. It is the only action in the bar, so an
-            outline gave it the weight of a secondary control while still
-            drawing the eye — and a hollow button at this size showed its ring
-            more clearly than its label.
+            Signed out: one filled action. Outlined gave it the weight of a
+            secondary control while still drawing the eye, and a hollow button
+            at this size showed its ring more clearly than its label.
+
+            Signed in: who you are, where your account is, and the way out.
+            A demo session that cannot be ended is a trap — every visitor who
+            clicks through the dashboard has to be able to get back to the
+            signed-out site without clearing their storage by hand.
           */}
-          <Link
-            href="/anmelden"
-            className="btn btn-teal sheen px-[clamp(1rem,1.5vw,1.75rem)] py-[clamp(0.5rem,0.75vw,0.85rem)] text-[clamp(0.8125rem,0.604vw+0.4rem,1.0625rem)]"
-          >
-            anmelden
-          </Link>
+          {user ? (
+            <span className="flex items-center gap-2">
+              <Link
+                href="/dashboard"
+                aria-label={`Mein Konto, angemeldet als ${user.name}`}
+                className="group flex items-center gap-2.5 rounded-[var(--radius-control)] py-1 pr-3 pl-1 transition-colors duration-300 hover:bg-teal-50"
+              >
+                <span
+                  aria-hidden
+                  className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-teal text-[0.8125rem] font-semibold text-white"
+                >
+                  {initials(user.name)}
+                </span>
+                <span className="max-w-[9rem] truncate text-[clamp(0.8125rem,0.604vw+0.4rem,1rem)] font-medium text-ink-900">
+                  {user.name}
+                </span>
+              </Link>
+              <button
+                type="button"
+                onClick={signOut}
+                title="Abmelden"
+                aria-label="Abmelden"
+                className="grid h-9 w-9 place-items-center rounded-[var(--radius-control)] text-ink/55 transition-colors duration-300 hover:bg-teal-50 hover:text-teal"
+              >
+                <LogOut className="h-[1.05rem] w-[1.05rem]" strokeWidth={1.75} />
+              </button>
+            </span>
+          ) : (
+            <Link
+              href="/anmelden"
+              className="btn btn-teal sheen px-[clamp(1rem,1.5vw,1.75rem)] py-[clamp(0.5rem,0.75vw,0.85rem)] text-[clamp(0.8125rem,0.604vw+0.4rem,1.0625rem)]"
+            >
+              anmelden
+            </Link>
+          )}
           <span className="text-[clamp(0.8125rem,0.604vw+0.4rem,1.0625rem)] font-medium text-muted-foreground">
             DE
           </span>
@@ -241,13 +278,36 @@ export function SiteHeader() {
                 {item.label}
               </Link>
             ))}
-            <Link
-              href="/anmelden"
-              onClick={() => setOpen(false)}
-              className="mt-2 rounded-[var(--radius-control)] bg-white px-8 py-3 text-lg font-semibold text-teal shadow-[0_10px_30px_-14px_rgba(0,0,0,0.5)] transition-colors hover:bg-cream"
-            >
-              anmelden
-            </Link>
+            {user ? (
+              <>
+                <Link
+                  href="/dashboard"
+                  onClick={() => setOpen(false)}
+                  className="mt-2 rounded-[var(--radius-control)] bg-white px-8 py-3 text-lg font-semibold text-teal shadow-[0_10px_30px_-14px_rgba(0,0,0,0.5)]"
+                >
+                  Mein Konto
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    signOut()
+                    setOpen(false)
+                  }}
+                  className="inline-flex items-center gap-2 text-base text-white/80 underline underline-offset-4"
+                >
+                  <LogOut className="h-4 w-4" strokeWidth={1.75} />
+                  Abmelden, {user.name}
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/anmelden"
+                onClick={() => setOpen(false)}
+                className="mt-2 rounded-[var(--radius-control)] bg-white px-8 py-3 text-lg font-semibold text-teal shadow-[0_10px_30px_-14px_rgba(0,0,0,0.5)] transition-colors hover:bg-cream"
+              >
+                anmelden
+              </Link>
+            )}
             <span className="mt-2 text-sm text-white/70">DE</span>
           </nav>
         </div>

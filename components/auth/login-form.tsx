@@ -3,7 +3,9 @@
 import Link from "next/link"
 import { useId, useState } from "react"
 import { useRouter } from "next/navigation"
-import { ArrowRight, Eye, EyeOff, Info } from "lucide-react"
+import { ArrowRight, Eye, EyeOff, Info, PlayCircle } from "lucide-react"
+
+import { DEMO_HOST, nameFromEmail, signIn } from "@/lib/demo-session"
 
 /**
  * Sign-in and registration.
@@ -42,7 +44,13 @@ export function LoginForm() {
   const passBad = touched && password.length < (isRegister ? 8 : 6)
   const termsBad = touched && isRegister && !terms
 
-  function go() {
+  /*
+    Signing in for real, as far as a prototype can: the session is written
+    before the navigation, so the header, the account bar and the dashboard
+    greeting are already in the signed-in state when the next page paints.
+  */
+  function enter(user: { name: string; email: string }) {
+    signIn({ ...user, role: "host" })
     router.push("/dashboard")
   }
 
@@ -53,7 +61,11 @@ export function LoginForm() {
     if (!MAIL.test(email.trim())) return
     if (password.length < (isRegister ? 8 : 6)) return
     if (isRegister && !terms) return
-    go()
+    const trimmed = email.trim()
+    enter({
+      name: isRegister ? name.trim() : nameFromEmail(trimmed),
+      email: trimmed,
+    })
   }
 
   /* Switching mode clears the error state — the fields are not the same set,
@@ -261,23 +273,54 @@ export function LoginForm() {
       </div>
 
       <div className="grid gap-3">
-        {/* Both providers land where the form lands: there is no OAuth here,
+        {/* Both providers sign in the same demo host: there is no OAuth here,
             and a button that silently does nothing would be worse than one
-            that takes you to the same place the password does. */}
-        <button type="button" onClick={go} className="btn btn-outline h-12 px-5 text-sm">
+            that takes you where the password takes you. */}
+        <button
+          type="button"
+          onClick={() => enter(DEMO_HOST)}
+          className="btn btn-outline h-12 px-5 text-sm"
+        >
           <GoogleMark />
           Mit Google fortfahren
         </button>
-        <button type="button" onClick={go} className="btn btn-outline h-12 px-5 text-sm">
+        <button
+          type="button"
+          onClick={() => enter(DEMO_HOST)}
+          className="btn btn-outline h-12 px-5 text-sm"
+        >
           <AppleMark />
           Mit Apple fortfahren
         </button>
       </div>
 
-      <p className="mt-7 flex items-start gap-2.5 text-xs leading-relaxed text-muted-foreground">
-        <Info className="mt-px h-3.5 w-3.5 shrink-0 text-teal" strokeWidth={2} />
-        Prototyp ohne Konten: jede gültige Eingabe öffnet das Host-Dashboard.
-      </p>
+      {/*
+        The demo door, and it is labelled as one.
+
+        Anybody looking at this prototype wants to see the signed-in side, and
+        making them invent an address and a password first is a toll gate in
+        front of a room that is already unlocked. It signs in as the host the
+        dashboard's data actually belongs to, so the name in the greeting and
+        the areas in the list are the same person.
+      */}
+      <div className="mt-7 rounded-[var(--radius)] border border-dashed border-teal/35 bg-teal-50/60 p-4">
+        <p className="flex items-start gap-2.5 text-xs leading-relaxed text-ink">
+          <Info className="mt-px h-3.5 w-3.5 shrink-0 text-teal" strokeWidth={2} />
+          Prototyp ohne echte Konten. Jede gültige Eingabe legt eine Demo-Sitzung
+          an, mit der Du das Host-Dashboard so siehst wie ein angemeldeter Host.
+        </p>
+        <button
+          type="button"
+          onClick={() => enter(DEMO_HOST)}
+          className="btn group mt-3 h-10 w-full bg-white px-4 text-xs text-teal shadow-[var(--shadow-sm)] hover:-translate-y-0.5"
+        >
+          <PlayCircle className="h-4 w-4" strokeWidth={1.75} />
+          Direkt als Demo-Host anmelden
+          <span className="arrow-nudge inline-flex">
+            <ArrowRight className="h-3.5 w-3.5" />
+          </span>
+        </button>
+      </div>
     </div>
   )
 }
