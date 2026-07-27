@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
+import { ArrowLeft } from "lucide-react"
 
 import { SITE } from "@/lib/site"
 import { cn } from "@/lib/utils"
@@ -14,6 +15,7 @@ export function SiteHeader() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const onHome = pathname === "/"
   const toggleRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
 
@@ -106,15 +108,41 @@ export function SiteHeader() {
       )}
     >
       <div className="container-page flex h-16 items-center justify-between md:h-[clamp(4.5rem,4.8vw,5.75rem)]">
+        {/*
+          The wordmark has always linked to `/`, but nothing about it said so:
+          no hit area, no hover surface, and a 3% scale that nobody notices. A
+          logo that is a link only in the markup is a link nobody uses.
+
+          So it is drawn as a control. Off the homepage it carries a back arrow
+          and a hover plate — the arrow occupies its space permanently rather
+          than sliding in, because an affordance that only appears once you are
+          already hovering has not told anybody anything. On the homepage the
+          arrow is gone and `aria-current` marks it as where you already are;
+          pointing "back" at the page under your feet would be a lie.
+        */}
         <Link
           href="/"
-          aria-label="CoArea, zur Startseite"
-          className="group shrink-0"
+          aria-label={
+            onHome ? "CoArea, Startseite" : "CoArea, zurück zur Startseite"
+          }
+          aria-current={onHome ? "page" : undefined}
+          title={onHome ? undefined : "Zurück zur Startseite"}
+          className={cn(
+            "group -ml-2 flex shrink-0 items-center gap-1.5 rounded-[var(--radius-control)] px-2 py-1.5 transition-colors duration-300",
+            !onHome && "hover:bg-teal-50",
+          )}
         >
+          {!onHome ? (
+            <ArrowLeft
+              aria-hidden
+              className="h-[1.125rem] w-[1.125rem] shrink-0 text-teal/45 transition-all duration-300 ease-out group-hover:-translate-x-0.5 group-hover:text-teal motion-reduce:group-hover:translate-x-0"
+              strokeWidth={2}
+            />
+          ) : null}
           {/* href={null} — the wrapping Link is the anchor; nesting two would be invalid. */}
           <Logo
             href={null}
-            className="h-[clamp(2.1rem,2.55vw,3rem)] origin-left transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+            className="h-[clamp(2.1rem,2.55vw,3rem)] origin-left transition-transform duration-300 ease-out group-hover:scale-[1.03] motion-reduce:group-hover:scale-100"
           />
         </Link>
 

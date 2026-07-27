@@ -47,20 +47,37 @@ export function Testimonials() {
   return (
     <section className="mesh relative isolate overflow-hidden bg-cream">
       <div className="relative container-page py-[clamp(2.75rem,3.6vw,4.25rem)]">
-        <Carousel
-          label="Stimmen aus der Community"
-          trackClassName="mt-[clamp(2rem,3vw,3.5rem)] items-stretch"
-          itemClassName="w-[86%] sm:w-[62%] lg:w-[calc(50%-13px)]"
-          header={
-            <Reveal>
-              <span className="eyebrow">Stimmen aus der Community</span>
-              <h2 className="h-plain mt-4">Das sagen unsere Hosts &amp; User</h2>
-            </Reveal>
-          }
-        >
-          {TESTIMONIALS.map((t, i) => (
-            <Reveal key={t.name} delay={i * 100} className="h-full">
-              <figure className="surface surface-on-cream surface-hover flex h-full flex-col p-[clamp(1.5rem,2.2vw,2.5rem)]">
+        {/*
+          One reveal around the whole block, not one per card.
+
+          Each card used to animate on its own with a 100ms stagger. Two cards
+          sitting side by side are read as a single row, so staggering them
+          means the row arrives crooked: the right card is still 30px low and
+          half-transparent while the left one has already landed. A stagger
+          earns its keep down a column, where the eye follows one item at a
+          time — across a pair at the same height it just looks unsteady.
+
+          It also removes a second problem. Each card was a transformed element
+          carrying its own shadow, and a shadow being rasterised mid-transform
+          is what made the edges look soft and smeared while it moved.
+        */}
+        <Reveal className="block">
+          <Carousel
+            label="Stimmen aus der Community"
+            trackClassName="mt-[clamp(2rem,3vw,3.5rem)] items-stretch"
+            itemClassName="w-[86%] sm:w-[62%] lg:w-[calc(50%-13px)]"
+            header={
+              <div>
+                <span className="eyebrow">Stimmen aus der Community</span>
+                <h2 className="h-plain mt-4">Das sagen unsere Hosts &amp; User</h2>
+              </div>
+            }
+          >
+            {TESTIMONIALS.map((t) => (
+              <figure
+                key={t.name}
+                className="surface surface-on-cream surface-hover flex h-full flex-col p-[clamp(1.5rem,2.2vw,2.5rem)]"
+              >
                 {/*
                   The teal accent used to be a 3px bar pinned across the top of
                   the card. Inside a 16px radius with overflow hidden, a straight
@@ -94,9 +111,9 @@ export function Testimonials() {
                   </span>
                 </figcaption>
               </figure>
-            </Reveal>
-          ))}
-        </Carousel>
+            ))}
+          </Carousel>
+        </Reveal>
       </div>
     </section>
   )
