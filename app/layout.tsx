@@ -17,11 +17,11 @@ const sans = Montserrat({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.coarea.de"),
   title: {
-    default: "CoArea — Gemeinsam nutzen, nachhaltig erleben.",
+    default: "CoArea: Gemeinsam nutzen, nachhaltig erleben.",
     template: "%s · CoArea",
   },
   description:
-    "CoArea ist die Plattform, um ungenutzte Freiflächen gemeinschaftlich zu nutzen und zu teilen — Gärten, Sport- und Agrarflächen, Gewerbe und mehr. Gemeinsam nutzen, nachhaltig erleben.",
+    "CoArea ist die Plattform, um ungenutzte Freiflächen gemeinschaftlich zu nutzen und zu teilen: Gärten, Sport- und Agrarflächen, Gewerbe und mehr. Gemeinsam nutzen, nachhaltig erleben.",
   keywords: [
     "Fläche mieten",
     "Freiflächen teilen",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "de_DE",
     siteName: "CoArea",
-    title: "CoArea — Gemeinsam nutzen, nachhaltig erleben.",
+    title: "CoArea: Gemeinsam nutzen, nachhaltig erleben.",
     description:
       "Die Plattform für die gemeinschaftliche Nutzung ungenutzter Freiflächen.",
     url: "https://www.coarea.de",

@@ -22,6 +22,15 @@
   box they were drawn in. The 0.5 hatch lines keep their own width — they are
   meant to be finer than the outline they fill.
 
+  The factor was 0.025, which put the drawn line at 0.70px where the strip
+  renders at 28px and 1.20px at its largest. The private diamonds are filled
+  with `.hatch-fine`, whose lines are a flat 1px — so the icon was being drawn
+  *thinner than the texture behind it* and dissolved into it at exactly the
+  sizes the homepage uses. 0.036 puts it at 1.0–1.7px, clear of the hatch at
+  every size, and since it is applied per viewBox the eight stay level with each
+  other. The drawings themselves are untouched: this is the one number the file
+  already owned.
+
   Fills are deliberately left alone. The football is a filled ball with white
   knockouts and the tree has a filled crown; converting those silhouettes to
   outlines would redraw the brand's icons rather than tidy them.
@@ -31,7 +40,7 @@ type IconProps = { className?: string }
 /** Agrarfläche */
 export function AgrarForstIcon({ className }: IconProps) {
   return (
-    <svg viewBox="0 0 51.356 54.369" className={className} strokeWidth={1.28} aria-hidden focusable="false">
+    <svg viewBox="0 0 51.356 54.369" className={className} strokeWidth={1.85} aria-hidden focusable="false">
       <g id="agrar-forst-c">
         <g>
           <line x1="15.118" y1="53.814" x2="15.118" y2="22.619" fill="none" stroke="currentColor" strokeMiterlimit="10" />
@@ -78,7 +87,7 @@ export function AgrarForstIcon({ className }: IconProps) {
 /** Gewerbliche Fläche */
 export function GewerbeIcon({ className }: IconProps) {
   return (
-    <svg viewBox="0 0 51.284 51.446" className={className} strokeWidth={1.28} aria-hidden focusable="false">
+    <svg viewBox="0 0 51.284 51.446" className={className} strokeWidth={1.85} aria-hidden focusable="false">
       <g id="gewerbe-c">
         <path d="m50.784,50.946V.5H.5v50.446h5.465s0-41.177,0-41.177h39.234v41.177h5.585Z" fill="currentColor" stroke="currentColor" strokeMiterlimit="10" />
         <rect x="12.74" y="38.615" width="12.641" height="11.966" fill="none" stroke="currentColor" strokeMiterlimit="10" />
@@ -95,7 +104,7 @@ export function GewerbeIcon({ className }: IconProps) {
 /** Innerstädtisch öffentliche Grünanlagen */
 export function GruenanlagenIcon({ className }: IconProps) {
   return (
-    <svg viewBox="0 0 55.193 51.884" className={className} strokeWidth={1.38} aria-hidden focusable="false">
+    <svg viewBox="0 0 55.193 51.884" className={className} strokeWidth={1.99} aria-hidden focusable="false">
       <g id="gruenanlagen-c">
         <g>
           <line x1="17.027" y1="50.928" x2="17.027" y2="36.069" fill="currentColor" stroke="currentColor" strokeMiterlimit="10" />
@@ -120,7 +129,7 @@ export function GruenanlagenIcon({ className }: IconProps) {
 /** Innerstädtisch öffentliche Plätze */
 export function OeffentlichePlaetzeIcon({ className }: IconProps) {
   return (
-    <svg viewBox="0 0 52.733 51.54" className={className} strokeWidth={1.32} aria-hidden focusable="false">
+    <svg viewBox="0 0 52.733 51.54" className={className} strokeWidth={1.90} aria-hidden focusable="false">
       <g id="oeffentliche-plaetze-c">
         <rect x="16.408" y="19.486" width="19.925" height="42.683" transform="translate(67.197 14.457) rotate(90)" fill="currentColor" stroke="currentColor" strokeMiterlimit="10" />
         <path d="m1.19,14.14c16.84.069,33.679.139,50.519.208L45.791,0H7.079c-1.963,4.713-3.925,9.427-5.888,14.14Z" fill="currentColor" />
@@ -135,7 +144,7 @@ export function OeffentlichePlaetzeIcon({ className }: IconProps) {
 /** Innerstädtisch private Gärten */
 export function PrivateGaertenIcon({ className }: IconProps) {
   return (
-    <svg viewBox="0 0 52.439 49.98" className={className} strokeWidth={1.31} aria-hidden focusable="false">
+    <svg viewBox="0 0 52.439 49.98" className={className} strokeWidth={1.89} aria-hidden focusable="false">
       <defs>
         <clipPath id="private-gaerten-e">
           <path d="m21.873,12.719c.003.029-1.126-.085-2.15.51-1.221.71-1.59,2.022-1.633,2.183-.062.233-.352,1.42.293,2.627.653,1.222,1.821,1.636,2.408,1.844.474.168,2.241.795,3.938-.196,1.297-.757,1.775-2.005,1.91-2.408.207.367.544.873,1.066,1.372.227.217.864.815,1.803,1.181.39.152,2.385.93,4.163-.222.201-.13,1.488-.995,1.771-2.666.05-.296.22-1.4-.434-2.531-.792-1.371-2.183-1.723-2.43-1.781.592.057,1.571.076,2.693-.279.775-.245,1.491-.472,2.031-1.151.95-1.195.548-2.781.468-3.07-.352-1.269-1.264-1.952-1.571-2.175-1.085-.787-2.211-.822-2.772-.839-1.218-.037-2.17.327-2.698.581.12-.312.28-.855.229-1.529-.083-1.105-.68-1.837-.921-2.123-1.023-1.218-2.44-1.45-2.942-1.525-.609-.09-1.668-.248-2.749.361-1.593.897-1.844,2.674-1.859,2.795-.125,1.008.204,1.8.368,2.135-.404-.096-.981-.216-1.682-.303-1.262-.156-1.903-.235-2.683-.039-.351.088-1.581.396-2.386,1.565-.18.262-.805,1.2-.626,2.446.149,1.037.769,1.685,1.031,1.952.751.763,1.614,1.001,2.179,1.149,1.67.438,3.18.1,3.183.133Z" fill="none" />
@@ -216,7 +225,7 @@ export function PrivateGaertenIcon({ className }: IconProps) {
 /** Innerstädtisch private Plätze */
 export function PrivatePlaetzeIcon({ className }: IconProps) {
   return (
-    <svg viewBox="0 0 50.985 50.609" className={className} strokeWidth={1.27} aria-hidden focusable="false">
+    <svg viewBox="0 0 50.985 50.609" className={className} strokeWidth={1.84} aria-hidden focusable="false">
       <defs>
         <clipPath id="private-plaetze-e">
           <path d="m.75,49.861V14.74C5.042,10.192,9.335,5.643,13.627,1.095c4.257,4.548,8.514,9.097,12.771,13.645v16.695h23.837v18.426h-3.459v-12.593h-16.996v12.593H.75Z" fill="none" />
@@ -287,7 +296,7 @@ export function PrivatePlaetzeIcon({ className }: IconProps) {
 /** öffentliche Sportfläche */
 export function OeffentlicherSportIcon({ className }: IconProps) {
   return (
-    <svg viewBox="0 0 55.115 55.115" className={className} strokeWidth={1.38} aria-hidden focusable="false">
+    <svg viewBox="0 0 55.115 55.115" className={className} strokeWidth={1.98} aria-hidden focusable="false">
       <g id="oeffentlicher-sport-c">
         <g>
           <circle cx="27.558" cy="27.558" r="27.058" fill="currentColor" stroke="currentColor" strokeMiterlimit="10" />
@@ -306,7 +315,7 @@ export function OeffentlicherSportIcon({ className }: IconProps) {
 /** private Sportfläche */
 export function PrivaterSportIcon({ className }: IconProps) {
   return (
-    <svg viewBox="0 0 55.615 55.615" className={className} strokeWidth={1.39} aria-hidden focusable="false">
+    <svg viewBox="0 0 55.615 55.615" className={className} strokeWidth={2.00} aria-hidden focusable="false">
       <defs>
         <clipPath id="privater-sport-d">
           <circle cx="27.808" cy="27.808" r="27.058" fill="none" stroke="currentColor" strokeMiterlimit="10" />

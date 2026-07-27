@@ -108,7 +108,7 @@ export function SiteHeader() {
       <div className="container-page flex h-16 items-center justify-between md:h-[clamp(4.5rem,4.8vw,5.75rem)]">
         <Link
           href="/"
-          aria-label="CoArea — zur Startseite"
+          aria-label="CoArea, zur Startseite"
           className="group shrink-0"
         >
           {/* href={null} — the wrapping Link is the anchor; nesting two would be invalid. */}

@@ -98,13 +98,20 @@ export function Hero() {
                 makes the intended break the only break, and the size is capped
                 at what the column can actually hold.
               */}
+              {/*
+                The no-wrap was unconditional, and below ~340px the second line
+                plus the frame's padding is wider than the column it sits in.
+                The section clips, so on a 320px phone the headline — the whole
+                claim of the site — was cut off at the right edge rather than
+                wrapping. Held from `sm` up, where the column can carry it.
+              */}
               <TabHeading
                 as="h1"
-                className="text-[clamp(1.75rem,2.55vw+0.5rem,3.375rem)]/[1.12] [text-wrap:nowrap]"
+                className="text-[clamp(1.6rem,2.55vw+0.5rem,3.375rem)]/[1.12]"
               >
-                <span className="whitespace-nowrap">Gemeinsam nutzen,</span>
+                <span className="sm:whitespace-nowrap">Gemeinsam nutzen,</span>
                 <br />
-                <span className="text-gradient whitespace-nowrap">
+                <span className="text-gradient sm:whitespace-nowrap">
                   nachhaltig erleben.
                 </span>
               </TabHeading>

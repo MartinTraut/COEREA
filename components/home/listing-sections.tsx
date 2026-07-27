@@ -71,13 +71,18 @@ function FeatureCard({ listing }: { listing: Listing }) {
 
       {/*
         The copy side sits on the quiet cream so the two halves read as a
-        deliberate pairing rather than as a photo taped onto a white box, and a
-        Schraffur edge runs down the seam between them.
+        deliberate pairing rather than as a photo taped onto a white box.
+
+        The seam used to be a 12px strip of `.hatch-soft` — whose lines repeat
+        every 12px, so the strip showed exactly one diagonal. That is not a
+        Schraffur, it is a stray stroke, and it was one of four places the motif
+        was being spent on decoration. A gradient rule states the seam without
+        borrowing a mark that means something else.
       */}
       <div className="relative flex flex-col justify-center gap-4 bg-cream p-[clamp(1.5rem,2.6vw,3rem)]">
         <span
           aria-hidden
-          className="hatch-soft absolute inset-y-0 left-0 hidden w-3 md:block"
+          className="absolute inset-y-0 left-0 hidden w-[3px] [background:var(--grad-teal)] md:block"
         />
 
         <div className="flex items-start justify-between gap-4">

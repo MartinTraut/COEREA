@@ -8,7 +8,7 @@ import { Discover } from "@/components/listings/discover"
 
 const URL = `${SITE.url}/flaechen`
 const DESCRIPTION =
-  "Entdecke ungenutzte Flächen in Deiner Nähe — Gärten, Agrar- und Sportflächen, Gewerbe und mehr. Filtern, suchen und auf der Karte finden."
+  "Entdecke ungenutzte Flächen in Deiner Nähe: Gärten, Agrar- und Sportflächen, Gewerbe und mehr. Filtern, suchen und auf der Karte finden."
 
 export const metadata: Metadata = {
   title: "Flächen entdecken",

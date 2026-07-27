@@ -49,7 +49,7 @@ export default function HomePage() {
         graph={[
           webPageNode({
             url: `${SITE.url}/`,
-            name: `${SITE.name} — ${SITE.claim}`,
+            name: `${SITE.name}: ${SITE.claim}`,
             description: SITE.description,
           }),
           serviceCatalogNode(CATEGORIES),

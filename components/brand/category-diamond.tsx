@@ -175,10 +175,21 @@ export function CategoryDiamond({
     </>
   )
 
+  /*
+    `outline-none` used to sit here, which knocked out the site-wide
+    :focus-visible ring and left a substitute: a rectangular `ring-2` at 40%
+    teal drawn around the plate — a transparent box that does not touch the
+    diamond it is meant to indicate, at roughly 1.9:1 against white. These are
+    eight of the homepage's main navigation targets and they were effectively
+    invisible to anyone using a keyboard.
+
+    The global ring is simply allowed to do its job. It wraps plate, label and
+    access marker, which is the better target anyway: the whole column is what
+    the focus is on, not the diamond alone.
+  */
   const shared = cn(
-    "group flex shrink-0 flex-col items-center text-center outline-none",
+    "group flex shrink-0 flex-col items-center rounded-[var(--radius-control)] text-center",
     COLUMN,
-    "focus-visible:[&>span:first-child]:ring-2 focus-visible:[&>span:first-child]:ring-teal/40",
     className,
   )
 

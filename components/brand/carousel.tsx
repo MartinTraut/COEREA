@@ -20,6 +20,8 @@ export function Carousel({
   children,
   className,
   itemClassName,
+  trackClassName,
+  label,
 }: {
   /** Heading block rendered to the left of the arrows. */
   header?: React.ReactNode
@@ -27,6 +29,10 @@ export function Carousel({
   className?: string
   /** Applied to each child wrapper — set the card width per breakpoint here. */
   itemClassName?: string
+  /** Overrides on the scroll track itself, e.g. the gap above it. */
+  trackClassName?: string
+  /** Names the scrollable region for assistive tech. */
+  label?: string
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const [state, setState] = useState({ overflows: false, atStart: true, atEnd: false })
@@ -58,8 +64,15 @@ export function Carousel({
   const page = (dir: 1 | -1) => {
     const el = ref.current
     if (!el) return
+    /*
+      An explicit `behavior: "smooth"` beats the `scroll-behavior: auto` that
+      the reduced-motion block sets in CSS, so the preference has to be read
+      here as well — otherwise the one animation a motion-sensitive user cannot
+      escape is the one they are pressing a button to trigger.
+    */
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     // Leave a sliver of the outgoing card visible so the move reads as a page.
-    el.scrollBy({ left: dir * (el.clientWidth * 0.9), behavior: "smooth" })
+    el.scrollBy({ left: dir * (el.clientWidth * 0.9), behavior: still ? "auto" : "smooth" })
   }
 
   const items = Array.isArray(children) ? children : [children]
@@ -70,7 +83,9 @@ export function Carousel({
         <div className="flex flex-wrap items-center justify-between gap-6">
           {header}
           {state.overflows ? (
-            <span className="flex items-center gap-3">
+            /* `ms-auto` so the pair stays on the right once the row wraps —
+               `justify-between` only aligns items that share a line. */
+            <span className="ms-auto flex items-center gap-3">
               <button
                 type="button"
                 aria-label="Zurück"
@@ -98,9 +113,25 @@ export function Carousel({
         Negative margin + matching padding lets the track bleed to the viewport
         edge on small screens while its cards stay aligned with the page column.
       */}
+      {/*
+        `tabIndex` on the track, deliberately. A scrollable region that cannot
+        be focused can only be scrolled with a pointer — and where the cards
+        hold no links of their own (the testimonials do not), that leaves
+        keyboard users with no way to reach the content past the first screen.
+        With a tabindex the browser gives arrow-key scrolling for free, which is
+        why this is a scrollable region and not an `aria-roledescription`
+        carousel: it is not rotating, and announcing it as one would promise
+        controls that do not exist.
+      */}
       <div
         ref={ref}
-        className="-mx-5 mt-12 flex snap-x snap-mandatory gap-[26px] overflow-x-auto scroll-smooth px-5 pb-2 [scrollbar-width:none] lg:mx-0 lg:px-0 [&::-webkit-scrollbar]:hidden"
+        tabIndex={0}
+        role="group"
+        aria-label={label}
+        className={cn(
+          "-mx-5 mt-12 flex snap-x snap-mandatory gap-[26px] overflow-x-auto scroll-smooth px-5 pb-2 [scrollbar-width:none] lg:mx-0 lg:px-0 [&::-webkit-scrollbar]:hidden",
+          trackClassName,
+        )}
       >
         {items.map((child, i) => (
           <div

@@ -8,7 +8,7 @@ import { Todo } from "@/components/layout/legal-shell"
 export const metadata: Metadata = {
   title: "Presse",
   description:
-    "Pressekontakt, Fakten und Materialien zu CoArea — der Plattform für gemeinschaftliche Flächennutzung.",
+    "Pressekontakt, Fakten und Materialien zu CoArea, der Plattform für gemeinschaftliche Flächennutzung.",
 }
 
 const FACTS = [

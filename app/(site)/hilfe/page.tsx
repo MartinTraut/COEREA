@@ -69,7 +69,7 @@ export default function HilfePage() {
               Noch Fragen?
             </TabHeading>
             <p className="mt-4 max-w-md text-white/90">
-              Schreib oder ruf uns an — wir helfen Dir schnell und persönlich weiter.
+              Schreib oder ruf uns an. Wir helfen Dir schnell und persönlich weiter.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">

@@ -12,14 +12,14 @@ export const metadata: Metadata = {
 
 const HOST_BENEFITS = [
   { icon: TrendingUp, title: "Einnahmen generieren", text: "Verdiene mit Flächen, die sonst ungenutzt bleiben." },
-  { icon: Recycle, title: "Leerstand sinnvoll nutzen", text: "Gib Deiner Fläche einen Zweck — nachhaltig und effizient." },
+  { icon: Recycle, title: "Leerstand sinnvoll nutzen", text: "Gib Deiner Fläche einen Zweck, nachhaltig und effizient." },
   { icon: Users, title: "Teil einer Bewegung", text: "Verbinde Menschen und stärke die Gemeinschaft vor Ort." },
-  { icon: Sparkles, title: "Einfach & unkompliziert", text: "In wenigen Schritten inseriert — den Rest übernehmen wir." },
+  { icon: Sparkles, title: "Einfach & unkompliziert", text: "In wenigen Schritten inseriert. Den Rest übernehmen wir." },
 ]
 
 const STEPS = [
   { n: "1", title: "Fläche inserieren", text: "Beschreibe Deine Fläche, lade Fotos hoch und lege Deinen Preis fest." },
-  { n: "2", title: "Anfragen erhalten", text: "Interessenten senden Dir Buchungsanfragen — Du entscheidest." },
+  { n: "2", title: "Anfragen erhalten", text: "Interessenten senden Dir Buchungsanfragen. Du entscheidest." },
   { n: "3", title: "Teilen & verdienen", text: "Bestätige die Buchung, teile Deine Fläche und erhalte Deine Einnahmen." },
 ]
 
@@ -36,7 +36,7 @@ export default function HostWerdenPage() {
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/90">
             Du hast eine leerstehende Fläche und weißt nicht, was Du mit ihr anfangen
             sollst? Dann lade sie noch heute bei CoArea hoch und teile sie mit der
-            Community — nachhaltig, einfach und mit echtem Mehrwert.
+            Community: nachhaltig, einfach und mit echtem Mehrwert.
           </p>
           <Link
             href="/anmelden"

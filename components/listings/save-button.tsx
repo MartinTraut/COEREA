@@ -34,7 +34,10 @@ export function SaveButton({
       aria-pressed={active}
       className={cn(
         "grid min-h-11 min-w-11 place-items-center rounded-[var(--radius-control)] transition-colors hover:text-teal",
-        active ? "text-teal" : "text-ink/20",
+        /* Unsaved was `text-ink/20`: #707070 at 20% over the white chip it sits
+           on is about 1.15:1, so the only secondary control on a listing card
+           was invisible until hovered. WCAG 1.4.11 asks 3:1 of a control. */
+        active ? "text-teal" : "text-ink-900/55",
         className,
       )}
     >

@@ -52,7 +52,7 @@ export function BookingConfirmation({ listing }: { listing: Listing }) {
         </h2>
         <p className="mt-4 max-w-2xl leading-relaxed text-ink">
           Für „{listing.title}“ ist in dieser Sitzung keine Buchungsanfrage
-          hinterlegt. Wähle einen Zeitraum aus und schließe die Anfrage ab —
+          hinterlegt. Wähle einen Zeitraum aus und schließe die Anfrage ab.
           danach findest Du die Bestätigung hier.
         </p>
         <Link
@@ -73,7 +73,7 @@ export function BookingConfirmation({ listing }: { listing: Listing }) {
         Deine Buchungsanfrage ist abgeschlossen!
       </h2>
       <p className="mt-4 max-w-2xl leading-relaxed text-ink">
-        Danke, {record.name.split(" ")[0]} — Deine Anfrage für „{record.title}“ ist
+        Danke, {record.name.split(" ")[0]}! Deine Anfrage für „{record.title}“ ist
         vorbereitet. Sobald CoArea live ist, geht sie an {listing.host.name}, und
         die Bestätigung erreicht Dich unter {record.email}.
       </p>

@@ -12,7 +12,7 @@ const BENEFITS = [
   {
     icon: Leaf,
     title: "Nachhaltige Einflussnahme auf unsere Natur",
-    text: "Teilen statt versiegeln — wir bewahren Böden und wertvolle Lebensräume.",
+    text: "Teilen statt versiegeln: Wir bewahren Böden und wertvolle Lebensräume.",
   },
   {
     icon: TrendingUp,
@@ -40,13 +40,28 @@ const BENEFITS = [
 export function Benefits() {
   return (
     <section className="mesh mesh-dark grain relative isolate overflow-hidden [background:var(--grad-teal-deep)] text-white">
-      <span aria-hidden className="hatch-white absolute inset-0 opacity-20" />
+      {/*
+        The Schraffur used to run across this entire band at 20% and it was the
+        reason the four benefits disappeared into it.
+
+        Three things were competing at once: the hatch drew white lines at an
+        effective 10% white, the icon plates sat on 12% white — a two-point
+        difference, so they had no edge — and the only structure separating the
+        four items was a 1px rule at 25% white, which was *fainter than the
+        stripes crossing it*. The band's own texture outweighed its content.
+
+        The hatch now marks the top edge and dissolves, so it still announces
+        the band with the brand's diagonal without laying a field of lines
+        behind every word of the argument.
+      */}
+      <span
+        aria-hidden
+        className="hatch-white absolute inset-0 opacity-30 [mask-image:linear-gradient(to_bottom,black_0,black_11%,transparent_34%)]"
+      />
 
       <div className="relative container-page py-[clamp(4rem,7vw,8.5rem)]">
         <Reveal>
-          <span className="eyebrow text-white/80 before:bg-white/60">
-            Warum CoArea
-          </span>
+          <span className="eyebrow eyebrow-invert">Warum CoArea</span>
           {/*
             This is the band that has to carry the page, so its heading is the
             largest thing on the homepage after the H1 — the framed motif at
@@ -66,36 +81,31 @@ export function Benefits() {
             <Reveal
               key={b.title}
               delay={i * 90}
-              className="group relative flex flex-col gap-4 border-t border-white/25 pt-6 transition-colors duration-300 hover:border-white/70"
+              className="group relative flex flex-col gap-4 pt-6 before:absolute before:inset-x-0 before:top-0 before:h-[2px] before:bg-white/45 before:transition-colors before:duration-300 hover:before:bg-white"
             >
               <div className="flex items-center justify-between">
                 {/*
-                  The icon used to sit on a hatched square, which since the
-                  Schraffur now runs across the whole band meant hatch on hatch:
-                  a 1.5px white line drawing lost inside a field of 1px white
-                  lines, at 24px. It gets a clean, quiet ground instead — the
-                  band already carries the motif — and the mark itself is drawn
-                  a step heavier so it holds up against the stripes behind it.
+                  Shared plate, inverted for the teal ground. With the hatch off
+                  the body of the band, the 18% white fill is a closed surface
+                  the glyph can stand on instead of a transparency two points
+                  away from the stripes behind it.
                 */}
-                <span className="relative grid h-12 w-12 place-items-center rounded-[var(--radius-control)] bg-white/12 ring-1 ring-white/25 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:bg-white group-hover:ring-white">
-                  <b.icon
-                    className="h-[1.625rem] w-[1.625rem] text-white transition-colors duration-300 group-hover:text-teal"
-                    strokeWidth={1.75}
-                  />
+                <span className="icon-plate icon-plate-invert icon-plate-hover">
+                  <b.icon strokeWidth={1.5} />
                 </span>
                 {/*
                   The counter used to be 24px against a 17px title — the
                   decoration outweighed the brand's actual argument. It is now
                   the smallest element in the item, which is what a counter is.
                 */}
-                <span className="text-base leading-none font-bold text-white/20 transition-colors duration-300 group-hover:text-white/50">
+                <span className="text-base leading-none font-bold text-white/30 transition-colors duration-300 group-hover:text-white/60">
                   {String(i + 1).padStart(2, "0")}
                 </span>
               </div>
               <h3 className="text-[clamp(1.0625rem,0.55vw+0.85rem,1.375rem)]/[1.3] font-semibold text-balance">
                 {b.title}
               </h3>
-              <p className="text-[0.9375rem]/[1.65] text-white/80">{b.text}</p>
+              <p className="text-[0.9375rem]/[1.65] text-white/85">{b.text}</p>
             </Reveal>
           ))}
         </div>

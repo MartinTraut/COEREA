@@ -211,7 +211,7 @@ export function BookingForm({
             </>
           ) : (
             <p className="text-sm text-ink">
-              Für diese Fläche wird der Preis individuell abgestimmt — wähle einen{" "}
+              Für diese Fläche wird der Preis individuell abgestimmt. Wähle einen{" "}
               <Link
                 href={`/flaechen/${listing.slug}#verfuegbarkeit`}
                 className="text-teal underline underline-offset-2"
@@ -239,7 +239,7 @@ export function BookingForm({
         </div>
 
         <p className="mt-4 text-xs text-ink">
-          Prototyp: Deine Anfrage wird noch nicht an den Host übermittelt — der
+          Prototyp: Deine Anfrage wird noch nicht an den Host übermittelt. Der
           Bezahlvorgang erfolgt später nach dessen Bestätigung.
         </p>
       </div>

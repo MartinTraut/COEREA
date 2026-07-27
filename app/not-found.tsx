@@ -42,7 +42,7 @@ export default function NotFound() {
           <p className="mt-7 max-w-[46rem] text-[clamp(1rem,0.6vw+0.7rem,1.3125rem)] leading-[1.5] text-ink">
             Die Seite, die Du aufgerufen hast, existiert nicht oder wurde
             verschoben. Vielleicht hat sich ein Tippfehler in die Adresse
-            geschlichen — oder das Inserat wurde inzwischen vermietet.
+            geschlichen, oder das Inserat wurde inzwischen vermietet.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">

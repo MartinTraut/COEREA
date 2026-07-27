@@ -10,7 +10,7 @@ import { ContactForm } from "@/components/contact/contact-form"
 export const metadata: Metadata = {
   title: "Kontakt",
   description:
-    "Kontaktiere CoArea — per E-Mail, Telefon oder über unser Kontaktformular. Wir beraten Dich gern zur optimalen Nutzung Deiner Flächen.",
+    "Kontaktiere CoArea per E-Mail, Telefon oder über unser Kontaktformular. Wir beraten Dich gern zur optimalen Nutzung Deiner Flächen.",
 }
 
 /*
@@ -52,7 +52,7 @@ const ROUTES = [
   {
     href: "/hilfe",
     title: "Fragen zur Buchung",
-    text: "Ablauf, Kosten, Storno und Versicherung — im Hilfe-Bereich beantwortet.",
+    text: "Ablauf, Kosten, Storno und Versicherung: im Hilfe-Bereich beantwortet.",
   },
   {
     href: "/businesspartner",
@@ -80,7 +80,7 @@ export default function KontaktPage() {
             </TabHeading>
             <p className="mt-6 max-w-[52ch] text-[clamp(1.0625rem,0.6vw+0.85rem,1.375rem)]/[1.45] text-ink-900">
               Du hast Fragen zu einer Fläche, möchtest Host werden oder brauchst
-              Beratung? Schreib uns, ruf an — oder nutze das Formular. Wir sind
+              Beratung? Schreib uns, ruf an oder nutze das Formular. Wir sind
               für Dich da.
             </p>
           </Reveal>
@@ -140,7 +140,7 @@ export default function KontaktPage() {
             <Reveal>
               <h2 className="h-plain">Wobei können wir helfen?</h2>
               <p className="mt-4 max-w-[42ch] text-[clamp(1rem,0.42vw+0.85rem,1.125rem)]/[1.6] text-ink">
-                Viele Fragen sind hier schon beantwortet — das geht schneller als
+                Viele Fragen sind hier schon beantwortet. Das geht schneller als
                 eine Mail. Wenn nichts passt, schreib uns direkt.
               </p>
 

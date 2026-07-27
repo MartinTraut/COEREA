@@ -96,7 +96,7 @@ export function SiteFooter() {
             */}
             <ul className="mt-7 flex items-center gap-4">
               {social.map((s) => (
-                <li key={s.label} title={`${s.label} — Profil folgt`} className="text-white/85">
+                <li key={s.label} title={`${s.label}: Profil folgt`} className="text-white/85">
                   <SocialIcon name={s.icon} className="h-[1.375rem] w-[1.375rem]" />
                   <span className="sr-only">{s.label} (Profil folgt)</span>
                 </li>

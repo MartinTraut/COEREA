@@ -1,7 +1,9 @@
-import { Mail, Phone, MapPin } from "lucide-react"
+import Link from "next/link"
+import { ArrowRight, Mail, Phone, MapPin } from "lucide-react"
 
 import { SITE } from "@/lib/site"
 import { ContactForm } from "@/components/contact/contact-form"
+import { Reveal } from "@/components/brand/reveal"
 
 export function GetInTouch() {
   const { contact } = SITE
@@ -20,17 +22,34 @@ export function GetInTouch() {
         className="pointer-events-none absolute inset-0 -z-10 select-none bg-[url(/images/hero-map.png)] bg-cover bg-bottom bg-no-repeat opacity-70 [mask-image:linear-gradient(to_top,black_0%,black_34%,transparent_86%)]"
       />
       <div className="relative container-page grid gap-[clamp(2.5rem,4vw,4.5rem)] py-[clamp(2.75rem,3.6vw,4.25rem)] lg:grid-cols-2 lg:items-start">
-        <div>
+        {/* Closing section, and it was the only one on the page that arrived
+            without a reveal — the motion systematics broke exactly at the end. */}
+        <Reveal>
           <span className="eyebrow">Host-Support</span>
           <h2 className="h-plain mt-4">Get in Touch</h2>
+          {/*
+            Original wording from the design, restored. The paraphrase that was
+            here read more tightly but it was not the client's copy, and this
+            section exists in the source frames — where copy exists, it wins.
+          */}
           <p className="mt-7 max-w-md text-[clamp(1.0625rem,0.5vw+0.8rem,1.375rem)]/[1.5] font-medium text-ink-900">
-            Erfahrene Beratung für die optimale Nutzung Deiner Flächen.
+            Erfahrene Beratung für optimale Nutzung unserer Flächen.
           </p>
-          <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
-            Du brauchst Hilfe beim Anbieten Deiner Fläche oder möchtest als Host
-            mehr aus Deinen Möglichkeiten herausholen? Lass Dich von unserem
-            Host-Support beraten.
+          <p className="mt-4 max-w-md text-[0.9375rem]/[1.7] text-muted-foreground">
+            Brauchst Du Hilfe beim Anbieten Deiner Fläche oder möchtest Du als
+            Host gerne mehr über Deine vielfältigen Möglichkeiten erfahren?
+            Lasse Dich von unserem hilfsbereiten Host-Support beraten.
           </p>
+
+          <Link
+            href="/kontakt"
+            className="btn btn-teal sheen group mt-7 h-12 px-6 text-sm"
+          >
+            jetzt beraten lassen
+            <span className="arrow-nudge inline-flex">
+              <ArrowRight className="h-4 w-4" />
+            </span>
+          </Link>
 
           {/*
             Three contact tiles. The two that lead somewhere (mail, phone) are
@@ -38,18 +57,30 @@ export function GetInTouch() {
             tile — an identical-looking box that does nothing on click is worse
             than an obviously static one.
           */}
+          {/*
+            These tiles were white cards outlined in --border on the cream band:
+            #ededed against #f6f6f6 is 1.04:1, and the fill itself is 1.05:1. So
+            neither the edge nor the surface separated from the ground and the
+            tiles read as three loose stacks of text floating on the section.
+            That is what "sodass es ein bisschen ersichtlicher wird" is pointing
+            at, and it is a contrast problem, not a decoration problem.
+
+            `.surface-on-cream` gives them a teal-tinted edge and a resting
+            shadow. The two that lead somewhere additionally carry a teal spine
+            on the left; the address does not, because a tile that looks
+            identical and does nothing on click is worse than an obviously
+            static one.
+          */}
           <ul className="mt-9 grid gap-3 sm:grid-cols-3">
             <li>
               <a
                 href={`mailto:${contact.email}`}
-                className="surface surface-hover group flex h-full flex-col gap-2 p-4"
+                className="surface surface-on-cream surface-hover group flex h-full flex-col gap-2.5 border-l-[3px] border-l-teal p-4"
               >
-                <span className="grid h-9 w-9 place-items-center rounded-[var(--radius-control)] bg-teal-50 text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white">
-                  <Mail className="h-4 w-4" />
+                <span className="icon-plate icon-plate-sm icon-plate-hover">
+                  <Mail strokeWidth={1.5} />
                 </span>
-                <span className="text-[11px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">
-                  E-Mail
-                </span>
+                <span className="caps text-muted-foreground">E-Mail</span>
                 <span className="text-sm font-medium break-words text-ink-900">
                   {contact.email}
                 </span>
@@ -58,32 +89,30 @@ export function GetInTouch() {
             <li>
               <a
                 href={`tel:${contact.phoneHref}`}
-                className="surface surface-hover group flex h-full flex-col gap-2 p-4"
+                className="surface surface-on-cream surface-hover group flex h-full flex-col gap-2.5 border-l-[3px] border-l-teal p-4"
               >
-                <span className="grid h-9 w-9 place-items-center rounded-[var(--radius-control)] bg-teal-50 text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white">
-                  <Phone className="h-4 w-4" />
+                <span className="icon-plate icon-plate-sm icon-plate-hover">
+                  <Phone strokeWidth={1.5} />
                 </span>
-                <span className="text-[11px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">
-                  Telefon
-                </span>
+                <span className="caps text-muted-foreground">Telefon</span>
                 <span className="text-sm font-medium text-ink-900">{contact.phone}</span>
               </a>
             </li>
-            <li className="surface flex flex-col gap-2 p-4">
-              <span className="grid h-9 w-9 place-items-center rounded-[var(--radius-control)] bg-teal-50 text-teal">
-                <MapPin className="h-4 w-4" />
+            <li className="surface surface-on-cream flex flex-col gap-2.5 p-4">
+              <span className="icon-plate icon-plate-sm">
+                <MapPin strokeWidth={1.5} />
               </span>
-              <span className="text-[11px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">
-                Adresse
-              </span>
+              <span className="caps text-muted-foreground">Adresse</span>
               <span className="text-sm font-medium text-ink-900">
                 {contact.street}, {contact.zip} {contact.city}
               </span>
             </li>
           </ul>
-        </div>
+        </Reveal>
 
-        <ContactForm />
+        <Reveal delay={100}>
+          <ContactForm />
+        </Reveal>
       </div>
     </section>
   )

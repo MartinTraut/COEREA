@@ -13,7 +13,7 @@ import { Reveal } from "@/components/brand/reveal"
 const NEWS = [
   {
     tag: "News",
-    title: "Urban Gardening boomt — unsere Tipps und Tricks für einen grünen Daumen",
+    title: "Urban Gardening boomt: Unsere Tipps und Tricks für einen grünen Daumen",
     cta: "Flächen ansehen",
     href: "/flaechen/kategorie/private-gaerten",
     image: "/images/news-urban-gardening.jpg",
@@ -21,14 +21,14 @@ const NEWS = [
   {
     tag: "Community",
     title:
-      "Kaarst: Fußball-Verein Weißenberger 04 startet Charity-Event für Kinder in Not",
+      "Kaarst: Fußball-Verein Weißenberger 04 startet Charity Event für Kinder in Not",
     cta: "Sportflächen ansehen",
     href: "/flaechen/kategorie/oeffentlicher-sport",
     image: "/images/news-fussball.jpg",
   },
   {
     tag: "Standpunkt",
-    title: "Urbanisierung der Stadt — wo setzen wir an?",
+    title: "Urbanisierung der Stadt: wo setzen wir an?",
     cta: "Unsere Mission",
     href: "/ueber-uns",
     image: "/images/news-urbanisierung.jpg",

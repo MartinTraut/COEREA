@@ -47,11 +47,11 @@ export default function CookiesPage() {
         Marketing-Cookies. Schriften werden lokal von unserem eigenen Server
         ausgeliefert, es werden keine Inhalte von Drittanbietern nachgeladen, und
         es findet keine Reichweitenmessung statt. Eine Einwilligung ist deshalb
-        derzeit nicht erforderlich — und aus demselben Grund gibt es bewusst kein
+        derzeit nicht erforderlich, und aus demselben Grund gibt es bewusst kein
         Cookie-Banner.
       </p>
       <p>
-        Technisch notwendige Angaben — etwa Deine gemerkten Flächen — speichern wir
+        Technisch notwendige Angaben, etwa Deine gemerkten Flächen, speichern wir
         ausschließlich lokal in Deinem Browser (localStorage). Sie verlassen Dein
         Gerät nicht und lassen sich über die Einstellungen Deines Browsers jederzeit
         löschen.

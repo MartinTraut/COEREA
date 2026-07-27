@@ -27,7 +27,7 @@ export const SITE = {
     zip: "50999",
     city: "Köln",
     country: "Deutschland",
-    hours: "Mo–Fr 09:00–18:00 Uhr & nach Terminvereinbarung",
+    hours: "Mo bis Fr 09:00 bis 18:00 Uhr & nach Terminvereinbarung",
   },
   nav: [
     { label: "Flächen entdecken", href: "/flaechen" },

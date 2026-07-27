@@ -180,6 +180,18 @@
     --accent-foreground: var(--teal-700);
     --destructive: oklch(0.577 0.245 27.325);
     --border: #ededed;
+    /*
+      A second border tone, for surfaces that sit on cream rather than on white.
+
+      #ededed against #ffffff is a deliberate hairline. Against --cream #f6f6f6
+      it is 1.04:1 — mathematically present, optically absent. Three sections of
+      the homepage put white cards on the cream band, and every one of them was
+      losing its outline entirely: the contact tiles in "Get in Touch" read as
+      floating text because neither their edge nor their fill separated from the
+      ground behind them. Tinting the border towards the brand instead of just
+      darkening it keeps the edge quiet while making it exist.
+    */
+    --border-cream: color-mix(in srgb, var(--teal) 18%, #e4e4e4);
     --input: #dbdbdb;
     --ring: var(--teal);
     --chart-1: var(--teal);
@@ -345,9 +357,17 @@
     .surface-hover:focus-within,
     .btn-teal:hover,
     .group:hover .arrow-nudge svg,
-    .arrow-nudge:hover svg {
+    .arrow-nudge:hover svg,
+    .group:hover .icon-plate-hover,
+    .icon-plate-hover:hover {
       transform: none !important;
     }
+    /*
+      The list above is hand-maintained and therefore always one commit behind.
+      Transform-on-hover added from here on is written with Tailwind's
+      `motion-safe:` prefix at the call site instead, which cannot fall out of
+      sync because the condition travels with the utility.
+    */
   }
 }
 
@@ -610,6 +630,122 @@
   }
 
   /*
+    A card on the cream bands. Same surface, an edge that can actually be seen
+    against #f6f6f6, and a resting shadow so white-on-cream separates by depth
+    as well as by outline — see the note on --border-cream.
+  */
+  .surface-on-cream {
+    border-color: var(--border-cream);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ── Icon plates ───────────────────────────────────────────────────────── */
+
+  /*
+    One plate for every icon on the site.
+
+    Counted across the homepage there were ten different ways an icon was being
+    presented, eight of which were "an icon on a coloured square" and no two of
+    which agreed. They disagreed on all four axes at once:
+
+    · size — 36 / 44 / 44→52 fluid / 48px. Not a scale, four separate decisions.
+    · ratio — the icon filled 44% of its plate in one place and 54% in another,
+      and where the plate was fluid but the icon fixed the ratio drifted with
+      the viewport. Side by side one icon looks cramped and the next looks lost.
+    · stroke — six call sites never set strokeWidth and silently inherited
+      lucide's 2, so the SMALLEST icons on the page carried the HEAVIEST line
+      while the largest carried the lightest. Exactly backwards.
+    · edge — seven plates had no border and one had a ring, and that one sat on
+      the hatched teal band where its fill differed from the stripes behind it
+      by two percentage points. It had no readable edge, only a ring floating
+      over texture. That is the "komische Umrandung" precisely.
+
+    Three sizes, ratio fixed at 50% (lucide glyphs fill ~85% of their box, so
+    the visible mark lands near 42% of the plate — the proportion that reads as
+    an icon resting on a plate rather than one crammed into a box). The corner
+    follows the same graduated rule as the cards: bigger surface, bigger corner.
+    Nothing here is fluid, so the ratio cannot drift.
+  */
+  .icon-plate {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--radius);
+    background: var(--teal-50);
+    /* Inset, so the edge IS the plate boundary rather than a ring beside it. */
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--teal) 14%, transparent);
+    color: var(--teal);
+    transition:
+      background-color 240ms var(--ease-out-expo),
+      box-shadow 240ms var(--ease-out-expo),
+      color 240ms var(--ease-out-expo),
+      transform 240ms var(--ease-out-expo);
+  }
+  .icon-plate > svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .icon-plate-sm {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-control);
+  }
+  .icon-plate-sm > svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+  .icon-plate-lg {
+    width: 4rem;
+    height: 4rem;
+    border-radius: calc(var(--radius) * 1.25);
+  }
+  .icon-plate-lg > svg {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  /*
+    The dark counterpart, for plates on the teal bands. White at 18% over the
+    graded teal is a closed ground the white glyph can stand on; the previous
+    12% over a field of 50%-white stripes was lighter behind the icon than in
+    front of it.
+  */
+  .icon-plate-invert {
+    background: color-mix(in srgb, #fff 18%, transparent);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+    color: #fff;
+  }
+
+  /* Filled: for the one plate per flow that marks a completed state. */
+  .icon-plate-solid {
+    background: var(--teal);
+    box-shadow: none;
+    color: #fff;
+  }
+
+  /*
+    Hover belongs to the plate, not to each call site — one 2px lift everywhere
+    instead of 4px here, none there. Applied via a group so the whole card can
+    drive it.
+  */
+  .group:hover .icon-plate-hover,
+  .icon-plate-hover:hover {
+    background: var(--teal);
+    box-shadow: inset 0 0 0 1px var(--teal);
+    color: #fff;
+    transform: translate3d(0, -2px, 0);
+  }
+  .group:hover .icon-plate-invert.icon-plate-hover,
+  .icon-plate-invert.icon-plate-hover:hover {
+    background: #fff;
+    box-shadow: inset 0 0 0 1px #fff;
+    color: var(--teal);
+    transform: translate3d(0, -2px, 0);
+  }
+
+  /*
     This used to cut the top-right corner off with a clip-path polygon — the one
     shape move in a system that was otherwise all right angles. It was the most
     angular thing on the site, and it is what the whole page was hanging its
@@ -755,6 +891,21 @@
       var(--teal)
     );
   }
+  /*
+    The eyebrow on a teal band.
+
+    The call sites tried to solve this with `before:bg-white/60`, which sets
+    background-color — and the rule above paints a linear-gradient, i.e. a
+    background-IMAGE, which sits on top and is never overridden. So the lead-in
+    rule above the most important heading on the page was teal on teal, and the
+    hierarchy it exists to create simply was not there.
+  */
+  .eyebrow-invert {
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .eyebrow-invert::before {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.25), #fff);
+  }
 
   /*
     One fluid size for every section heading. It lives here rather than as a
@@ -764,6 +915,30 @@
   */
   .h-section {
     font-size: clamp(1.6rem, 2.2vw + 0.55rem, 3rem);
+  }
+
+  /*
+    Micro-label in caps — the role above a name, the kind above a card, the
+    field above a value.
+
+    There were six of these on the homepage at six different sizes and five
+    different tracking values, all doing the same job in the same register.
+    Nobody chose that; each was set where it was written. One class now, because
+    caps tracking is not a per-site decision: capitals have no ascender rhythm
+    to space them, so they need a fixed, generous track or they clot.
+  */
+  .caps {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  /* Below ~10px the track has to OPEN further, not tighten — the smaller the
+     capital, the more space it needs between letters to stay legible. */
+  .caps-xs {
+    font-size: 0.5625rem;
+    letter-spacing: 0.14em;
   }
 
   /*

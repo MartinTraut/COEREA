@@ -11,7 +11,7 @@ import { Newsletter } from "@/components/home/newsletter"
 export const metadata: Metadata = {
   title: "Über Uns",
   description:
-    "CoArea — die Revolution der Flächennutzung. Unsere Mission, unsere Vision und die Menschen dahinter.",
+    "CoArea: die Revolution der Flächennutzung. Unsere Mission, unsere Vision und die Menschen dahinter.",
 }
 
 /* Photo frame using the design's own photography. */
@@ -60,7 +60,7 @@ export default function UeberUnsPage() {
         <div className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-center">
           <div>
             <h2 className="text-xl font-semibold text-teal">
-              CoArea — die Revolution der Flächennutzung
+              CoArea: die Revolution der Flächennutzung
             </h2>
             <p className="mt-4 max-w-xl leading-relaxed text-ink">
               CoArea ist eine Plattform, die es Menschen ermöglicht, ihre ungenutzten
@@ -99,7 +99,7 @@ export default function UeberUnsPage() {
           </div>
 
           <blockquote className="mx-auto mt-10 max-w-2xl rounded-[var(--radius)] border border-teal/60 bg-teal/[0.04] px-8 py-7 text-center text-[clamp(1.1rem,1.6vw+0.5rem,1.5rem)] leading-snug font-semibold text-teal text-balance">
-            „Kreativ, smart und innovativ — Mit CoArea erschaffen wir unbeachtete
+            „Kreativ, smart und innovativ: Mit CoArea erschaffen wir unbeachtete
             Flächenpotenziale
             neu.&quot;
           </blockquote>

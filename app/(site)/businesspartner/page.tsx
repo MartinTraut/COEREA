@@ -18,7 +18,7 @@ const PARTNERS = [
 ]
 
 const REASONS = [
-  { icon: LineChart, title: "Zusätzliche Erlöse", text: "Monetarisiere Flächen, die heute brachliegen — planbar und transparent." },
+  { icon: LineChart, title: "Zusätzliche Erlöse", text: "Monetarisiere Flächen, die heute brachliegen, planbar und transparent." },
   { icon: ShieldCheck, title: "Sicher & geprüft", text: "Verifizierte Nutzer, klare Konditionen und abgesicherte Abwicklung." },
   { icon: Handshake, title: "Persönliche Betreuung", text: "Ein fester Ansprechpartner begleitet euch beim Onboarding und darüber hinaus." },
 ]
@@ -35,7 +35,7 @@ export default function BusinesspartnerPage() {
             Aus Leerstand wird Mehrwert
           </TabHeading>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/90">
-            Als Businesspartner bringt ihr eure Flächen auf CoArea — und macht sie
+            Als Businesspartner bringt ihr eure Flächen auf CoArea und macht sie
             für die Gemeinschaft nutzbar. Nachhaltig, planbar und mit persönlicher
             Betreuung.
           </p>
@@ -90,7 +90,7 @@ export default function BusinesspartnerPage() {
               Lass uns sprechen
             </TabHeading>
             <p className="mt-4 text-white/90">
-              Erzähl uns von euren Flächen — wir melden uns mit einem passenden
+              Erzähl uns von euren Flächen. Wir melden uns mit einem passenden
               Vorschlag. Unser Vertriebsteam berät euch unverbindlich.
             </p>
           </div>

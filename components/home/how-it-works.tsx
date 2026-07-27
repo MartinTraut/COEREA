@@ -29,7 +29,7 @@ const PATHS = [
       {
         icon: MapPinned,
         title: "Suchen und filtern",
-        text: "Ort, Zeitraum und Kategorie eingeben — Du siehst sofort, welche Flächen in Deinem Umkreis frei sind.",
+        text: "Ort, Zeitraum und Kategorie eingeben. Du siehst sofort, welche Flächen in Deinem Umkreis frei sind.",
       },
       {
         icon: CalendarCheck,
@@ -51,7 +51,7 @@ const PATHS = [
       {
         icon: ClipboardList,
         title: "Fläche kostenlos anlegen",
-        text: "Kategorie, Fotos, Lage und Beschreibung — vom innerstädtischen Hinterhof bis zur Forstfläche.",
+        text: "Kategorie, Fotos, Lage und Beschreibung: vom innerstädtischen Hinterhof bis zur Forstfläche.",
       },
       {
         icon: SlidersHorizontal,
@@ -71,12 +71,26 @@ const PATHS = [
 export function HowItWorks() {
   return (
     <section className="mesh grain relative isolate overflow-hidden bg-cream">
-      {/* Schraffur through the whole band, as everywhere else on the site. */}
-      <span aria-hidden className="hatch-soft absolute inset-0 opacity-60" />
+      {/*
+        The Schraffur used to fill this whole band at 60%, and the band directly
+        below it is the teal one that was also fully hatched — two hatched
+        fields back to back with nothing between them.
+
+        Worse, it meant nothing here. The hatch carries a specific meaning on
+        this site: it marks *private ground*, which is the one thing the eight
+        category icons cannot say, and the strip above introduces it with a
+        visible legend. Used as wallpaper on a third of the page it can no
+        longer mark anything — the legend is left pointing at a pattern that is
+        simply everywhere.
+
+        So it is gone from here. The band already has `mesh grain bg-cream`,
+        which is what makes the cream read as lit rather than as flat grey; it
+        never needed a third texture.
+      */}
 
       <div className="relative container-page py-[clamp(3rem,5vw,6rem)]">
         <Reveal className="max-w-[52rem] block">
-          <span className="eyebrow">In drei Schritten</span>
+          <span className="eyebrow">Zwei Wege, drei Schritte</span>
           <h2 className="h-plain mt-4">So funktioniert CoArea</h2>
           <p className="mt-6 text-[clamp(1rem,0.5vw+0.78rem,1.1875rem)]/[1.65] text-ink">
             Zwei Wege, ein Prinzip: Fläche, die schon da ist, wird für eine
@@ -126,24 +140,36 @@ export function HowItWorks() {
                       {i < path.steps.length - 1 ? (
                         <span
                           aria-hidden
-                          className="absolute top-[clamp(2.75rem,3.4vw,3.25rem)] bottom-[0.4rem] left-[clamp(1.34rem,1.7vw,1.62rem)] w-px bg-gradient-to-b from-teal/35 to-teal/5"
+                          className="absolute top-[3.5rem] bottom-[0.4rem] left-[1.5rem] w-px bg-gradient-to-b from-teal/35 to-teal/5"
                         />
                       ) : null}
 
-                      <span className="relative grid h-[clamp(2.75rem,3.4vw,3.25rem)] w-[clamp(2.75rem,3.4vw,3.25rem)] shrink-0 place-items-center rounded-[var(--radius-control)] bg-teal-50 text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white">
-                        <step.icon
-                          className="h-[1.375rem] w-[1.375rem]"
-                          strokeWidth={1.75}
-                        />
-                        {/* Step number, tucked into the corner of the plate —
-                            small, because the icon is the thing being read. */}
-                        <span className="absolute -top-1.5 -right-1.5 grid h-[1.125rem] w-[1.125rem] place-items-center rounded-full bg-teal text-[0.625rem] leading-none font-bold text-white transition-colors duration-300 group-hover:bg-ink-900">
-                          {i + 1}
-                        </span>
+                      {/*
+                        Shared plate. It used to be fluid (44→52px) while the
+                        icon inside it stayed fixed at 22px, so the icon-to-plate
+                        ratio slid from 50% on a phone to 42% on a desktop — the
+                        same component looking differently proportioned
+                        depending on the window. Fixed plate, fixed icon.
+
+                        The step number used to be a round badge notched into
+                        the plate's corner, where a circle overlapped a 12px
+                        rounded corner across about six pixels and cut into its
+                        arc. Two radii fighting over the same corner is a large
+                        part of what read as "komisch". The number belongs with
+                        the step title anyway — that is what it numbers.
+                      */}
+                      <span className="icon-plate icon-plate-hover">
+                        <step.icon strokeWidth={1.5} />
                       </span>
 
                       <span className="min-w-0 pt-0.5">
-                        <span className="block text-[clamp(1rem,0.4vw+0.85rem,1.125rem)]/[1.35] font-semibold text-ink-900">
+                        <span className="flex items-baseline gap-2.5 text-[clamp(1rem,0.4vw+0.85rem,1.125rem)]/[1.35] font-semibold text-ink-900">
+                          <span
+                            aria-hidden
+                            className="shrink-0 text-[0.8125rem] font-bold text-teal/55 tabular-nums"
+                          >
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
                           {step.title}
                         </span>
                         <span className="mt-2 block text-[0.9375rem]/[1.65] text-ink">

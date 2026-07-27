@@ -20,7 +20,7 @@ const HOST_NAME = "Roland Schick"
 const hostListing = LISTINGS.find((l) => l.host.name === HOST_NAME)
 if (!hostListing) {
   throw new Error(
-    `Dashboard-Host „${HOST_NAME}" ist in LISTINGS nicht vorhanden — lib/dashboard.ts liest sein Profil von dort.`,
+    `Dashboard-Host „${HOST_NAME}" ist in LISTINGS nicht vorhanden; lib/dashboard.ts liest sein Profil von dort.`,
   )
 }
 const host = hostListing.host

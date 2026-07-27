@@ -33,8 +33,8 @@ export function ContactForm() {
 
     const href =
       `mailto:${SITE.contact.email}` +
-      `?subject=${encodeURIComponent(`Anfrage über coarea.de – ${name}`)}` +
-      `&body=${encodeURIComponent(`${message}\n\n—\n${name}\n${email}`)}`
+      `?subject=${encodeURIComponent(`Anfrage über coarea.de: ${name}`)}` +
+      `&body=${encodeURIComponent(`${message}\n\nViele Grüße\n${name}\n${email}`)}`
 
     setMailHref(href)
     setHandedOff(true)
@@ -44,14 +44,20 @@ export function ContactForm() {
   if (handedOff) {
     return (
       <div className="flex flex-col items-start gap-3 rounded-[var(--radius)] border border-teal/60 bg-accent p-8">
-        <span className="grid h-11 w-11 place-items-center rounded-full bg-teal text-white">
-          <Mail className="h-5 w-5" aria-hidden />
+        {/*
+          Shared plate. This was the only `rounded-full` icon container on the
+          homepage, sitting a few centimetres from three 12px-cornered ones in
+          the same section — it read as an accident rather than as a decision.
+          Full rounds are reserved for avatars, where the shape means "person".
+        */}
+        <span className="icon-plate icon-plate-solid">
+          <Mail strokeWidth={1.5} aria-hidden />
         </span>
         <h3 className="text-lg font-semibold text-ink">
           Dein E-Mail-Programm sollte sich geöffnet haben.
         </h3>
         <p className="text-[15px] leading-relaxed text-ink">
-          Schick die vorbereitete Nachricht einfach ab — dann liegt sie direkt in
+          Schick die vorbereitete Nachricht einfach ab, dann liegt sie direkt in
           unserem Postfach. Ist nichts passiert, schreib uns bitte direkt an{" "}
           <a
             href={`mailto:${SITE.contact.email}`}
@@ -81,7 +87,7 @@ export function ContactForm() {
         Lass uns wissen, wie wir Dir helfen können!
       </p>
       <p className="mt-2 mb-6 text-[14px] leading-relaxed text-ink">
-        Drei Felder — mehr brauchen wir nicht, um Dir zu antworten.
+        Drei Felder. Mehr brauchen wir nicht, um Dir zu antworten.
       </p>
       <div className="grid gap-4">
         <label className="grid gap-1.5">

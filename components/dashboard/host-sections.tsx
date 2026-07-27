@@ -100,7 +100,7 @@ export function ContactPerson() {
     value?: string
     href?: string
   }[] = [
-    { icon: MessageSquare, label: "Chat Nachricht — folgt" },
+    { icon: MessageSquare, label: "Chat Nachricht (folgt)" },
     { icon: Mail, label: "E-Mail", value: HOST_SUPPORT.email, href: `mailto:${HOST_SUPPORT.email}` },
     { icon: Phone, label: "Telefon", value: HOST_SUPPORT.phone, href: `tel:${HOST_SUPPORT.phoneHref}` },
   ]

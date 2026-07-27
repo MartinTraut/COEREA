@@ -71,7 +71,7 @@ export const LISTINGS: Listing[] = [
     category: "private-gaerten",
     title: "Deine eigene Parzelle im Gewächshaus",
     excerpt:
-      "Geschützte Parzelle in einem gepflegten Gewächshaus — perfekt zum Anbauen, Ernten und Gärtnern das ganze Jahr über.",
+      "Geschützte Parzelle in einem gepflegten Gewächshaus, perfekt zum Anbauen, Ernten und Gärtnern das ganze Jahr über.",
     city: "Korschenbroich",
     size: "85,5 m²",
     price: { amount: "179 €", unit: "Monat" },
@@ -87,7 +87,7 @@ export const LISTINGS: Listing[] = [
     category: "private-gaerten",
     title: "Gartenparzelle am Hangweiher Quartier",
     excerpt:
-      "Sonnige Gartenparzelle im ruhigen Hangweiher Quartier — bereit für dein eigenes Urban-Gardening-Projekt.",
+      "Sonnige Gartenparzelle im ruhigen Hangweiher Quartier, bereit für dein eigenes Urban-Gardening-Projekt.",
     city: "Singen",
     size: "40 m²",
     price: { amount: "60 €", unit: "Monat" },
@@ -103,7 +103,7 @@ export const LISTINGS: Listing[] = [
     category: "private-gaerten",
     title: "Fruchtbarer Boden für eine ertragsreiche Ernte",
     excerpt:
-      "Nährstoffreiche Gartenfläche mit lockerem Boden — ideal für Gemüsebeete und eine ertragsreiche eigene Ernte.",
+      "Nährstoffreiche Gartenfläche mit lockerem Boden, ideal für Gemüsebeete und eine ertragsreiche eigene Ernte.",
     city: "Würselen",
     size: "145 m²",
     price: { amount: "100 €", unit: "Monat" },
@@ -119,7 +119,7 @@ export const LISTINGS: Listing[] = [
     category: "private-gaerten",
     title: "Dein kleiner Hobby-Garten am Stadtwald",
     excerpt:
-      "Kompaktes Hochbeet am Stadtwald — der unkomplizierte Einstieg ins eigene Gärtnern, mitten in der Stadt.",
+      "Kompaktes Hochbeet am Stadtwald: der unkomplizierte Einstieg ins eigene Gärtnern, mitten in der Stadt.",
     city: "Essen",
     size: "5 m²",
     price: { amount: "25 €", unit: "Monat" },
@@ -135,7 +135,7 @@ export const LISTINGS: Listing[] = [
     category: "private-gaerten",
     title: "Wunderschöner Blumengarten für Events oder Fotoshootings",
     excerpt:
-      "Liebevoll angelegter Blumengarten — die perfekte Kulisse für Events, Feiern und Fotoshootings.",
+      "Liebevoll angelegter Blumengarten: die perfekte Kulisse für Events, Feiern und Fotoshootings.",
     city: "St. Augustin",
     size: "1800 m²",
     price: { amount: "600 €", unit: "Tag" },
@@ -152,7 +152,7 @@ export const LISTINGS: Listing[] = [
     category: "private-gaerten",
     title: "Dein eigener Bereich auf fruchtbarem Blumenboden",
     excerpt:
-      "Abgegrenzter Bereich in einem gepflegten Blumengarten — für eigene Pflanzungen und ruhige Stunden im Grünen.",
+      "Abgegrenzter Bereich in einem gepflegten Blumengarten, für eigene Pflanzungen und ruhige Stunden im Grünen.",
     city: "Wermelskirchen",
     size: "20 m²",
     price: { amount: "45 €", unit: "Monat" },
@@ -171,7 +171,7 @@ export const LISTINGS: Listing[] = [
     category: "agrar-forst",
     title: "Riesiges umzäuntes Areal für landwirtschaftliche Zwecke",
     excerpt:
-      "Weitläufiges, vollständig umzäuntes Areal — ausgelegt für landwirtschaftliche Nutzung im großen Maßstab.",
+      "Weitläufiges, vollständig umzäuntes Areal, ausgelegt für landwirtschaftliche Nutzung im großen Maßstab.",
     city: "Leichlingen",
     size: "4,1 ha",
     price: { amount: "2100 €", unit: "Monat" },
@@ -187,7 +187,7 @@ export const LISTINGS: Listing[] = [
     category: "agrar-forst",
     title: "Freie Weide für landwirtschaftliche Zwecke",
     excerpt:
-      "Offene, saftig grüne Weidefläche — bereit für Beweidung, Tierhaltung und landwirtschaftliche Nutzung.",
+      "Offene, saftig grüne Weidefläche, bereit für Beweidung, Tierhaltung und landwirtschaftliche Nutzung.",
     city: "Dabringhausen",
     size: "2,1 ha",
     price: { amount: "790 €", unit: "Monat" },
@@ -204,7 +204,7 @@ export const LISTINGS: Listing[] = [
     category: "agrar-forst",
     title: "Umzäuntes Gelände zur Eigennutzung",
     excerpt:
-      "Eingezäuntes Gelände zur freien Eigennutzung — vielseitig einsetzbar und jederzeit gut erreichbar.",
+      "Eingezäuntes Gelände zur freien Eigennutzung, vielseitig einsetzbar und jederzeit gut erreichbar.",
     city: "Langenfeld",
     size: "0,5 ha",
     price: { amount: "1600 €", unit: "Monat" },
@@ -236,7 +236,7 @@ export const LISTINGS: Listing[] = [
     category: "agrar-forst",
     title: "Umzäunte Weide am Stadtrand / Ideal für Tierhaltung",
     excerpt:
-      "Weitläufige, eingezäunte Weidefläche am Rand von Solingen — ideal für Tierhaltung, Beweidung und naturnahe Nutzung.",
+      "Weitläufige, eingezäunte Weidefläche am Rand von Solingen, ideal für Tierhaltung, Beweidung und naturnahe Nutzung.",
     city: "Solingen Burg",
     size: "1,4 ha",
     price: { amount: "710 €", unit: "Monat" },
@@ -252,7 +252,7 @@ export const LISTINGS: Listing[] = [
     category: "agrar-forst",
     title: "Private Forstfläche direkt am Rhein/ ideal für den Campingurlaub",
     excerpt:
-      "Private Forstfläche in Rheinnähe — ruhig gelegen und wie gemacht für Camping und Erholung in der Natur.",
+      "Private Forstfläche in Rheinnähe, ruhig gelegen und wie gemacht für Camping und Erholung in der Natur.",
     city: "Monheim",
     size: "1200 m²",
     price: { amount: "200 €", unit: "Woche" },
@@ -270,7 +270,7 @@ export const LISTINGS: Listing[] = [
     category: "oeffentlicher-sport",
     title: "Volleyballfeld für Aktivitäten im Freien",
     excerpt:
-      "Gepflegtes Feld für Turniere, Events und spontane Aktivitäten — stundenweise buchbar.",
+      "Gepflegtes Feld für Turniere, Events und spontane Aktivitäten, stundenweise buchbar.",
     city: "Köln",
     size: "162 m²",
     price: { amount: "6 €", unit: "Stunde" },
@@ -286,7 +286,7 @@ export const LISTINGS: Listing[] = [
     category: "oeffentlicher-sport",
     title: "Sportfläche für private Kurse",
     excerpt:
-      "Flexible Sportfläche für Kurse, Training und Gruppenangebote — stundenweise buchbar.",
+      "Flexible Sportfläche für Kurse, Training und Gruppenangebote, stundenweise buchbar.",
     city: "Aachen",
     size: "500 m²",
     price: { amount: "12 €", unit: "Stunde" },
@@ -302,7 +302,7 @@ export const LISTINGS: Listing[] = [
     category: "oeffentlicher-sport",
     title: "Multifunktionsrasen für große Veranstaltungen",
     excerpt:
-      "Großer, ebener Rasenplatz — die Bühne für Turniere, Festivals und Veranstaltungen jeder Größe.",
+      "Großer, ebener Rasenplatz: die Bühne für Turniere, Festivals und Veranstaltungen jeder Größe.",
     city: "Düren",
     size: "1,2 ha",
     price: { amount: "380 €", unit: "Tag" },
@@ -319,7 +319,7 @@ export const LISTINGS: Listing[] = [
     category: "oeffentlicher-sport",
     title: "Vollausgestattete Sportanlage für private Sportevents",
     excerpt:
-      "Professionell ausgestattete Sportanlage — ideal für Turniere, private Sportevents und Vereinsveranstaltungen.",
+      "Professionell ausgestattete Sportanlage, ideal für Turniere, private Sportevents und Vereinsveranstaltungen.",
     city: "Düsseldorf",
     size: "1,8 ha",
     price: { amount: "1940 €", unit: "Tag" },
@@ -335,7 +335,7 @@ export const LISTINGS: Listing[] = [
     category: "oeffentlicher-sport",
     title: "Skate- & Freizeitanlage für private Events buchen",
     excerpt:
-      "Voll ausgestattete Skate- und Freizeitanlage — ideal für private Events, Wettbewerbe und Community-Aktionen.",
+      "Voll ausgestattete Skate- und Freizeitanlage, ideal für private Events, Wettbewerbe und Community-Aktionen.",
     city: "Dortmund",
     size: "600 m²",
     price: { amount: "90 €", unit: "Tag" },
@@ -351,7 +351,7 @@ export const LISTINGS: Listing[] = [
     category: "oeffentlicher-sport",
     title: "Versiegelte Freizeitfläche für private Kurse",
     excerpt:
-      "Befestigte, wetterfeste Freizeitfläche — zuverlässig nutzbar für Kurse, Training und Gruppenangebote.",
+      "Befestigte, wetterfeste Freizeitfläche, zuverlässig nutzbar für Kurse, Training und Gruppenangebote.",
     city: "Mönchengladbach",
     size: "800 m²",
     price: { amount: "20 €", unit: "Stunde" },
@@ -369,7 +369,7 @@ export const LISTINGS: Listing[] = [
     category: "gewerbe",
     title: "Innerstädtischer Büroparkplatz für große Events",
     excerpt:
-      "Zentraler Büroparkplatz, der außerhalb der Betriebszeiten frei wird — viel Platz für große Veranstaltungen.",
+      "Zentraler Büroparkplatz, der außerhalb der Betriebszeiten frei wird, viel Platz für große Veranstaltungen.",
     city: "Neuss",
     size: "0,34 ha",
     price: { amount: "550 €", unit: "Tag" },
@@ -385,7 +385,7 @@ export const LISTINGS: Listing[] = [
     category: "gewerbe",
     title: "Innenhof einer Metalverarbeitung für Partys und Events",
     excerpt:
-      "Charaktervoller Innenhof eines Metallbetriebs — an Wochenenden frei für Partys, Feiern und Events.",
+      "Charaktervoller Innenhof eines Metallbetriebs, an Wochenenden frei für Partys, Feiern und Events.",
     city: "Dormagen",
     size: "750 m²",
     price: { amount: "90 €", unit: "Tag" },
@@ -401,7 +401,7 @@ export const LISTINGS: Listing[] = [
     category: "gewerbe",
     title: "Exklusiver Innenhof eines Tech-Unternehmens für besondere Veranstaltungen",
     excerpt:
-      "Repräsentativer Innenhof eines Tech-Unternehmens — der passende Rahmen für besondere Veranstaltungen.",
+      "Repräsentativer Innenhof eines Tech-Unternehmens: der passende Rahmen für besondere Veranstaltungen.",
     city: "Köln Deutz",
     size: "1100 m²",
     price: { amount: "600 €", unit: "Tag" },
@@ -417,7 +417,7 @@ export const LISTINGS: Listing[] = [
     category: "gewerbe",
     title: "Ungenutzte Gewerbefläche als Lager-& Nutzfläche",
     excerpt:
-      "Ebenerdige Gewerbefläche in zentraler Lage — vielseitig nutzbar als Lager-, Stell- oder Veranstaltungsfläche.",
+      "Ebenerdige Gewerbefläche in zentraler Lage, vielseitig nutzbar als Lager-, Stell- oder Veranstaltungsfläche.",
     city: "Solingen Mitte",
     size: "450 m²",
     price: { amount: "499 €", unit: "Monat" },
@@ -433,7 +433,7 @@ export const LISTINGS: Listing[] = [
     category: "gewerbe",
     title: "Gesicherte und überwachte Lagerfläche in der Innenstadt",
     excerpt:
-      "Videoüberwachte, gesicherte Lagerfläche mitten in der Stadt — kurzfristig und flexibel buchbar.",
+      "Videoüberwachte, gesicherte Lagerfläche mitten in der Stadt, kurzfristig und flexibel buchbar.",
     city: "Wuppertal",
     size: "1200 m²",
     price: { amount: "500 €", unit: "Woche" },
@@ -449,7 +449,7 @@ export const LISTINGS: Listing[] = [
     category: "gewerbe",
     title: "Stellplatzanlage eines Einkaufszentrums für große Veranstaltungen",
     excerpt:
-      "Große, befestigte Stellplatzanlage — an Feiertagen und Sonntagen verfügbar für Märkte und Großveranstaltungen.",
+      "Große, befestigte Stellplatzanlage, an Feiertagen und Sonntagen verfügbar für Märkte und Großveranstaltungen.",
     city: "Köln Deutz",
     size: "1,102 ha",
     price: { amount: "3000 €", unit: "Tag" },
@@ -501,7 +501,7 @@ export const LISTINGS: Listing[] = [
     category: "gewerbe",
     title: "Hinterhof vom Schreiner: Ideal für einen Marktplatz",
     excerpt:
-      "Charmanter, überdachter Innenhof einer Schreinerei — perfekt für Märkte, kleine Veranstaltungen und Pop-ups.",
+      "Charmanter, überdachter Innenhof einer Schreinerei, perfekt für Märkte, kleine Veranstaltungen und Pop-ups.",
     city: "Köln",
     size: "960 m²",
     price: { amount: "220 €", unit: "Tag" },

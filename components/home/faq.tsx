@@ -33,20 +33,21 @@ export function Faq() {
           <span className="eyebrow">Häufige Fragen</span>
           <h2 className="h-plain mt-4">Alles, was Du wissen willst</h2>
           <p className="mt-6 text-[0.9375rem]/[1.7] text-ink">
-            Die Fragen, die uns am häufigsten gestellt werden — zur Plattform,
+            Die Fragen, die uns am häufigsten gestellt werden: zur Plattform,
             zu Kosten, zum Ablauf einer Buchung und zu dem, was Du als
             Eigentümer in der Hand behältst.
           </p>
 
           {/* Closing hand-off — someone whose question is not in the list
               should not have to go looking for the way out of this section. */}
-          <div className="mt-8 border-l-[3px] border-teal bg-teal-50 px-5 py-4">
-            <p className="flex items-start gap-3 text-sm/[1.65] text-ink">
-              <MessageCircleQuestion
-                className="mt-0.5 h-5 w-5 shrink-0 text-teal"
-                aria-hidden
-              />
-              Deine Frage ist nicht dabei? Schreib uns — wir antworten
+          <div className="mt-8 rounded-[var(--radius)] border border-teal/20 border-l-[3px] border-l-teal bg-teal-50 px-5 py-5">
+            {/* Stacked, not inline: the rail is 22rem wide, and an inline
+                plate leaves the sentence three narrow lines to wrap into. */}
+            <span className="icon-plate icon-plate-sm">
+              <MessageCircleQuestion strokeWidth={1.5} />
+            </span>
+            <p className="mt-3.5 text-sm/[1.65] text-ink">
+              Deine Frage ist nicht dabei? Schreib uns. Wir antworten
               persönlich, nicht mit einem Textbaustein.
             </p>
             <div className="mt-4 flex flex-wrap gap-x-6 gap-y-3">

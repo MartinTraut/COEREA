@@ -51,12 +51,16 @@ export function Newsletter() {
     */
     <section className="mesh mesh-dark grain relative isolate overflow-hidden [background:var(--grad-teal-bright)] py-[clamp(2.75rem,4vw,4.5rem)]">
       {/*
-        Full-height Schraffur — on the client's instruction (2026-07-26): the
-        lines run all the way through the band, not as a 24px edge. Kept at a
-        low opacity so the white card still reads as sitting on a surface rather
-        than as a hole punched in a field of stripes.
+        The white card covers most of this band, so a full-height Schraffur only
+        ever showed in a 2–4rem margin around it, where it read as fraying
+        rather than as the brand's diagonal. It runs along the top edge and
+        dissolves instead — the same treatment as the benefits band above, so
+        the two teal bands announce themselves the same way.
       */}
-      <span aria-hidden className="hatch-white absolute inset-0 opacity-25" />
+      <span
+        aria-hidden
+        className="hatch-white absolute inset-0 opacity-30 [mask-image:linear-gradient(to_bottom,black_0,black_14%,transparent_42%)]"
+      />
       <div className="relative container-page">
         {/*
           `justify-between` on the full 1520px column pushed the heading and the
@@ -73,7 +77,7 @@ export function Newsletter() {
         {state === "done" ? (
           <div
             role="status"
-            className="flex w-full max-w-md items-start gap-3 border-l-[3px] border-teal bg-teal-50 px-5 py-4 md:w-auto"
+            className="flex w-full items-start gap-3 rounded-[var(--radius-control)] border border-teal/25 border-l-[3px] border-l-teal bg-teal-50 px-5 py-4 md:flex-1"
           >
             <Check className="mt-0.5 h-5 w-5 shrink-0 text-teal" />
             <p className="text-sm text-ink">
@@ -82,8 +86,25 @@ export function Newsletter() {
             </p>
           </div>
         ) : (
-          <form onSubmit={submit} noValidate className="w-full md:w-auto md:min-w-[26rem]">
-            <div className="flex items-stretch">
+          /* `md:w-auto` let the control shrink to its content and left ~180px
+             of the card empty beside it. It takes the remaining width. */
+          <form onSubmit={submit} noValidate className="w-full md:flex-1">
+            {/*
+              Field and action share one outline and sit flush, so the pair
+              reads as a single control rather than as two adjacent boxes.
+
+              That intent survived the radius retrofit badly. The global input
+              rule gives every field `--radius-control` on all four corners and
+              `.btn` rounds the button the same way, so at the seam two 12px
+              arcs curved away from each other and left a white wedge above and
+              below — an hourglass pinch. It looked like the two were jammed
+              together, which is what "die Buttons kleben sehr eng aneinander"
+              is describing; the cause is geometry, not spacing.
+
+              The radius now lives on the wrapper, which clips both children,
+              and the children are square. One shape, one focus state.
+            */}
+            <div className="flex items-stretch overflow-hidden rounded-[var(--radius-control)] border border-input transition-colors duration-200 focus-within:border-teal focus-within:ring-2 focus-within:ring-teal/25">
               <input
                 id={id}
                 type="email"
@@ -99,14 +120,14 @@ export function Newsletter() {
                 aria-label="E-Mail-Adresse"
                 aria-invalid={state === "invalid" || undefined}
                 aria-describedby={state === "invalid" ? `${id}-err` : undefined}
-                /* Input and action share one outline and sit flush, so the pair
-                   reads as a single control rather than two adjacent boxes. */
-                className="min-w-0 flex-1 border border-r-0 border-input bg-white px-4 py-3.5 text-sm text-ink-900 outline-none transition-colors placeholder:text-ink/70 focus:border-teal focus-visible:outline-none"
+                /* Square: the wrapper owns the corners. `outline-none` is safe
+                   here only because the wrapper carries a visible focus ring. */
+                className="min-w-0 flex-1 rounded-none border-0 bg-white px-4 py-3.5 text-sm text-ink-900 outline-none placeholder:text-ink/70 focus-visible:outline-none"
               />
               <button
                 type="submit"
                 aria-label="Zum Newsletter anmelden"
-                className="btn btn-teal sheen shrink-0 px-5 text-sm"
+                className="btn btn-teal sheen shrink-0 rounded-none px-5 text-sm"
               >
                 <Send className="h-4 w-4" />
                 <span className="hidden sm:inline">jetzt anmelden</span>

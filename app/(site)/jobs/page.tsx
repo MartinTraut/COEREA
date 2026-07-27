@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 }
 
 const VALUES = [
-  { icon: Sprout, title: "Sinn", text: "Wir machen ungenutzte Flächen produktiv — jeder Tag zahlt auf mehr Nachhaltigkeit ein." },
+  { icon: Sprout, title: "Sinn", text: "Wir machen ungenutzte Flächen produktiv. Jeder Tag zahlt auf mehr Nachhaltigkeit ein." },
   { icon: Users, title: "Gemeinschaft", text: "Flache Hierarchien, echtes Miteinander und Vertrauen statt Mikromanagement." },
-  { icon: Rocket, title: "Gestaltung", text: "Frühe Phase, viel Verantwortung — Du prägst Produkt und Marke aktiv mit." },
+  { icon: Rocket, title: "Gestaltung", text: "Frühe Phase, viel Verantwortung. Du prägst Produkt und Marke aktiv mit." },
   { icon: Heart, title: "Balance", text: "Flexibles Arbeiten, faire Bedingungen und Raum für Deine Entwicklung." },
 ]
 
@@ -88,7 +88,7 @@ export default function JobsPage() {
         ) : (
           <div className="mt-8 rounded-xl border border-dashed border-border bg-card p-8 text-center">
             <p className="text-ink">
-              Aktuell sind keine Stellen ausgeschrieben — aber wir wachsen. Überzeuge
+              Aktuell sind keine Stellen ausgeschrieben, aber wir wachsen. Überzeuge
               uns mit einer Initiativbewerbung.
             </p>
           </div>

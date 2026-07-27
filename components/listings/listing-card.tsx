@@ -28,7 +28,14 @@ export function ListingCard({ listing }: { listing: Listing }) {
   return (
     <article className="surface surface-hover group flex h-full flex-col overflow-hidden">
       <div className="media-zoom relative overflow-hidden">
-        <Link href={`/flaechen/${listing.slug}`} aria-label={listing.title}>
+        {/* Not a tab stop: the title below links to the same place, and two
+            stops on one destination is a stop too many in a grid of twelve. */}
+        <Link
+          href={`/flaechen/${listing.slug}`}
+          tabIndex={-1}
+          aria-hidden
+          className="block"
+        >
           <ListingImage
             category={listing.category}
             tone={listing.tone}

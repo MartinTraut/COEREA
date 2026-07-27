@@ -28,7 +28,7 @@ export const CATEGORY_PAGES: CategoryPage[] = [
     slug: "private-gaerten",
     subline: "Auch andere Eigentümer haben schöne Gärten zum Teilen.",
     intro: [
-      "Egal ob privater Garten eines Einfamilienhauses, ungenutzte Grünfläche einer Eigentumsgemeinschaft oder der Hinterhofgarten einer großen Wohngesellschaft — überall im Land wird diesen kostbaren Flächen nicht ausreichend Beachtung geschenkt. Das Potenzial einer gemeinschaftlichen Nutzung wird dank CoArea nicht weiter vernachlässigt.",
+      "Egal ob privater Garten eines Einfamilienhauses, ungenutzte Grünfläche einer Eigentumsgemeinschaft oder der Hinterhofgarten einer großen Wohngesellschaft: Überall im Land wird diesen kostbaren Flächen nicht ausreichend Beachtung geschenkt. Das Potenzial einer gemeinschaftlichen Nutzung wird dank CoArea nicht weiter vernachlässigt.",
     ],
     introImage: "/images/kategorie-private-gaerten-intro.jpg",
     story: {
@@ -43,7 +43,7 @@ export const CATEGORY_PAGES: CategoryPage[] = [
         "Einzig der große Garten findet aktuell nicht mehr die Zuwendung, die er früher erhalten hat. Als die Kinder klein waren, wurde jede freie Minute mit der Erkundung der Pflanzenwelt und der Suche nach Abenteuern im Gebüsch genutzt. Später wurden im Sommer die Wochenenden faulenzend auf der Wiese verbracht und regelmäßig Grillabende mit befreundeten Eltern und Kindern durchlebt.",
         "Heute ist die Gartenarbeit überwältigend für die alternden Familienoberhäupter und das Planschbecken wurde schon seit Jahren nicht mehr aus dem Schuppen geholt. Ein Umzug kommt nicht in Frage doch gerade vor dem Hintergrund der Nachhaltigkeit stört sich Familie Schmitz an der ungenutzten Fläche im Garten.",
         "Gleichzeitig ist bei Familie Müller das nun dritte Kind auf dem Weg. Mutter und Vater sind berufstätig, aber genießen die Zeit mit ihrer bald noch größeren Familie sehr. Sie leben in einer Altbauwohnung in der Innenstadt. Es gibt genug Räume für die zukünftig fünfköpfige Familie zum leben, nur der zur Straße hin gelegene Balkon kommt an seine Grenzen, wenn es darum geht, Freizeit zu genießen.",
-        "Die Familie wünscht sich gerne öfters eine eigene Grünfläche zum spielen, toben, erholen, entspannen — und das ohne auf die eigene Privatsphäre verzichten zu müssen. So wie im nahliegenden und überfüllten Stadtpark. Sie möchten ungerne ihre jetzige Wohnung deswegen verlassen.",
+        "Die Familie wünscht sich gerne öfters eine eigene Grünfläche zum spielen, toben, erholen und entspannen, und das ohne auf die eigene Privatsphäre verzichten zu müssen. So wie im nahliegenden und überfüllten Stadtpark. Sie möchten ungerne ihre jetzige Wohnung deswegen verlassen.",
         "Nachdem Familie Schmitz ihre große Gartenfläche bei CoArea inseriert hat, entdeckt Familie Müller das Angebot und bucht diesen Garten für eine kurze Zeit. Als die beiden Familien sich bei der Übergabe des Gartens kennenlernten, verstanden sie sich auf Anhieb und es entwickelte sich eine Freundschaft zwischen ihnen.",
         "Da Familie Müller den Garten sehr genoss und sich darin wohl fühlte, buchten sie diesen immer öfter bei Familie Schmitz. Diese waren sehr glücklich darüber, dass ihr Garten nun wieder genutzt wurde und sie durch die Teilhabe an CoArea weitere Freundschaften knüpfen konnten. Familie Müller konnte nun endlich ihren Wunsch nach einer eigenen Grünfläche erfüllen, ohne ihre geliebte Altbauwohnung in der Innenstadt aufgeben zu müssen. Die beiden Familien teilten den Garten und verbrachten gemeinsam schöne Stunden, während Familie Schmitz nun wieder die Pflege des Gartens genießen konnte, ohne sich dabei überfordert zu fühlen.",
         "Durch CoArea konnten beide Familien ihre Bedürfnisse erfüllen und gleichzeitig neue Freundschaften schließen. Dies ist ein Beispiel dafür, wie CoArea dazu beitragen kann, Menschen miteinander zu verbinden und nachhaltiges Handeln zu fördern.",
@@ -54,7 +54,7 @@ export const CATEGORY_PAGES: CategoryPage[] = [
     slug: "agrar-forst",
     subline: "Eine ungenutzte Agrarfläche mit vielen Möglichkeiten",
     intro: [
-      "Ganz gleich, ob es sich um ungenutzte Agrarflächen in ländlichen Gebieten, brachliegende Felder oder landwirtschaftliche Flächen in Besitz von Bauernhöfen handelt — überall im Land bleibt das Potenzial dieser wertvollen Areale oft ungenutzt. Doch mit CoArea können wir diese Flächen in vollem Umfang nutzen und gemeinschaftlich davon profitieren. Eine innovative Lösung, um die Nutzung von Agrarflächen neu zu gestalten und die landwirtschaftliche Produktion zu optimieren.",
+      "Ganz gleich, ob es sich um ungenutzte Agrarflächen in ländlichen Gebieten, brachliegende Felder oder landwirtschaftliche Flächen in Besitz von Bauernhöfen handelt: Überall im Land bleibt das Potenzial dieser wertvollen Areale oft ungenutzt. Doch mit CoArea können wir diese Flächen in vollem Umfang nutzen und gemeinschaftlich davon profitieren. Eine innovative Lösung, um die Nutzung von Agrarflächen neu zu gestalten und die landwirtschaftliche Produktion zu optimieren.",
     ],
     introImage: "/images/kategorie-agrar-forst-intro.jpg",
     story: {
@@ -77,7 +77,7 @@ export const CATEGORY_PAGES: CategoryPage[] = [
     slug: "oeffentlicher-sport",
     subline: "Unterstützung für Deine Leidenschaft",
     intro: [
-      "Von öffentlichen Parks und Freizeitflächen bis hin zu privaten Sportanlagen und den Spielfeldern von Vereinen — überall schlummert ein ungenutztes Potenzial. Außerhalb des geregelten Betriebes und insbesondere zu Ferienzeiten sind diese Flächen oft nicht ausgelastet.",
+      "Von öffentlichen Parks und Freizeitflächen bis hin zu privaten Sportanlagen und den Spielfeldern von Vereinen: Überall schlummert ein ungenutztes Potenzial. Außerhalb des geregelten Betriebes und insbesondere zu Ferienzeiten sind diese Flächen oft nicht ausgelastet.",
       "Ein gigantisches Potenzial für Nutzer und Betreiber dieser Flächen, welches einfach nicht abgerufen wird. Mit unserer innovativen Plattform wird die gemeinschaftliche Nutzung von Sportflächen für Veranstaltungen, Events und vieles mehr zur Realität.",
     ],
     introImage: "/images/kategorie-oeffentlicher-sport-intro.jpg",
@@ -94,7 +94,7 @@ export const CATEGORY_PAGES: CategoryPage[] = [
   },
   {
     slug: "gewerbe",
-    subline: "CoArea — Eine Erfolgsgeschichte des Zusammenkommens und Teilens",
+    subline: "CoArea: Eine Erfolgsgeschichte des Zusammenkommens und Teilens",
     intro: [
       "Gewerbeimmobilien zeichnen unser Stadtbild im ganz besonderen Maße aus. Sie nehmen insbesondere den Raum ein, der für die praktische Umsetzung ihrer Tätigkeiten benötigt wird. Dabei spielt es keine Rolle, ob Bürogebäude, kleine mittelständische Handwerksbetriebe oder Einzelhändler - bei jedem Gewerbe steckt großes Flächenpotenzial, welches insbesondere außerhalb der Betriebszeiten ertragsbringend mit der Gemeinschaft geteilt werden kann. Das nachfolgende Szenario beschäftigt sich dabei mit einer besonders charmanten Möglichkeit der Teilhabe.",
     ],

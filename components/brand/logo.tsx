@@ -110,7 +110,7 @@ export function Logo({
   if (!href) return mark
 
   return (
-    <Link href={href} aria-label="CoArea — zur Startseite" className="inline-flex">
+    <Link href={href} aria-label="CoArea, zur Startseite" className="inline-flex">
       {mark}
     </Link>
   )

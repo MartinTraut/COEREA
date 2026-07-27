@@ -522,7 +522,7 @@ export function Discover({
                     {matches.length} gefundenen Flächen in:
                   </p>
                   <p className="mt-3 text-sm font-medium text-ink">
-                    {Array.from(new Set(matches.map((l) => l.city))).join(" · ") || "—"}
+                    {Array.from(new Set(matches.map((l) => l.city))).join(" · ") || "keine Angabe"}
                   </p>
                 </div>
               </div>
@@ -565,7 +565,7 @@ export function Discover({
                 : "Keine Fläche passt zu diesen Filtern."}
             </p>
             <p className="mx-auto mt-3 max-w-md text-[15px] text-ink">
-              Versuch es mit einem anderen Ort oder einem allgemeineren Begriff —
+              Versuch es mit einem anderen Ort oder einem allgemeineren Begriff.
               oder setz alles zurück, um wieder alle Flächen zu sehen.
             </p>
             <button
@@ -642,7 +642,7 @@ export function Discover({
                       {`„${page.story.quote.text}“`}
                     </blockquote>
                     <figcaption className="mt-3 text-[0.9375rem] text-ink">
-                      — {page.story.quote.author}
+                      {page.story.quote.author}
                     </figcaption>
                   </figure>
                 ) : null}
@@ -775,7 +775,7 @@ function EmptyCategory({
           In dieser Kategorie ist gerade keine Fläche frei.
         </p>
         <p className="mx-auto mt-4 max-w-[38rem] text-[15px] leading-relaxed text-ink md:text-[17px]">
-          {label} sind auf CoArea noch neu — hier entstehen die ersten Inserate
+          {label} sind auf CoArea noch neu. Hier entstehen die ersten Inserate
           gerade. Wenn Du selbst eine solche Fläche besitzt, ist jetzt der beste
           Zeitpunkt, sie einzustellen.
         </p>

@@ -152,7 +152,7 @@ export default async function ListingDetailPage({
             */}
             <p className="mt-6 max-w-2xl text-[clamp(1rem,0.35vw+0.85rem,1.125rem)]/[1.7] text-ink">
               {listing.host.name} bietet hier {listing.size} in {listing.city} an
-              — Kategorie {cat?.label ?? "Fläche"}. {listing.excerpt}
+              , Kategorie {cat?.label ?? "Fläche"}. {listing.excerpt}
             </p>
           </div>
 
@@ -189,7 +189,7 @@ export default async function ListingDetailPage({
               <Fact icon={Ruler} label="Größe" value={listing.size} />
               <Fact icon={MapPin} label="Ort" value={listing.city} />
               <Fact icon={CalendarRange} label="Zeitraum" value={period} />
-              <Fact icon={Tag} label="Typische Nutzung" value={cat?.usage ?? "—"} />
+              <Fact icon={Tag} label="Typische Nutzung" value={cat?.usage ?? "keine Angabe"} />
             </dl>
 
             {/*
