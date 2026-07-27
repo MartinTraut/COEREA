@@ -4,6 +4,7 @@ import { ArrowRight, MapPin, Clock } from "lucide-react"
 import { LISTINGS, listingBySlug } from "@/lib/listings"
 import type { Listing } from "@/lib/listings"
 import { categoryBySlug } from "@/lib/categories"
+import { AreaChip } from "@/components/brand/area-chip"
 import { Reveal } from "@/components/brand/reveal"
 import { ListingCard } from "@/components/listings/listing-card"
 import { ListingImage } from "@/components/brand/listing-image"
@@ -63,9 +64,7 @@ function FeatureCard({ listing }: { listing: Listing }) {
           {listing.badge ?? "Neu"}
         </span>
         {listing.size ? (
-          <span className="absolute right-4 bottom-4 z-10 rounded-[var(--radius-control)] bg-white/95 px-2.5 py-1 text-xs font-semibold text-teal backdrop-blur-sm">
-            {listing.size}
-          </span>
+          <AreaChip value={listing.size} className="absolute right-4 bottom-4 z-10" />
         ) : null}
       </Link>
 

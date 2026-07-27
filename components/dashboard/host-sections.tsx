@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Mail, MessageSquare, Phone, Quote, Star } from "lucide-react"
+import { Mail, MessageSquare, Phone, Plus, Quote, Star } from "lucide-react"
 
 import { HOST_REVIEWS, HOST_SUPPORT, LISTED_AREA_SLUGS } from "@/lib/dashboard"
 import { listingBySlug } from "@/lib/listings"
@@ -9,30 +9,14 @@ import { Reveal } from "@/components/brand/reveal"
 import { TabHeading } from "@/components/brand/tab-heading"
 import { ListingCard } from "@/components/listings/listing-card"
 
-/** Section header with a teal action button. The arrows come from `Carousel`. */
-function SectionHead({
-  title,
-  action,
-  href,
-}: {
-  title: string
-  /** Omitted where there is no page to send the visitor to yet. */
-  action?: string
-  href?: string
-}) {
-  return (
-    <div className="flex flex-wrap items-center gap-6">
-      <h2 className="h-plain">{title}</h2>
-      {action && href ? (
-        <Link
-          href={href}
-          className="btn btn-teal sheen px-8 py-4 text-[17px]"
-        >
-          {action}
-        </Link>
-      ) : null}
-    </div>
-  )
+/*
+  Section header. The action moved out of here and into the Carousel's own
+  `action` slot, so it sits with the arrows on the right instead of clamped
+  against the heading on the left with the whole page width torn open between
+  the two control groups.
+*/
+function SectionHead({ title }: { title: string }) {
+  return <h2 className="h-plain">{title}</h2>
 }
 
 export function PotenzialBand() {
@@ -72,13 +56,21 @@ export function ListedAreas() {
 
   return (
     <section id="inserierte-flaechen" className="container-page py-14 lg:py-20">
+      {/*
+        „alle anzeigen" pointed at /flaechen — the public search across every
+        area on the platform. Under a heading that says „Deine inserierten
+        Flächen" that is not a wider view of the same thing, it is a different
+        subject entirely: the host clicks to see his own eight areas and lands
+        among everybody else's. All of his areas are already in this row, so
+        there is nothing for an „alle anzeigen" to lead to. The one action that
+        genuinely belongs on this section is adding the next one.
+      */}
       <Carousel
-        header={
-          <SectionHead
-            title="Deine inserierten Flächen"
-            action="alle anzeigen"
-            href="/flaechen"
-          />
+        header={<SectionHead title="Deine inserierten Flächen" />}
+        action={
+          <Link href="/host-werden" className="btn btn-teal sheen px-6 py-3.5 text-[0.9375rem]">
+            <Plus className="h-4 w-4" strokeWidth={2.5} /> Fläche inserieren
+          </Link>
         }
       >
         {items.map((l) => (

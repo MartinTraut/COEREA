@@ -1069,6 +1069,63 @@
   /* ── Controls ──────────────────────────────────────────────────────────── */
 
   /*
+    Paging arrow. One shape for every "previous / next" control on the site.
+
+    There were three: a 44px circle with a grey border in the carousel, a 44px
+    rounded square with an input border in the discover row, and a 48px
+    translucent square in the gallery lightbox. Three arrows doing one job in
+    three shapes, and the carousel's was the only control on the site that grew
+    on hover — everything else lifts by 2px. The hover also ran at 200ms against
+    the 240 to 480ms of the rest of the system, so the one control the visitor
+    clicks repeatedly was also the one that felt cheapest.
+
+    Disabled is `opacity` alone, no colour change: an arrow at the end of a
+    track still has to read as the same object, only unavailable.
+  */
+  .nav-arrow {
+    display: grid;
+    place-items: center;
+    height: 3rem;
+    width: 3rem;
+    flex-shrink: 0;
+    border-radius: var(--radius-control);
+    border: 1px solid var(--input);
+    background: #fff;
+    color: var(--teal);
+    transition:
+      transform 240ms var(--ease-out-expo),
+      border-color 240ms var(--ease-brand),
+      background-color 240ms var(--ease-brand),
+      box-shadow 240ms var(--ease-brand);
+  }
+  .nav-arrow:hover:not(:disabled),
+  .nav-arrow:focus-visible:not(:disabled) {
+    border-color: var(--teal);
+    background: var(--teal-50);
+    box-shadow: var(--shadow-sm);
+    transform: translate3d(0, -2px, 0);
+  }
+  .nav-arrow:active:not(:disabled) {
+    transform: translate3d(0, 0, 0);
+  }
+  .nav-arrow:disabled {
+    pointer-events: none;
+    opacity: 0.3;
+  }
+  /* On the dark lightbox the white plate would be a hole in the overlay. */
+  .nav-arrow-dark {
+    border-color: transparent;
+    background: rgb(255 255 255 / 0.12);
+    color: #fff;
+  }
+  .nav-arrow-dark:hover:not(:disabled),
+  .nav-arrow-dark:focus-visible:not(:disabled) {
+    border-color: transparent;
+    background: rgb(255 255 255 / 0.26);
+    color: #fff;
+  }
+
+  /*
     The primary action. The gradient fill wipes across on hover via a
     pseudo-element transform rather than by animating background-position,
     which cannot be composited and repaints the button every frame.

@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, Images, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { setOutsideInert } from "@/lib/inert"
+import { lockScroll } from "@/lib/scroll-lock"
 import { ListingImage } from "@/components/brand/listing-image"
 
 /*
@@ -36,6 +37,25 @@ export function ListingGallery({
   const [active, setActive] = useState(0)
   const [lightbox, setLightbox] = useState(false)
   const dialogRef = useRef<HTMLDivElement>(null)
+  const closeRef = useRef<HTMLButtonElement>(null)
+  /*
+    Which control opened the lightbox, so focus can go back to it.
+
+    Reading `document.activeElement` inside the effect looked like it did this
+    and did not: React applies `autoFocus` during the commit phase, before
+    passive effects run, so by then the active element was already the close
+    button inside the dialog. On close, focus was handed to an element that had
+    just been removed from the document and fell through to `<body>` — a
+    keyboard user was dropped back at the top of the page every time they shut a
+    photo. Recorded on the click instead, before anything moves.
+  */
+  const openerRef = useRef<HTMLElement | null>(null)
+
+  const open = (index?: number) => {
+    openerRef.current = document.activeElement as HTMLElement | null
+    if (index !== undefined && index >= 0) setActive(index)
+    setLightbox(true)
+  }
 
   const hero = photos[active] ?? image
   const cluster = [more[0], more[1], more[2], more[3]]
@@ -51,12 +71,18 @@ export function ListingGallery({
     stayed tabbable and was still read out. `setOutsideInert` makes the claim
     true, and focus returns to whatever opened the lightbox rather than being
     dropped on the document.
+
+    Both helpers hand back their own undo instead of being called a second time
+    with an "off" argument. The old shape could not clean up after a dialog that
+    unmounts on close — see the note in lib/inert.ts — which left the whole page
+    inert and unclickable after looking at a photo.
   */
   useEffect(() => {
     if (!lightbox) return
-    const opener = document.activeElement as HTMLElement | null
-    const dialog = dialogRef.current
-    setOutsideInert(true, dialog)
+    const opener = openerRef.current
+    const restore = setOutsideInert(dialogRef.current)
+    const unlock = lockScroll()
+    closeRef.current?.focus()
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setLightbox(false)
@@ -64,14 +90,33 @@ export function ListingGallery({
       if (e.key === "ArrowLeft") step(-1)
     }
     document.addEventListener("keydown", onKey)
-    document.body.style.overflow = "hidden"
     return () => {
       document.removeEventListener("keydown", onKey)
-      document.body.style.overflow = ""
-      setOutsideInert(false, dialog)
+      unlock()
+      restore()
       opener?.focus?.()
     }
   }, [lightbox, step])
+
+  /*
+    Swipe. The only way to change photo was two 48px buttons lying on top of the
+    picture — on a phone the first thing anybody tries in a gallery is to swipe,
+    and nothing happened. A start and an end coordinate are enough; no library,
+    no pointer capture, and a 45px threshold so a vertical scroll or a tap does
+    not count as a swipe.
+  */
+  const swipeX = useRef<number | null>(null)
+  const onTouchStart = (e: React.TouchEvent) => {
+    swipeX.current = e.touches[0]?.clientX ?? null
+  }
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const from = swipeX.current
+    const to = e.changedTouches[0]?.clientX
+    swipeX.current = null
+    if (from === null || to === undefined) return
+    const dx = to - from
+    if (Math.abs(dx) > 45) step(dx < 0 ? 1 : -1)
+  }
 
   return (
     <>
@@ -90,7 +135,7 @@ export function ListingGallery({
       <div className="grid gap-3 lg:h-[clamp(22rem,30vw,30rem)] lg:grid-cols-[1.55fr_1fr]">
         <button
           type="button"
-          onClick={() => setLightbox(true)}
+          onClick={() => open(0)}
           aria-label="Foto vergrößern"
           className="media-zoom block w-full overflow-hidden rounded-[var(--radius)] lg:h-full"
         >
@@ -113,10 +158,7 @@ export function ListingGallery({
               <div key={i} className="relative min-h-0">
                 <button
                   type="button"
-                  onClick={() => {
-                    if (src) setActive(photos.indexOf(src))
-                    setLightbox(true)
-                  }}
+                  onClick={() => open(src ? photos.indexOf(src) : undefined)}
                   className="media-zoom block h-full w-full overflow-hidden rounded-[var(--radius)]"
                   aria-label={`Foto ${i + 2} vergrößern`}
                 >
@@ -129,10 +171,17 @@ export function ListingGallery({
                     size={i === 0 ? size : undefined}
                   />
                 </button>
+                {/*
+                  This button covers roughly a quarter of the tile underneath it
+                  and used to open the gallery at photo 1, while the tile itself
+                  opened its own photo. One tile, two outcomes depending on
+                  which square millimetre was hit. It now opens the same photo
+                  the tile shows.
+                */}
                 {last ? (
                   <button
                     type="button"
-                    onClick={() => setLightbox(true)}
+                    onClick={() => open(src ? photos.indexOf(src) : undefined)}
                     className="btn btn-teal absolute inset-x-2 bottom-2 z-10 px-3 py-2 text-xs"
                   >
                     <Images className="h-3.5 w-3.5" /> alle Fotos anzeigen
@@ -181,12 +230,20 @@ export function ListingGallery({
           aria-modal="true"
           aria-label="Fotogalerie"
           className="fixed inset-0 z-100 flex flex-col bg-ink/95 motion-safe:animate-[coarea-fade-up_200ms_ease-out]"
-          onClick={() => setLightbox(false)}
+          /*
+            Only a click that lands on the backdrop itself closes. Without the
+            target check, any drag that started on the photo and ended beside it
+            — a failed pan, an imprecise swipe — bubbled up to this handler and
+            shut the gallery. On a touchscreen that was most attempts.
+          */
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setLightbox(false)
+          }}
         >
           <div className="flex justify-end p-4">
             <button
               type="button"
-              autoFocus
+              ref={closeRef}
               onClick={() => setLightbox(false)}
               aria-label="Galerie schließen"
               className="grid h-11 w-11 place-items-center rounded-[var(--radius-control)] text-white transition-colors hover:text-gold"
@@ -197,14 +254,20 @@ export function ListingGallery({
 
           <div
             className="relative flex flex-1 items-center justify-center px-4 pb-10"
-            onClick={(e) => e.stopPropagation()}
+            /* Same rule as the backdrop: the dark area around the photo closes,
+               the photo and the controls on it do not. */
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setLightbox(false)
+            }}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
           >
             {photos.length > 1 ? (
               <button
                 type="button"
                 onClick={() => step(-1)}
                 aria-label="Vorheriges Foto"
-                className="absolute left-2 grid h-12 w-12 place-items-center rounded-[var(--radius-control)] bg-white/10 text-white transition-colors hover:bg-white/25 sm:left-6"
+                className="nav-arrow nav-arrow-dark absolute left-2 sm:left-6"
               >
                 <ChevronLeft className="h-6 w-6" />
               </button>
@@ -213,7 +276,13 @@ export function ListingGallery({
             <div className="relative h-full max-h-[76svh] w-full max-w-5xl">
               <Image
                 src={hero}
-                alt={alt ?? "Foto der Fläche"}
+                /* The alt was the same on every photo, so paging through the
+                   gallery read as the identical image over and over. */
+                alt={
+                  photos.length > 1
+                    ? `${alt ?? "Foto der Fläche"}, Foto ${active + 1} von ${photos.length}`
+                    : (alt ?? "Foto der Fläche")
+                }
                 fill
                 sizes="100vw"
                 className="object-contain"
@@ -225,13 +294,15 @@ export function ListingGallery({
                 type="button"
                 onClick={() => step(1)}
                 aria-label="Nächstes Foto"
-                className="absolute right-2 grid h-12 w-12 place-items-center rounded-[var(--radius-control)] bg-white/10 text-white transition-colors hover:bg-white/25 sm:right-6"
+                className="nav-arrow nav-arrow-dark absolute right-2 sm:right-6"
               >
                 <ChevronRight className="h-6 w-6" />
               </button>
             ) : null}
 
-            <p className="absolute bottom-2 text-sm text-white/70">
+            {/* Announced, because paging with the arrow keys otherwise gives a
+                screen reader nothing at all to report. */}
+            <p aria-live="polite" className="absolute bottom-2 text-sm text-white/70">
               {active + 1} / {photos.length}
             </p>
           </div>

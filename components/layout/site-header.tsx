@@ -9,6 +9,7 @@ import { SITE } from "@/lib/site"
 import { initials, signOut, useDemoSession } from "@/lib/demo-session"
 import { cn } from "@/lib/utils"
 import { setOutsideInert } from "@/lib/inert"
+import { lockScroll } from "@/lib/scroll-lock"
 import { Logo } from "@/components/brand/logo"
 import { SlashMark } from "@/components/brand/slash-mark"
 
@@ -22,6 +23,7 @@ export function SiteHeader() {
   const user = useDemoSession()
   const toggleRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLElement>(null)
 
   /*
     The overlay used to leave the page behind it fully tabbable and readable to
@@ -30,28 +32,54 @@ export function SiteHeader() {
     document is marked inert while it is up.
   */
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : ""
+    if (!open) return
 
+    const unlock = lockScroll()
     /*
       This marked only `#main` inert, but `<main>` is not the whole page — the
       footer is its sibling, so an open menu still let you tab into eleven footer
       links hidden behind the panel. `setOutsideInert` disables everything except
-      the panel's own ancestor chain.
+      the panel's own ancestor chain, and hands back the undo.
     */
-    const panel = panelRef.current
-    setOutsideInert(open, panel)
+    /*
+      Inert from the HEADER, not from the panel.
 
-    if (!open) return
-    panel?.querySelector<HTMLElement>("a, button")?.focus()
+      The panel and the bar that holds the „///" toggle are siblings inside
+      `<header>`, so disabling everything outside the panel disabled the bar
+      too — and an inert subtree ignores pointer events. The one control
+      labelled „Menü schließen" was dead for exactly as long as the menu was
+      open, and on a phone there is no Escape key: the only way out of the
+      navigation was to follow a link or reload the page.
+    */
+    const restore = setOutsideInert(headerRef.current)
+
+    panelRef.current?.querySelector<HTMLElement>("a, button")?.focus()
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false)
     }
     document.addEventListener("keydown", onKey)
+
+    /*
+      The panel is `md:hidden`, but `open` was not: opening the menu on a phone
+      and then rotating it, or dragging a desktop window past 768px, hid the
+      panel while leaving the page locked and inert behind it. Nothing was
+      visible to explain why the site had stopped scrolling and stopped
+      responding to clicks — the only way out was a reload. Crossing the
+      breakpoint now closes the menu, which is also what the visitor means by
+      it: the full navigation is back in the bar.
+    */
+    const wide = window.matchMedia("(min-width: 768px)")
+    const onWide = () => {
+      if (wide.matches) setOpen(false)
+    }
+    wide.addEventListener("change", onWide)
+
     return () => {
       document.removeEventListener("keydown", onKey)
-      document.body.style.overflow = ""
-      setOutsideInert(false, panel)
+      wide.removeEventListener("change", onWide)
+      unlock()
+      restore()
     }
   }, [open])
 
@@ -106,6 +134,7 @@ export function SiteHeader() {
       so frosted glass was never part of it.
     */
     <header
+      ref={headerRef}
       className={cn(
         "sticky top-0 z-50 bg-white transition-shadow duration-300",
         scrolled ? "shadow-[0_10px_30px_-24px_rgba(0,101,95,0.55)]" : "shadow-none",

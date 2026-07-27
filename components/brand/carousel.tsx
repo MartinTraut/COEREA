@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils"
  */
 export function Carousel({
   header,
+  action,
   children,
   className,
   itemClassName,
@@ -25,6 +26,14 @@ export function Carousel({
 }: {
   /** Heading block rendered to the left of the arrows. */
   header?: React.ReactNode
+  /**
+   * The section's own control, rendered in the right-hand cluster next to the
+   * arrows. It used to be passed inside `header`, which left it pinned to the
+   * heading on the far left with the arrows floating alone on the far right —
+   * two control groups on one row with the whole width torn open between them.
+   * Everything that acts on this section now sits together.
+   */
+  action?: React.ReactNode
   children: React.ReactNode
   className?: string
   /** Applied to each child wrapper — set the card width per breakpoint here. */
@@ -79,33 +88,36 @@ export function Carousel({
 
   return (
     <div className={className}>
-      {header || state.overflows ? (
-        <div className="flex flex-wrap items-center justify-between gap-6">
+      {header || action || state.overflows ? (
+        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
           {header}
-          {state.overflows ? (
-            /* `ms-auto` so the pair stays on the right once the row wraps —
-               `justify-between` only aligns items that share a line. */
-            <span className="ms-auto flex items-center gap-3">
-              <button
-                type="button"
-                aria-label="Zurück"
-                disabled={state.atStart}
-                onClick={() => page(-1)}
-                className="grid h-11 w-11 place-items-center rounded-full border border-border bg-white text-teal transition-all duration-200 hover:border-teal hover:scale-105 disabled:pointer-events-none disabled:opacity-30"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </button>
-              <button
-                type="button"
-                aria-label="Weiter"
-                disabled={state.atEnd}
-                onClick={() => page(1)}
-                className="grid h-11 w-11 place-items-center rounded-full border border-border bg-white text-teal transition-all duration-200 hover:border-teal hover:scale-105 disabled:pointer-events-none disabled:opacity-30"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </button>
-            </span>
-          ) : null}
+          {/* `ms-auto` so the cluster stays on the right once the row wraps —
+              `justify-between` only aligns items that share a line. */}
+          <span className="ms-auto flex items-center gap-3">
+            {action}
+            {state.overflows ? (
+              <span className="flex items-center gap-2">
+                <button
+                  type="button"
+                  aria-label="Zurück"
+                  disabled={state.atStart}
+                  onClick={() => page(-1)}
+                  className="nav-arrow"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Weiter"
+                  disabled={state.atEnd}
+                  onClick={() => page(1)}
+                  className="nav-arrow"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </span>
+            ) : null}
+          </span>
         </div>
       ) : null}
 
@@ -129,7 +141,24 @@ export function Carousel({
         role="group"
         aria-label={label}
         className={cn(
-          "-mx-5 mt-12 flex snap-x snap-mandatory gap-[26px] overflow-x-auto scroll-smooth px-5 pb-2 [scrollbar-width:none] lg:mx-0 lg:px-0 [&::-webkit-scrollbar]:hidden",
+          /*
+            The padding is not spacing, it is headroom for the shadow.
+
+            A box with `overflow-x: auto` clips the *other* axis too — the spec
+            gives no way to scroll horizontally and overflow vertically. So the
+            track was cutting the hover shadow of every card it holds: the cards
+            lift 6px into a --shadow-lg that reaches some 40px below them, and
+            with 8px of padding the bottom two thirds of that shadow ended in a
+            dead straight line across the card. Same on the sides at `lg`, where
+            the padding was zero. It read as a rendering fault, and the animation
+            got the blame for it.
+
+            Bottom and side room now match the shadow, and the negative bottom
+            margin gives most of it back to the layout so the carousel does not
+            suddenly carry 56px of air under it. What is left over falls into
+            the section's own bottom padding.
+          */
+          "-mx-5 -mb-10 mt-12 flex snap-x snap-mandatory gap-[26px] overflow-x-auto scroll-smooth px-5 pt-2 pb-14 [scrollbar-width:none] lg:-mx-6 lg:px-6 [&::-webkit-scrollbar]:hidden",
           trackClassName,
         )}
       >

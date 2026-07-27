@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import { ChevronRight } from "lucide-react"
 
 import { TabHeading } from "@/components/brand/tab-heading"
 import { BlueprintBg } from "@/components/brand/blueprint-bg"
@@ -20,83 +21,116 @@ export function WelcomePanel() {
           Willkommen zurück, <HostGreeting fallback={HOST_PROFILE.name} />!
         </TabHeading>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-[1.35fr_1fr] lg:gap-8">
+        {/*
+          Both columns are `items-stretch` and each is one surface rather than a
+          stack of floating boxes. The right column used to be four separately
+          shadowed panels with their own gaps, so it ended at a different height
+          than the card beside it and the whole band read as unaligned.
+        */}
+        <div className="mt-[clamp(2rem,3vw,3.25rem)] grid items-stretch gap-6 lg:grid-cols-[1.35fr_1fr] lg:gap-8">
           {/* profile + key figures */}
-          <div className="grid gap-8 bg-white p-8 sm:grid-cols-[200px_1fr] sm:items-center lg:p-10">
+          <div className="surface grid gap-[clamp(1.5rem,2.4vw,2.5rem)] p-[clamp(1.5rem,2.4vw,2.5rem)] sm:grid-cols-[auto_1fr] sm:items-center">
             <div className="flex flex-col items-center text-center">
+              {/*
+                The portrait carries a teal ring instead of floating free on
+                white. 200px was larger than the host's own name is ever set,
+                which made the profile column read as the subject of the page
+                rather than as the person it belongs to.
+              */}
               <Image
                 src={HOST_PROFILE.image}
                 alt={HOST_PROFILE.name}
-                width={200}
-                height={200}
-                className="h-[200px] w-[200px] rounded-full object-cover"
+                width={160}
+                height={160}
+                className="h-[clamp(7rem,9vw,10rem)] w-[clamp(7rem,9vw,10rem)] rounded-full object-cover ring-4 ring-teal/15"
               />
-              <p className="mt-5 text-[19px] leading-snug text-ink">
+              <p className="mt-5 text-[clamp(1.0625rem,0.5vw+0.9rem,1.25rem)] leading-tight font-semibold text-ink-900">
                 {HOST_PROFILE.name}
-                <br />
-                {HOST_PROFILE.age} Jahre alt
               </p>
+              <p className="caps mt-1.5 text-teal">{HOST_PROFILE.age} Jahre</p>
               {/* Was a link to /dashboard, i.e. to this very page. There is no
                   profile editor yet, so it says so rather than pretending. */}
-              <p
-                title="Profil bearbeiten folgt"
-                className="mt-5 text-[19px] text-ink/70"
-              >
-                bearbeiten folgt
-              </p>
+              <p className="mt-4 text-[0.8125rem] text-ink/70">Profil bearbeiten folgt</p>
             </div>
 
-            <dl className="flex flex-col gap-5">
+            {/*
+              The figure now dominates its own tile. Label and value used to be
+              19px and 17px, so „Sternebewertung" was set larger than the 4,8
+              it exists to introduce — the tile said its own name louder than
+              its content.
+            */}
+            <dl className="grid gap-3 sm:grid-cols-1">
               {[
-                { term: "Bewertungen", value: String(HOST_PROFILE.reviews) },
-                { term: "Sternebewertung", value: `${HOST_PROFILE.ratingAvg} / 5` },
-                { term: "Du bist Host seit", value: HOST_PROFILE.since },
+                { term: "Bewertungen", value: String(HOST_PROFILE.reviews), suffix: null },
+                { term: "Sternebewertung", value: HOST_PROFILE.ratingAvg, suffix: "/ 5" },
+                { term: "Host seit", value: HOST_PROFILE.since, suffix: null },
               ].map((row) => (
                 <div
                   key={row.term}
-                  className="rounded-[var(--radius)] border-2 border-teal/70 bg-teal/[0.04] px-6 py-5 text-center"
+                  className="rounded-[var(--radius)] bg-teal-50 px-[clamp(1rem,1.6vw,1.5rem)] py-[clamp(0.85rem,1.3vw,1.15rem)]"
                 >
-                  <dt className="text-[19px] text-teal">{row.term}</dt>
-                  <dd className="mt-1.5 text-[17px] text-ink">{row.value}</dd>
+                  <dt className="caps text-teal">{row.term}</dt>
+                  <dd className="mt-1.5 text-[clamp(1.25rem,1vw+0.9rem,1.75rem)] leading-none font-bold text-ink-900 tabular-nums">
+                    {row.value}
+                    {row.suffix ? (
+                      <span className="ml-1.5 text-[0.55em] font-semibold text-ink">
+                        {row.suffix}
+                      </span>
+                    ) : null}
+                  </dd>
                 </div>
               ))}
             </dl>
           </div>
 
           {/* quick access */}
-          <ul className="flex flex-col gap-5">
-            {/*
-              These areas have no page behind them yet. Rather than four tiles
-              that look clickable and reload the dashboard, the ones without a
-              target are plain panels — the count badge still tells the host what
-              is waiting.
-            */}
+          {/*
+            These areas have no page behind them yet. Rather than four tiles
+            that look clickable and reload the dashboard, the ones without a
+            target are plain rows — and they now say „folgt" in place of a
+            count. A gold badge announcing three unread messages, on a section
+            greyed out as unavailable, promised something twice over that does
+            not exist.
+          */}
+          <ul className="surface flex flex-col divide-y divide-border">
             {QUICK_LINKS.map((link) => {
               const body = (
                 <>
-                  {link.count ? (
-                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gold text-sm font-semibold text-ink">
-                      +{link.count}
+                  <span className="flex-1 text-[clamp(1rem,0.45vw+0.85rem,1.125rem)] font-medium">
+                    {link.label}
+                  </span>
+                  {link.href ? (
+                    <>
+                      {link.count ? (
+                        <span className="grid h-7 min-w-7 shrink-0 place-items-center rounded-full bg-gold px-2 text-[0.8125rem] font-bold text-ink-900">
+                          {link.count}
+                        </span>
+                      ) : null}
+                      <ChevronRight
+                        aria-hidden
+                        className="h-5 w-5 shrink-0 text-teal transition-transform duration-300 group-hover:translate-x-1"
+                      />
+                    </>
+                  ) : (
+                    <span className="caps-xs shrink-0 rounded-[var(--radius-pill)] bg-cream px-2.5 py-1 text-ink">
+                      folgt
                     </span>
-                  ) : null}
-                  {link.label}
+                  )}
                 </>
               )
-              const surface =
-                "flex items-center gap-4 bg-white px-7 py-6 text-[19px] shadow-[0_2px_10px_-6px_rgba(41,41,42,0.35)]"
+              const row =
+                "flex flex-1 items-center gap-4 px-[clamp(1.25rem,2vw,1.75rem)] py-[clamp(1rem,1.7vw,1.4rem)]"
               return (
-                <li key={link.label}>
+                <li key={link.label} className="flex flex-1">
                   {link.href ? (
                     <Link
                       href={link.href}
-                      className={`${surface} text-teal transition-shadow hover:shadow-[0_10px_28px_-16px_rgba(41,41,42,0.5)]`}
+                      className={`${row} group text-teal transition-colors duration-300 hover:bg-teal-50`}
                     >
                       {body}
                     </Link>
                   ) : (
-                    <p title="Dieser Bereich folgt" className={`${surface} text-ink`}>
-                      {body}
-                    </p>
+                    <p className={`${row} text-ink`}>{body}</p>
                   )}
                 </li>
               )

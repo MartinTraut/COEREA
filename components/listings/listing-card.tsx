@@ -3,6 +3,7 @@ import { MapPin, Star, Clock, ArrowUpRight } from "lucide-react"
 
 import type { Listing } from "@/lib/listings"
 import { categoryBySlug } from "@/lib/categories"
+import { AreaChip } from "@/components/brand/area-chip"
 import { ListingImage } from "@/components/brand/listing-image"
 import { SaveButton } from "@/components/listings/save-button"
 
@@ -74,18 +75,20 @@ export function ListingCard({ listing }: { listing: Listing }) {
           />
         </div>
 
-        <div className="absolute inset-x-3 bottom-2.5 flex items-end justify-between gap-2">
-          <span className="text-[clamp(1rem,0.5vw+0.8rem,1.25rem)] leading-none font-bold text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
+        {/*
+          Price and size, the two numbers the grid is scanned for. Both were set
+          smaller than the city line below them — the price at 16px, the size at
+          11px, which is under the floor for anything laid over a photograph.
+          They now carry the weight their job deserves.
+        */}
+        <div className="absolute inset-x-3 bottom-3 flex items-center justify-between gap-2">
+          <span className="text-[clamp(1.125rem,0.6vw+0.95rem,1.5rem)] leading-none font-bold text-white tabular-nums drop-shadow-[0_1px_5px_rgba(0,0,0,0.55)]">
             {listing.price.amount.replace(/\s€$/, "€")}
-            <span className="ml-1 text-[0.7em] font-medium text-white/85">
+            <span className="ml-1 text-[0.62em] font-medium text-white/85">
               / {listing.price.unit}
             </span>
           </span>
-          {listing.size ? (
-            <span className="rounded-[var(--radius-control)] bg-white/95 px-2 py-0.5 text-[11px] font-semibold text-teal backdrop-blur-sm">
-              {listing.size}
-            </span>
-          ) : null}
+          {listing.size ? <AreaChip value={listing.size} scale="sm" /> : null}
         </div>
       </div>
 

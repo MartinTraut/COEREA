@@ -2,6 +2,7 @@ import Image from "next/image"
 
 import { cn } from "@/lib/utils"
 import { categoryBySlug } from "@/lib/categories"
+import { AreaChip } from "@/components/brand/area-chip"
 
 /*
   Listing visual. When a real photo is provided it is rendered edge-to-edge
@@ -67,17 +68,18 @@ export function ListingImage({
         </>
       )}
       {/*
-        Size badge. Measured on the "Flächen entdecken" frame: on a 360px card
-        the 110x45 box sits 34px in from the right edge and 30px up from the
-        bottom, with a 3px rule. Expressed as a percentage of the card so it
-        holds in both the 360px overview grid and the 496px category grid —
-        `right-0` used to push the right border under `overflow-hidden`, which
-        clipped it away.
+        The size marker used to be placed in percentages of the tile — 9.4% in,
+        8.3% up — because it was measured off one 360px frame. A percentage
+        inset is not a position, it is a drift: on the wide gallery tile it
+        floated an inch inside the corner, on a small one it sat almost on the
+        edge. A fixed inset keeps it in the same corner at every width.
       */}
       {size ? (
-        <span className="absolute right-[9.4%] bottom-[8.3%] z-10 rounded-[var(--radius-control)] border-[length:clamp(2px,0.22vw,3px)] border-teal bg-white px-3 py-1 text-base font-semibold text-teal lg:px-3.5 lg:py-1.5 lg:text-xl">
-          {size}
-        </span>
+        <AreaChip
+          value={size}
+          scale="lg"
+          className="absolute right-3 bottom-3 z-10 lg:right-4 lg:bottom-4"
+        />
       ) : null}
     </div>
   )
