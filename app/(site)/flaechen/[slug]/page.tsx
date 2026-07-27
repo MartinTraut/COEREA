@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 import { MapPin, Ruler, Map as MapIcon, CalendarRange, Tag } from "lucide-react"
 
 import { SITE } from "@/lib/site"
-import { LISTINGS, listingBySlug } from "@/lib/listings"
+import { cityLabel, LISTINGS, listingBySlug } from "@/lib/listings"
 import { categoryBySlug } from "@/lib/categories"
 import { BOOKING_FAQ } from "@/lib/faq"
 import { SERVICE_FEE_RATE } from "@/lib/pricing"
@@ -113,7 +113,7 @@ export default async function ListingDetailPage({
         <Breadcrumbs trail={trail} />
 
         {/* Category heading + diamond navigation */}
-        <span className="eyebrow mt-6">Fläche in {listing.city}</span>
+        <span className="eyebrow mt-6">Fläche in {cityLabel(listing)}</span>
         <TabHeading as="span" className="mt-4 h-section">
           {cat?.label}
         </TabHeading>
@@ -154,7 +154,7 @@ export default async function ListingDetailPage({
             <p className="mt-6 max-w-2xl text-[clamp(1rem,0.35vw+0.85rem,1.125rem)]/[1.7] text-ink">
               {/* The line break in the source put a space in front of the comma,
                   visible on every listing: „in Köln an , Kategorie". */}
-              {listing.host.name} bietet hier {listing.size} in {listing.city}{" "}
+              {listing.host.name} bietet hier {listing.size} in {cityLabel(listing)}{" "}
               an, Kategorie {cat?.label ?? "Fläche"}. {listing.excerpt}
             </p>
           </div>
@@ -194,7 +194,7 @@ export default async function ListingDetailPage({
 
             <dl className="mt-6 grid gap-0 border-t border-border">
               <Fact icon={Ruler} label="Größe" value={listing.size} />
-              <Fact icon={MapPin} label="Ort" value={listing.city} />
+              <Fact icon={MapPin} label="Ort" value={cityLabel(listing)} />
               <Fact icon={CalendarRange} label="Zeitraum" value={period} />
               <Fact icon={Tag} label="Typische Nutzung" value={cat?.usage ?? "keine Angabe"} />
             </dl>

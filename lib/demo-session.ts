@@ -46,7 +46,9 @@ function read(): DemoUser | null {
   if (typeof window === "undefined") return null
   let raw: string | null = null
   try {
-    raw = window.localStorage.getItem(KEY)
+    /* Either store may hold it: „Angemeldet bleiben" decides which. The
+       session store wins, because it is the more recent decision. */
+    raw = window.sessionStorage.getItem(KEY) ?? window.localStorage.getItem(KEY)
   } catch {
     // Private mode or blocked storage: behave as signed out rather than throw.
     return null
@@ -75,9 +77,17 @@ function announce() {
   window.dispatchEvent(new Event(EVENT))
 }
 
-export function signIn(user: DemoUser) {
+/**
+ * @param persist  „Angemeldet bleiben". False keeps the session in
+ *                 `sessionStorage`, so it ends with the tab — which is what
+ *                 the unticked box on the sign-in form now actually means.
+ */
+export function signIn(user: DemoUser, persist = true) {
   try {
-    window.localStorage.setItem(KEY, JSON.stringify(user))
+    const store = persist ? window.localStorage : window.sessionStorage
+    const other = persist ? window.sessionStorage : window.localStorage
+    other.removeItem(KEY)
+    store.setItem(KEY, JSON.stringify(user))
   } catch {
     /* Storage unavailable — the navigation still happens, the header just
        cannot remember it. Failing the sign-in over that would be worse. */
@@ -88,6 +98,7 @@ export function signIn(user: DemoUser) {
 export function signOut() {
   try {
     window.localStorage.removeItem(KEY)
+    window.sessionStorage.removeItem(KEY)
   } catch {
     /* see signIn */
   }

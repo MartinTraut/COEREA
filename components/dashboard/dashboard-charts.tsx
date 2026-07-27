@@ -176,7 +176,7 @@ function QuarterChart() {
               stroke={t === 0 ? "#dcdedd" : "#ededed"}
               strokeWidth="1"
             />
-            <text x={PAD.left - 12} y={py(t) + 6} textAnchor="end" fill="#707070" fontSize="17">
+            <text x={PAD.left - 12} y={py(t) + 6} textAnchor="end" className="chart-label" fill="#707070">
               {t}
             </text>
           </g>
@@ -189,7 +189,7 @@ function QuarterChart() {
             y={baseline + 28}
             textAnchor="middle"
             fill="#707070"
-            fontSize="17"
+            className="chart-label"
           >
             {m}
           </text>
@@ -289,7 +289,7 @@ function EarningsChart() {
                 stroke={t === 0 ? "#dcdedd" : "#ededed"}
                 strokeWidth="1"
               />
-              <text x={AXIS - 12} y={y + 6} textAnchor="end" fill="#707070" fontSize="17">
+              <text x={AXIS - 12} y={y + 6} textAnchor="end" className="chart-label" fill="#707070">
                 {t === 0 ? "0 €" : `${t} €`}
               </text>
             </g>
@@ -321,7 +321,7 @@ function EarningsChart() {
                 y={top + trackH + 30}
                 textAnchor="middle"
                 fill="#707070"
-                fontSize="18"
+                className="chart-label"
               >
                 {m.month}
               </text>

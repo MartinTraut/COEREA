@@ -1,29 +1,30 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { useEffect, useRef, useState } from "react"
-import { ArrowLeft, LogOut } from "lucide-react"
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { ArrowLeft, LogOut } from "lucide-react";
 
-import { SITE } from "@/lib/site"
-import { initials, signOut, useDemoSession } from "@/lib/demo-session"
-import { cn } from "@/lib/utils"
-import { setOutsideInert } from "@/lib/inert"
-import { lockScroll } from "@/lib/scroll-lock"
-import { Logo } from "@/components/brand/logo"
-import { SlashMark } from "@/components/brand/slash-mark"
+import { SITE } from "@/lib/site";
+import { initials, signOut, useDemoSession } from "@/lib/demo-session";
+import { cn } from "@/lib/utils";
+import { setOutsideInert } from "@/lib/inert";
+import { lockScroll } from "@/lib/scroll-lock";
+import { Logo } from "@/components/brand/logo";
+import { SlashMark } from "@/components/brand/slash-mark";
 
 export function SiteHeader() {
-  const pathname = usePathname()
-  const [open, setOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const onHome = pathname === "/"
+  const pathname = usePathname();
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const onHome = pathname === "/";
   /* `null` during SSR and on the first paint — see useDemoSession. Both states
      occupy the same slot in the bar, so the swap does not move anything. */
-  const user = useDemoSession()
-  const toggleRef = useRef<HTMLButtonElement>(null)
-  const panelRef = useRef<HTMLDivElement>(null)
-  const headerRef = useRef<HTMLElement>(null)
+  const user = useDemoSession();
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
   /*
     The overlay used to leave the page behind it fully tabbable and readable to
@@ -32,9 +33,9 @@ export function SiteHeader() {
     document is marked inert while it is up.
   */
   useEffect(() => {
-    if (!open) return
+    if (!open) return;
 
-    const unlock = lockScroll()
+    const unlock = lockScroll();
     /*
       This marked only `#main` inert, but `<main>` is not the whole page — the
       footer is its sibling, so an open menu still let you tab into eleven footer
@@ -51,14 +52,14 @@ export function SiteHeader() {
       open, and on a phone there is no Escape key: the only way out of the
       navigation was to follow a link or reload the page.
     */
-    const restore = setOutsideInert(headerRef.current)
+    const restore = setOutsideInert(headerRef.current);
 
-    panelRef.current?.querySelector<HTMLElement>("a, button")?.focus()
+    panelRef.current?.querySelector<HTMLElement>("a, button")?.focus();
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false)
-    }
-    document.addEventListener("keydown", onKey)
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
 
     /*
       The panel is `md:hidden`, but `open` was not: opening the menu on a phone
@@ -69,25 +70,48 @@ export function SiteHeader() {
       breakpoint now closes the menu, which is also what the visitor means by
       it: the full navigation is back in the bar.
     */
-    const wide = window.matchMedia("(min-width: 768px)")
+    const wide = window.matchMedia("(min-width: 768px)");
     const onWide = () => {
-      if (wide.matches) setOpen(false)
-    }
-    wide.addEventListener("change", onWide)
+      if (wide.matches) setOpen(false);
+    };
+    wide.addEventListener("change", onWide);
 
     return () => {
-      document.removeEventListener("keydown", onKey)
-      wide.removeEventListener("change", onWide)
-      unlock()
-      restore()
-    }
-  }, [open])
+      document.removeEventListener("keydown", onKey);
+      wide.removeEventListener("change", onWide);
+      unlock();
+      restore();
+    };
+  }, [open]);
+
+  /*
+    Signing out used to clear the stored session and nothing else. The visitor
+    stayed on /dashboard, still looking at a profile, earnings and the teal
+    account bar — everything except the avatar in the corner. It read as a
+    click that had done nothing, or worse, as still being signed in. Leaving
+    the account area is part of leaving the account.
+  */
+  function leave() {
+    signOut();
+    if (pathname.startsWith("/dashboard")) router.push("/");
+    else router.refresh();
+  }
+
+  /*
+    A route change closes the menu — including one the visitor did not click,
+    such as the back button. Without this, going back with the menu open left
+    the previous page scroll-locked and inert underneath an overlay that was no
+    longer there.
+  */
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   // Return focus to the control that opened the menu, not to the document.
   const close = () => {
-    setOpen(false)
-    toggleRef.current?.focus()
-  }
+    setOpen(false);
+    toggleRef.current?.focus();
+  };
 
   /*
     The bar's height is now CONSTANT, and that is the whole fix for the header
@@ -108,23 +132,23 @@ export function SiteHeader() {
     4px) so a single pixel of trackpad drift near the boundary can't chatter.
   */
   useEffect(() => {
-    let raf = 0
+    let raf = 0;
     const read = () => {
-      raf = 0
+      raf = 0;
       // Read from the latest state, not from a captured value, so the band works.
-      setScrolled((was) => (was ? window.scrollY > 4 : window.scrollY > 12))
-    }
+      setScrolled((was) => (was ? window.scrollY > 4 : window.scrollY > 12));
+    };
     const onScroll = () => {
       // Coalesce a burst of scroll events into one state update per frame.
-      if (!raf) raf = requestAnimationFrame(read)
-    }
-    read()
-    window.addEventListener("scroll", onScroll, { passive: true })
+      if (!raf) raf = requestAnimationFrame(read);
+    };
+    read();
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      window.removeEventListener("scroll", onScroll)
-      if (raf) cancelAnimationFrame(raf)
-    }
-  }, [])
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
     /*
@@ -137,7 +161,9 @@ export function SiteHeader() {
       ref={headerRef}
       className={cn(
         "sticky top-0 z-50 bg-white transition-shadow duration-300",
-        scrolled ? "shadow-[0_10px_30px_-24px_rgba(0,101,95,0.55)]" : "shadow-none",
+        scrolled
+          ? "shadow-[0_10px_30px_-24px_rgba(0,101,95,0.55)]"
+          : "shadow-none",
       )}
     >
       <div className="container-page flex h-16 items-center justify-between md:h-[clamp(4.5rem,4.8vw,5.75rem)]">
@@ -182,7 +208,7 @@ export function SiteHeader() {
         {/* Desktop nav */}
         <nav className="hidden items-center gap-[clamp(1rem,2.9vw,3.5rem)] md:flex">
           {SITE.nav.map((item) => {
-            const active = pathname === item.href
+            const active = pathname === item.href;
             return (
               <Link
                 key={item.href}
@@ -203,11 +229,13 @@ export function SiteHeader() {
                   aria-hidden
                   className={cn(
                     "absolute -bottom-1.5 left-0 h-0.5 w-full origin-left bg-teal transition-transform duration-300 ease-out",
-                    active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100",
+                    active
+                      ? "scale-x-100"
+                      : "scale-x-0 group-hover:scale-x-100",
                   )}
                 />
               </Link>
-            )
+            );
           })}
           {/*
             Signed out: one filled action. Outlined gave it the weight of a
@@ -238,12 +266,15 @@ export function SiteHeader() {
               </Link>
               <button
                 type="button"
-                onClick={signOut}
+                onClick={leave}
                 title="Abmelden"
                 aria-label="Abmelden"
                 className="grid h-9 w-9 place-items-center rounded-[var(--radius-control)] text-ink/55 transition-colors duration-300 hover:bg-teal-50 hover:text-teal"
               >
-                <LogOut className="h-[1.05rem] w-[1.05rem]" strokeWidth={1.75} />
+                <LogOut
+                  className="h-[1.05rem] w-[1.05rem]"
+                  strokeWidth={1.75}
+                />
               </button>
             </span>
           ) : (
@@ -263,13 +294,18 @@ export function SiteHeader() {
         <button
           ref={toggleRef}
           type="button"
-          className="-mr-2 p-2 text-teal md:hidden"
+          className="-mr-2 grid h-11 w-11 place-items-center text-teal md:hidden"
           aria-label={open ? "Menü schließen" : "Menü öffnen"}
           aria-expanded={open}
           aria-controls="mobile-menu"
           onClick={() => (open ? close() : setOpen(true))}
         >
-          <SlashMark className={cn("h-6 transition-transform duration-300", open && "-scale-x-100")} />
+          <SlashMark
+            className={cn(
+              "h-6 transition-transform duration-300",
+              open && "-scale-x-100",
+            )}
+          />
         </button>
       </div>
 
@@ -296,51 +332,57 @@ export function SiteHeader() {
           /* top-16 matches the mobile bar, which no longer changes height. */
           className="fixed inset-x-0 top-16 bottom-0 z-40 flex flex-col bg-teal text-white motion-safe:animate-[coarea-fade-up_240ms_ease-out] md:hidden"
         >
-          <nav className="flex flex-1 flex-col items-center justify-center gap-7 px-6">
-            {SITE.nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="text-2xl font-medium"
-              >
-                {item.label}
-              </Link>
-            ))}
-            {user ? (
-              <>
+          {/* Scrollable: in landscape the panel is shorter than its own content, and
+              `justify-center` then clipped the navigation at both ends with no way
+              to reach it. `my-auto` keeps it centred while there is room and gives
+              way to the top edge when there is not. */}
+          <nav className="flex flex-1 flex-col items-center overflow-y-auto overscroll-contain px-6 py-8">
+            <div className="my-auto flex flex-col items-center gap-7">
+              {SITE.nav.map((item) => (
                 <Link
-                  href="/dashboard"
+                  key={item.href}
+                  href={item.href}
                   onClick={() => setOpen(false)}
-                  className="mt-2 rounded-[var(--radius-control)] bg-white px-8 py-3 text-lg font-semibold text-teal shadow-[0_10px_30px_-14px_rgba(0,0,0,0.5)]"
+                  className="text-2xl font-medium"
                 >
-                  Mein Konto
+                  {item.label}
                 </Link>
-                <button
-                  type="button"
-                  onClick={() => {
-                    signOut()
-                    setOpen(false)
-                  }}
-                  className="inline-flex items-center gap-2 text-base text-white/80 underline underline-offset-4"
+              ))}
+              {user ? (
+                <>
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setOpen(false)}
+                    className="mt-2 rounded-[var(--radius-control)] bg-white px-8 py-3 text-lg font-semibold text-teal shadow-[0_10px_30px_-14px_rgba(0,0,0,0.5)]"
+                  >
+                    Mein Konto
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOpen(false);
+                      leave();
+                    }}
+                    className="inline-flex items-center gap-2 text-base text-white/80 underline underline-offset-4"
+                  >
+                    <LogOut className="h-4 w-4" strokeWidth={1.75} />
+                    Abmelden, {user.name}
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/anmelden"
+                  onClick={() => setOpen(false)}
+                  className="mt-2 rounded-[var(--radius-control)] bg-white px-8 py-3 text-lg font-semibold text-teal shadow-[0_10px_30px_-14px_rgba(0,0,0,0.5)] transition-colors hover:bg-cream"
                 >
-                  <LogOut className="h-4 w-4" strokeWidth={1.75} />
-                  Abmelden, {user.name}
-                </button>
-              </>
-            ) : (
-              <Link
-                href="/anmelden"
-                onClick={() => setOpen(false)}
-                className="mt-2 rounded-[var(--radius-control)] bg-white px-8 py-3 text-lg font-semibold text-teal shadow-[0_10px_30px_-14px_rgba(0,0,0,0.5)] transition-colors hover:bg-cream"
-              >
-                anmelden
-              </Link>
-            )}
-            <span className="mt-2 text-sm text-white/70">DE</span>
+                  anmelden
+                </Link>
+              )}
+              <span className="mt-2 text-sm text-white/70">DE</span>
+            </div>
           </nav>
         </div>
       ) : null}
     </header>
-  )
+  );
 }

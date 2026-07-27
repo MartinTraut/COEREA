@@ -4,6 +4,7 @@ import { ArrowRight, MapPin, Clock } from "lucide-react"
 import { LISTINGS, listingBySlug } from "@/lib/listings"
 import type { Listing } from "@/lib/listings"
 import { categoryBySlug } from "@/lib/categories"
+import { cityLabel } from "@/lib/listings"
 import { AreaChip } from "@/components/brand/area-chip"
 import { Reveal } from "@/components/brand/reveal"
 import { ListingCard } from "@/components/listings/listing-card"
@@ -26,7 +27,7 @@ function SectionHead({ eyebrow, title }: { eyebrow: string; title: string }) {
         </div>
         <Link
           href="/flaechen"
-          className="btn btn-outline group h-11 px-5 text-sm max-sm:hidden"
+          className="btn btn-outline group h-11 px-5 text-sm max-sm:mt-5 max-sm:w-full"
         >
           Flächen entdecken
           <span className="arrow-nudge inline-flex">
@@ -111,7 +112,7 @@ function FeatureCard({ listing }: { listing: Listing }) {
         {/* Meta as chips — reads as data, not as another line of prose. */}
         <div className="flex flex-wrap gap-2">
           <span className="inline-flex items-center gap-1.5 bg-white px-2.5 py-1.5 text-xs font-medium text-ink">
-            <MapPin className="h-3.5 w-3.5 text-teal" /> {listing.city}
+            <MapPin className="h-3.5 w-3.5 text-teal" /> {cityLabel(listing)}
           </span>
           {date ? (
             <span className="inline-flex items-center gap-1.5 bg-white px-2.5 py-1.5 text-xs font-medium text-ink">

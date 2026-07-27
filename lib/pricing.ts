@@ -23,12 +23,28 @@ const PLURAL: Record<PriceUnit, string> = {
   Monat: "Monate",
 }
 
-/** How many days one billing unit covers — used to turn a range into units. */
-const DAYS_PER_UNIT: Record<PriceUnit, number> = {
-  Stunde: 1 / 24,
-  Tag: 1,
-  Woche: 7,
-  Monat: 30,
+/**
+ * How long a booked day is for an area priced by the hour.
+ *
+ * There is no time picker, so a day booked on an hourly area has to stand for
+ * some number of hours. This was written down three times and disagreed with
+ * itself: `DAYS_PER_UNIT.Stunde = 1/24` said a day is 24 hours, `unitsBetween`
+ * multiplied by 8, and `discover.tsx` divided by 8 again in its own copy. Two
+ * of the three numbers were wrong, and the table entry was dead code that only
+ * looked authoritative. One constant, exported, used everywhere.
+ */
+export const HOURS_PER_BOOKING_DAY = 8
+
+/**
+ * A day rate for an area priced in another unit, so that areas priced per hour,
+ * day, week and month can be sorted against each other.
+ */
+export function pricePerDay(amount: string, unit: string): number {
+  const value = parseAmount(amount)
+  if (value === null) return Number.POSITIVE_INFINITY
+  const days =
+    unit === "Stunde" ? 1 / HOURS_PER_BOOKING_DAY : unit === "Woche" ? 7 : unit === "Monat" ? 30 : 1
+  return value / days
 }
 
 export const isPriceUnit = (value: string): value is PriceUnit =>
@@ -64,6 +80,12 @@ export const toIso = (date: Date) =>
     date.getDate(),
   ).padStart(2, "0")}`
 
+/** Today as an ISO day — the floor for every date field on the site. */
+export const todayIso = () => toIso(new Date())
+
+/** The later of two ISO days; both are `yyyy-mm-dd`, so a string compare does. */
+export const maxIso = (a: string, b: string) => (a > b ? a : b)
+
 export const formatGermanDate = (date: Date) =>
   date.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" })
 
@@ -96,8 +118,29 @@ export function unitsBetween(from: Date, to: Date, unit: PriceUnit): number {
   const day = (d: Date) => Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())
   const days = (day(to) - day(from)) / 86_400_000 + 1
   if (days <= 0) return 0
-  if (unit === "Stunde") return days * 8
-  return Math.max(1, Math.ceil(days / DAYS_PER_UNIT[unit]))
+
+  if (unit === "Stunde") return days * HOURS_PER_BOOKING_DAY
+  if (unit === "Tag") return days
+
+  /*
+    Weeks and months are counted as calendar spans, not as `days / 30`.
+
+    `Math.ceil(days / 30)` charged a full calendar month as two: March has 31
+    days, so 01.03. to 31.03. came out as 2 — „499 € × 2 Monate", 1.294,51 €
+    for a month that costs 647,25 €. A whole year came out as 13 months. It is
+    the most common booking there is, and it was the one the maths got worst.
+
+    Months are the difference in months plus one, minus one if the end day of
+    the month has not been reached — so 01.03.–31.03. is one, 01.03.–01.04. is
+    two. Weeks count started weeks: seven days is one week, eight days is two.
+  */
+  if (unit === "Monat") {
+    const months =
+      (to.getFullYear() - from.getFullYear()) * 12 + (to.getMonth() - from.getMonth())
+    return Math.max(1, months + (to.getDate() >= from.getDate() ? 1 : 0))
+  }
+  // Started weeks: seven days is one, eight is two.
+  return Math.max(1, Math.ceil(days / 7))
 }
 
 export type Quote = {

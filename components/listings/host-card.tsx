@@ -1,6 +1,6 @@
 import { MessageSquare } from "lucide-react"
 
-import type { Host } from "@/lib/listings"
+import { hostStats, type Host } from "@/lib/listings"
 
 /*
   „Host dieser CoArea" — diagonal schraffur band with a flat white card inside:
@@ -14,11 +14,13 @@ export function HostCard({ host }: { host: Host }) {
     .join("")
     .slice(0, 2)
 
+  /* Summed from this host's own areas rather than typed out — see hostStats. */
+  const { reviews, ratingAvg } = hostStats(host.name)
   const stats = [
-    { label: "Bewertungen", value: String(host.reviews) },
+    { label: "Bewertungen", value: String(reviews) },
     {
       label: "Sternebewertung",
-      value: `${host.ratingAvg.toFixed(1).replace(".", ",")} / 5`,
+      value: `${ratingAvg.toFixed(1).replace(".", ",")} / 5`,
     },
     { label: "Host seit", value: host.since },
   ]
@@ -34,7 +36,7 @@ export function HostCard({ host }: { host: Host }) {
       <div className="container-page">
         <h2 className="h-plain">Host dieser CoArea</h2>
 
-        <div className="surface mt-7 grid items-center gap-8 px-6 py-8 shadow-[var(--shadow-md)] sm:px-8 md:grid-cols-[auto_1fr_auto] md:gap-12">
+        <div className="surface mt-7 grid items-center gap-8 px-6 py-8 shadow-[var(--shadow-md)] sm:px-8 lg:grid-cols-[auto_1fr_auto] md:gap-12">
           {/* avatar + identity */}
           <div className="flex flex-col items-center text-center">
             <span className="grid h-[clamp(4.5rem,5vw,5.5rem)] w-[clamp(4.5rem,5vw,5.5rem)] place-items-center rounded-full text-xl font-semibold text-white [background:var(--grad-teal)] shadow-[var(--shadow-md)]">

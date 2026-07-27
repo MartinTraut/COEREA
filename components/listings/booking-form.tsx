@@ -72,10 +72,20 @@ export function BookingForm({
     return quote(listing, unitsBetween(fromDate, toDate, unit))
   }, [listing, unit, fromDate, toDate])
 
-  const period =
-    fromDate && toDate
-      ? `${formatGermanDate(fromDate)} bis ${formatGermanDate(toDate)}`
-      : listing.dateText ?? (listing.from ? `${listing.from} bis ${listing.to}` : "auf Anfrage")
+  /*
+    No invented period.
+
+    The fallback used to print the listing's whole availability window — „Deine
+    Buchung: 01.01. bis 31.12." — for anyone who opened this URL without the
+    parameters: from a shared link, from the browser history, or after the
+    dates were dropped as unusable. A whole year nobody had chosen, shown as a
+    booking and written into the stored record. When there is no period, the
+    summary says so and the request cannot be sent.
+  */
+  const hasPeriod = Boolean(fromDate && toDate)
+  const period = hasPeriod
+    ? `${formatGermanDate(fromDate!)} bis ${formatGermanDate(toDate!)}`
+    : "noch nicht gewählt"
 
   const nameError = touched && name.trim().length < 2
   const emailError = touched && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())
@@ -83,6 +93,7 @@ export function BookingForm({
   function submit(e: React.FormEvent) {
     e.preventDefault()
     setTouched(true)
+    if (!hasPeriod) return
     if (name.trim().length < 2) return
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) return
 
@@ -104,10 +115,17 @@ export function BookingForm({
     router.push(`/flaechen/${listing.slug}/erfolgreich`)
   }
 
+  /*
+    „Gebuchte CoArea" and „Gebuchter Zeitraum" said the booking had happened,
+    on the screen whose own copy promises that a request is free and binds
+    nobody. And only the intended use could be corrected here, while the period
+    and the party size — the two a visitor actually wants to change at this
+    point — had no way back.
+  */
   const summary = [
-    { label: "Gebuchte CoArea", value: listing.title },
-    { label: "Gebuchter Zeitraum", value: period },
-    { label: "Anzahl der User", value: users },
+    { label: "Fläche", value: listing.title },
+    { label: "Gewählter Zeitraum", value: period, change: true },
+    { label: "Personen", value: users, change: true },
     { label: "Art der Flächennutzung", value: usage, change: true },
   ]
 
@@ -223,6 +241,19 @@ export function BookingForm({
           )}
         </div>
 
+        {!hasPeriod ? (
+          <p role="alert" className="field-error mt-6 text-sm">
+            Für diese Anfrage fehlt der Zeitraum.{" "}
+            <Link
+              href={`/flaechen/${listing.slug}#verfuegbarkeit`}
+              className="underline underline-offset-2"
+            >
+              Wähle ihn auf der Fläche aus
+            </Link>
+            , dann kannst Du die Anfrage absenden.
+          </p>
+        ) : null}
+
         <div className="mt-6 flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="grid gap-1 sm:grid-cols-[16rem_auto] sm:items-center sm:gap-6">
             <span className="text-sm text-ink">Gesamtbetrag</span>
@@ -230,9 +261,15 @@ export function BookingForm({
               {current ? eur(current.total) : "auf Anfrage"}
             </span>
           </div>
+          {/*
+            The one action this whole screen exists for was set as the
+            secondary button, while „Melde Dich an" and „registriere Dich" sat
+            above it in full teal — the most prominent thing on the page led
+            away from the goal.
+          */}
           <button
             type="submit"
-            className="btn btn-outline min-h-11 px-6 text-sm"
+            className="btn btn-teal sheen min-h-12 px-7 text-sm"
           >
             Buchungsanfrage senden
           </button>

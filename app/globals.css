@@ -1391,3 +1391,29 @@
   */
   padding-inline: clamp(1.25rem, 4.5vw, 5rem);
 }
+
+@layer components {
+  /*
+    Axis and month labels inside the dashboard charts.
+
+    The SVGs carry a fixed `viewBox` of 620 units and are drawn at the width of
+    their card, so everything inside them is scaled by that ratio — font sizes
+    included, whether they are set as an attribute or in CSS. There is no way
+    to opt text out of that the way `vector-effect` opts strokes out of it.
+
+    So the size is compensated instead of escaped. At 17 units the labels came
+    out at about 17px on a desktop card and at 8px on a 375px phone, which is
+    not a size anybody reads. On a narrow screen the ratio is roughly 0.48, so
+    the same rendered size needs about twice the units — hence 23 below, which
+    lands near 11px where it used to land near 8.
+  */
+  .chart-label {
+    font-size: 17px;
+    font-variant-numeric: tabular-nums;
+  }
+  @media (max-width: 640px) {
+    .chart-label {
+      font-size: 23px;
+    }
+  }
+}

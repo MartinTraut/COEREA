@@ -7,8 +7,8 @@ import { Search, ChevronDown, ListFilter, Map, LayoutGrid, ChevronLeft, ChevronR
 
 import { CATEGORIES, categoryBySlug } from "@/lib/categories"
 import type { CategoryPage } from "@/lib/category-pages"
-import { LISTINGS, availableOn, formatIsoDay } from "@/lib/listings"
-import { parseAmount } from "@/lib/pricing"
+import { LISTINGS, availableOn, cityLabel, formatIsoDay } from "@/lib/listings"
+import { pricePerDay } from "@/lib/pricing"
 import { cn } from "@/lib/utils"
 import { Reveal } from "@/components/brand/reveal"
 import { TabHeading } from "@/components/brand/tab-heading"
@@ -102,25 +102,27 @@ export function Discover({
       const okUnit = !fUnit || l.price.unit === fUnit
       const okDate = !fDate || availableOn(l, fDate)
       const okQ =
-        !q || l.title.toLowerCase().includes(q) || l.city.toLowerCase().includes(q)
+        !q || l.title.toLowerCase().includes(q) || cityLabel(l).toLowerCase().includes(q)
       return okCat && okCity && okUnit && okDate && okQ
     })
 
     /*
       Prices are per differing units, so sorting compares them normalised to a
-      day — otherwise "3000 € / Monat" would outrank "220 € / Tag".
-      Areas without a numeric price sort last either way.
-      */
-    const perDay = (amount: string, unit: string) => {
-      const value = parseAmount(amount)
-      if (value === null) return Number.POSITIVE_INFINITY
-      const days = unit === "Stunde" ? 1 / 8 : unit === "Woche" ? 7 : unit === "Monat" ? 30 : 1
-      return value / days
-    }
-
+      day — otherwise „3.000 € / Monat" would outrank „220 € / Tag". This used
+      to be a private copy that hard-coded the eight-hour day a third time;
+      `pricePerDay` is the shared one.
+    */
     const sorted = [...found]
-    if (sort === "preis-auf") sorted.sort((a, b) => perDay(a.price.amount, a.price.unit) - perDay(b.price.amount, b.price.unit))
-    if (sort === "preis-ab") sorted.sort((a, b) => perDay(b.price.amount, b.price.unit) - perDay(a.price.amount, a.price.unit))
+    if (sort === "preis-auf")
+      sorted.sort(
+        (a, b) =>
+          pricePerDay(a.price.amount, a.price.unit) - pricePerDay(b.price.amount, b.price.unit),
+      )
+    if (sort === "preis-ab")
+      sorted.sort(
+        (a, b) =>
+          pricePerDay(b.price.amount, b.price.unit) - pricePerDay(a.price.amount, a.price.unit),
+      )
     if (sort === "bewertung") sorted.sort((a, b) => b.rating - a.rating || b.reviews - a.reviews)
     return sorted
   }, [category, query, fCategory, fCity, fUnit, fDate, sort])
@@ -550,7 +552,7 @@ export function Discover({
                     {matches.length} gefundenen Flächen in:
                   </p>
                   <p className="mt-3 text-sm font-medium text-ink">
-                    {Array.from(new Set(matches.map((l) => l.city))).join(" · ") || "keine Angabe"}
+                    {Array.from(new Set(matches.map(cityLabel))).join(" · ") || "keine Angabe"}
                   </p>
                 </div>
               </div>
@@ -762,7 +764,7 @@ function FilterChip({ label, onClear }: { label: string; onClear: () => void }) 
         type="button"
         onClick={onClear}
         aria-label={`Filter „${label}“ entfernen`}
-        className="grid h-8 w-8 place-items-center rounded-[var(--radius-control)] transition-colors hover:bg-teal hover:text-white"
+        className="-my-1.5 -mr-1 grid h-11 w-11 place-items-center rounded-[var(--radius-control)] transition-colors hover:bg-teal hover:text-white"
       >
         <X className="h-3 w-3" />
       </button>

@@ -3,6 +3,7 @@ import { MapPin, Star, Clock, ArrowUpRight } from "lucide-react"
 
 import type { Listing } from "@/lib/listings"
 import { categoryBySlug } from "@/lib/categories"
+import { cityLabel } from "@/lib/listings"
 import { AreaChip } from "@/components/brand/area-chip"
 import { ListingImage } from "@/components/brand/listing-image"
 import { SaveButton } from "@/components/listings/save-button"
@@ -143,7 +144,7 @@ export function ListingCard({
         <div className="mt-auto flex flex-col gap-1.5 pt-2 text-[clamp(0.8125rem,0.2vw+0.75rem,0.9375rem)] text-ink">
           <span className="inline-flex items-center gap-2">
             <MapPin className="h-4 w-4 shrink-0 text-teal" strokeWidth={1.75} />
-            {listing.city}
+            {cityLabel(listing)}
           </span>
           {date ? (
             <span className="inline-flex items-center gap-2">

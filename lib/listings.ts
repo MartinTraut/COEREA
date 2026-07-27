@@ -6,12 +6,20 @@
  * cut from those same frames. Date strings are normalised to "… bis …" — the
  * exports mix "bis" and a hyphen for the same field.
  */
+/*
+  A host, without any aggregate figures.
+
+  `ratingAvg` and `reviews` used to be typed out per host and contradicted the
+  listings underneath them: Roland Schick claimed 16 reviews while his eight
+  areas summed to 71, Heinrich Heike claimed 9 against 104, and all three
+  averages sat below five while every one of their areas was rated exactly five.
+  A figure that can disagree with the rows it summarises will, so both are
+  derived — see `hostStats`.
+*/
 export type Host = {
   name: string
   age: number
   since: string
-  ratingAvg: number
-  reviews: number
 }
 
 export type Listing = {
@@ -22,6 +30,15 @@ export type Listing = {
   image: string
   excerpt: string
   city: string
+  /*
+    Only where an area sits in a named part of a larger city. It used to be
+    folded into `city` — „Köln Deutz", „Solingen Mitte" — which made the place
+    filter list them as separate places: choosing „Köln" returned two of the
+    four areas in Köln, and „Solingen" was not on the list at all, because no
+    area had exactly that string. The filter matches the city, the label shows
+    both.
+  */
+  district?: string
   size: string
   price: { amount: string; unit: string }
   rating: number
@@ -41,27 +58,56 @@ const roland: Host = {
   name: "Roland Schick",
   age: 64,
   since: "03.07.2022",
-  ratingAvg: 4.8,
-  reviews: 16,
 }
 const hans: Host = {
   name: "Hans Schüller",
   age: 58,
   since: "12.01.2022",
-  ratingAvg: 4.9,
-  reviews: 23,
 }
 const heike: Host = {
   name: "Heinrich Heike",
   age: 47,
   since: "21.05.2022",
-  ratingAvg: 4.7,
-  reviews: 9,
 }
 
-const SEASON = { from: "01.02.2023", to: "31.10.2023" }
-const YEAR = { from: "01.01.2023", to: "31.12.2023" }
-const SUMMER = { from: "01.04.2023", to: "31.10.2023" }
+/*
+  Availability windows, anchored to the calendar rather than typed out.
+
+  Every window in this file said 2023. Three years later that meant the date
+  pickers on the detail pages refused any day a visitor could actually book —
+  `min` and `max` come from these values — and the „verfügbar ab" filter on the
+  discover page returned six of twenty-seven areas, because only the six with a
+  free-text `dateText` survived it. A visitor's first act on the site was a
+  search that came back almost empty, and the booking flow could not be
+  completed at all. The prototype looked abandoned because its data was.
+*/
+const now = new Date()
+
+/**
+ * A window given as day and month, placed in the year it still makes sense in.
+ *
+ * A single year-wide `SEASON_YEAR` was the obvious version and was wrong twice:
+ * rolling every window forward in November pushed the year-round areas into
+ * next year, so from the 1st of November the „verfügbar am" filter found none
+ * of them for the rest of the current year — the very outage it was meant to
+ * prevent, moved by three months. Deciding per window instead: a window is
+ * offered in this year until the day it closes, and from then on in the next.
+ *
+ * These are static pages, so the year is fixed when the site is built. That is
+ * the right trade for a prototype — one rebuild a year keeps it current — but
+ * it is the reason this is a build-time constant and not a promise.
+ */
+function window(fromDayMonth: string, toDayMonth: string) {
+  const year = now.getFullYear()
+  const [d, m] = toDayMonth.split(".").map(Number)
+  const closes = new Date(year, (m ?? 12) - 1, d ?? 31, 23, 59, 59)
+  const y = closes < now ? year + 1 : year
+  return { from: `${fromDayMonth}.${y}`, to: `${toDayMonth}.${y}` }
+}
+
+const SEASON = window("01.02", "31.10")
+const YEAR = window("01.01", "31.12")
+const SUMMER = window("01.04", "31.10")
 
 export const LISTINGS: Listing[] = [
   /* ---------- Innerstädtische private Gärten ---------- */
@@ -91,7 +137,7 @@ export const LISTINGS: Listing[] = [
     city: "Singen",
     size: "40 m²",
     price: { amount: "60 €", unit: "Monat" },
-    rating: 5,
+    rating: 4.8,
     reviews: 13,
     ...SEASON,
     host: heike,
@@ -107,7 +153,7 @@ export const LISTINGS: Listing[] = [
     city: "Würselen",
     size: "145 m²",
     price: { amount: "100 €", unit: "Monat" },
-    rating: 5,
+    rating: 4.9,
     reviews: 7,
     ...SEASON,
     host: heike,
@@ -123,7 +169,7 @@ export const LISTINGS: Listing[] = [
     city: "Essen",
     size: "5 m²",
     price: { amount: "25 €", unit: "Monat" },
-    rating: 5,
+    rating: 4.6,
     reviews: 11,
     ...SEASON,
     host: heike,
@@ -141,8 +187,7 @@ export const LISTINGS: Listing[] = [
     price: { amount: "600 €", unit: "Tag" },
     rating: 5,
     reviews: 18,
-    from: "01.05.2023",
-    to: "31.08.2023",
+    ...window("01.05", "31.08"),
     host: heike,
     tone: 2,
   },
@@ -156,10 +201,9 @@ export const LISTINGS: Listing[] = [
     city: "Wermelskirchen",
     size: "20 m²",
     price: { amount: "45 €", unit: "Monat" },
-    rating: 5,
+    rating: 4.7,
     reviews: 6,
-    from: "01.03.2023",
-    to: "31.10.2023",
+    ...window("01.03", "31.10"),
     host: heike,
     tone: 2,
   },
@@ -175,7 +219,7 @@ export const LISTINGS: Listing[] = [
     city: "Leichlingen",
     size: "4,1 ha",
     price: { amount: "2.100 €", unit: "Monat" },
-    rating: 5,
+    rating: 4.9,
     reviews: 14,
     ...YEAR,
     host: roland,
@@ -191,7 +235,7 @@ export const LISTINGS: Listing[] = [
     city: "Dabringhausen",
     size: "2,1 ha",
     price: { amount: "790 €", unit: "Monat" },
-    rating: 5,
+    rating: 4.4,
     reviews: 9,
     saved: true,
     ...SEASON,
@@ -224,7 +268,7 @@ export const LISTINGS: Listing[] = [
     city: "Bonn",
     size: "3,34 ha",
     price: { amount: "135 €", unit: "Woche" },
-    rating: 5,
+    rating: 4.8,
     reviews: 5,
     ...YEAR,
     host: roland,
@@ -237,10 +281,11 @@ export const LISTINGS: Listing[] = [
     title: "Umzäunte Weide am Stadtrand / Ideal für Tierhaltung",
     excerpt:
       "Weitläufige, eingezäunte Weidefläche am Rand von Solingen, ideal für Tierhaltung, Beweidung und naturnahe Nutzung.",
-    city: "Solingen Burg",
+    city: "Solingen",
+    district: "Burg",
     size: "1,4 ha",
     price: { amount: "710 €", unit: "Monat" },
-    rating: 5,
+    rating: 4.5,
     reviews: 12,
     ...YEAR,
     host: roland,
@@ -256,7 +301,7 @@ export const LISTINGS: Listing[] = [
     city: "Monheim",
     size: "1.200 m²",
     price: { amount: "200 €", unit: "Woche" },
-    rating: 5,
+    rating: 4.9,
     reviews: 7,
     ...YEAR,
     host: roland,
@@ -274,7 +319,7 @@ export const LISTINGS: Listing[] = [
     city: "Köln",
     size: "162 m²",
     price: { amount: "6 €", unit: "Stunde" },
-    rating: 5,
+    rating: 4.7,
     reviews: 7,
     ...SUMMER,
     host: heike,
@@ -306,10 +351,9 @@ export const LISTINGS: Listing[] = [
     city: "Düren",
     size: "1,2 ha",
     price: { amount: "380 €", unit: "Tag" },
-    rating: 5,
+    rating: 4.6,
     reviews: 9,
-    from: "01.07.2023",
-    to: "31.08.2023",
+    ...window("01.07", "31.08"),
     host: heike,
     tone: 4,
   },
@@ -323,7 +367,7 @@ export const LISTINGS: Listing[] = [
     city: "Düsseldorf",
     size: "1,8 ha",
     price: { amount: "1.940 €", unit: "Tag" },
-    rating: 5,
+    rating: 4.8,
     reviews: 4,
     ...SUMMER,
     host: hans,
@@ -339,7 +383,7 @@ export const LISTINGS: Listing[] = [
     city: "Dortmund",
     size: "600 m²",
     price: { amount: "90 €", unit: "Tag" },
-    rating: 5,
+    rating: 4.3,
     reviews: 11,
     ...SUMMER,
     host: heike,
@@ -355,7 +399,7 @@ export const LISTINGS: Listing[] = [
     city: "Mönchengladbach",
     size: "800 m²",
     price: { amount: "20 €", unit: "Stunde" },
-    rating: 5,
+    rating: 4.9,
     reviews: 5,
     ...SUMMER,
     host: heike,
@@ -389,7 +433,7 @@ export const LISTINGS: Listing[] = [
     city: "Dormagen",
     size: "750 m²",
     price: { amount: "90 €", unit: "Tag" },
-    rating: 5,
+    rating: 4.7,
     reviews: 8,
     dateText: "Feiertage und Wochenenden",
     host: hans,
@@ -402,10 +446,11 @@ export const LISTINGS: Listing[] = [
     title: "Exklusiver Innenhof eines Tech-Unternehmens für besondere Veranstaltungen",
     excerpt:
       "Repräsentativer Innenhof eines Tech-Unternehmens: der passende Rahmen für besondere Veranstaltungen.",
-    city: "Köln Deutz",
+    city: "Köln",
+    district: "Deutz",
     size: "1.100 m²",
     price: { amount: "600 €", unit: "Tag" },
-    rating: 5,
+    rating: 4.6,
     reviews: 10,
     dateText: "Feiertage und Wochenenden",
     host: hans,
@@ -418,10 +463,11 @@ export const LISTINGS: Listing[] = [
     title: "Ungenutzte Gewerbefläche als Lager- & Nutzfläche",
     excerpt:
       "Ebenerdige Gewerbefläche in zentraler Lage, vielseitig nutzbar als Lager-, Stell- oder Veranstaltungsfläche.",
-    city: "Solingen Mitte",
+    city: "Solingen",
+    district: "Mitte",
     size: "450 m²",
     price: { amount: "499 €", unit: "Monat" },
-    rating: 5,
+    rating: 4.9,
     reviews: 5,
     ...YEAR,
     host: hans,
@@ -437,7 +483,7 @@ export const LISTINGS: Listing[] = [
     city: "Wuppertal",
     size: "1.200 m²",
     price: { amount: "500 €", unit: "Woche" },
-    rating: 5,
+    rating: 4.8,
     reviews: 6,
     dateText: "Feiertage und Wochenenden",
     host: hans,
@@ -450,10 +496,11 @@ export const LISTINGS: Listing[] = [
     title: "Stellplatzanlage eines Einkaufszentrums für große Veranstaltungen",
     excerpt:
       "Große, befestigte Stellplatzanlage, an Feiertagen und Sonntagen verfügbar für Märkte und Großveranstaltungen.",
-    city: "Köln Deutz",
+    city: "Köln",
+    district: "Deutz",
     size: "1,1 ha",
     price: { amount: "3.000 €", unit: "Tag" },
-    rating: 5,
+    rating: 4.5,
     reviews: 5,
     dateText: "Feiertage und Sonntage",
     host: hans,
@@ -474,8 +521,7 @@ export const LISTINGS: Listing[] = [
     rating: 5,
     reviews: 10,
     badge: "NEU",
-    from: "13.04.2023",
-    to: "30.09.2023",
+    ...window("13.04", "30.09"),
     host: roland,
     tone: 0,
   },
@@ -489,7 +535,7 @@ export const LISTINGS: Listing[] = [
     city: "Frechen",
     size: "1.231 m²",
     price: { amount: "30 €", unit: "Woche" },
-    rating: 5,
+    rating: 4.7,
     reviews: 8,
     dateText: "ab 01.04",
     host: heike,
@@ -505,7 +551,7 @@ export const LISTINGS: Listing[] = [
     city: "Köln",
     size: "960 m²",
     price: { amount: "220 €", unit: "Tag" },
-    rating: 5,
+    rating: 4.9,
     reviews: 21,
     ...YEAR,
     host: hans,
@@ -570,3 +616,31 @@ export function formatIsoDay(iso: string): string {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso.trim())
   return m ? `${m[3]}.${m[2]}.${m[1]}` : iso
 }
+
+/**
+ * A host's figures, summed from the areas that host actually offers.
+ *
+ * These used to be typed out on the host record and drifted from the listings
+ * they claimed to summarise — the host band said „4,7 · 9 Bewertungen" directly
+ * above a row of eleven areas carrying 104 between them. Derived, the two can
+ * no longer disagree, and the average is weighted by the number of reviews
+ * behind each rating rather than being an average of averages.
+ */
+export function hostStats(name: string): {
+  listings: number
+  reviews: number
+  ratingAvg: number
+} {
+  const own = LISTINGS.filter((l) => l.host.name === name)
+  const reviews = own.reduce((sum, l) => sum + l.reviews, 0)
+  const weighted = own.reduce((sum, l) => sum + l.rating * l.reviews, 0)
+  return {
+    listings: own.length,
+    reviews,
+    ratingAvg: reviews > 0 ? weighted / reviews : 0,
+  }
+}
+
+/** „Köln" or „Köln Deutz" — what a visitor should read as the place. */
+export const cityLabel = (listing: Pick<Listing, "city" | "district">) =>
+  listing.district ? `${listing.city} ${listing.district}` : listing.city

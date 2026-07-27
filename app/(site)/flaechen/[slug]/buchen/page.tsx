@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 
 import { LISTINGS, listingBySlug } from "@/lib/listings"
 import { categoryBySlug, USAGE_OPTIONS } from "@/lib/categories"
+import { listingRange, maxIso, parseIsoDate, toIso, todayIso } from "@/lib/pricing"
 import { TabHeading } from "@/components/brand/tab-heading"
 import { BookingForm } from "@/components/listings/booking-form"
 import { DetailSections } from "@/components/listings/detail-sections"
@@ -55,6 +56,37 @@ export default async function BuchenPage({
       ? usageRaw
       : (categoryBySlug(listing.category)?.usage ?? "auf Anfrage")
 
+  /*
+    The two dates were the only parameters left unchecked, and they are the ones
+    that decide the amount. `?von=2020-01-01&bis=2030-01-01` on a 499 €/Monat
+    area produced „121 Monate" and a total of 78.317,60 € under the heading
+    „Deine Buchung", and that figure went into the stored booking record as
+    well. Reversing them printed „31.12. bis 01.01.", switched the total to „auf
+    Anfrage" without a word of explanation, and still allowed the request to be
+    sent.
+
+    Both are now parsed, ordered, and clamped to what the host actually offers:
+    never before today, never outside the listing's window. A range that cannot
+    be salvaged is dropped rather than repaired into something the visitor did
+    not choose — `BookingForm` then says the period is missing instead of
+    inventing one.
+  */
+  const range = listingRange(listing)
+  const clamp = (value: string | undefined): string | undefined => {
+    const date = value ? parseIsoDate(value) : null
+    if (!date) return undefined
+    let iso = maxIso(toIso(date), todayIso())
+    if (range) {
+      iso = maxIso(iso, toIso(range.from))
+      if (iso > toIso(range.to)) return undefined
+    }
+    return iso
+  }
+  let von = clamp(one(q.von))
+  let bis = clamp(one(q.bis))
+  // Reversed on purpose or by accident: read it as the range they meant.
+  if (von && bis && bis < von) [von, bis] = [bis, von]
+
   return (
     <div className="pb-6">
       <div className="container-page pt-8 md:pt-12">
@@ -64,8 +96,8 @@ export default async function BuchenPage({
 
         <BookingForm
           listing={listing}
-          von={one(q.von)}
-          bis={one(q.bis)}
+          von={von}
+          bis={bis}
           users={users}
           usage={usage}
         />

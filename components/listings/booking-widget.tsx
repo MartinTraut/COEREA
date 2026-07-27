@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useId, useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 
 import type { Listing } from "@/lib/listings"
@@ -9,9 +9,11 @@ import {
   eur,
   isPriceUnit,
   listingRange,
+  maxIso,
   parseIsoDate,
   quote,
   toIso,
+  todayIso,
   unitsBetween,
 } from "@/lib/pricing"
 
@@ -28,11 +30,15 @@ const fieldCls =
 
 export function BookingWidget({ listing }: { listing: Listing }) {
   const router = useRouter()
+  const fieldId = useId()
   const range = listingRange(listing)
   const unit = isPriceUnit(listing.price.unit) ? listing.price.unit : null
 
-  const [from, setFrom] = useState(range ? toIso(range.from) : "")
-  const [to, setTo] = useState(range ? toIso(range.from) : "")
+  /* Prefilled with the first day that is actually bookable, not with the first
+     day of the host's window — that one can lie in the past. */
+  const start = range ? maxIso(toIso(range.from), todayIso()) : todayIso()
+  const [from, setFrom] = useState(start)
+  const [to, setTo] = useState(start)
   const [users, setUsers] = useState("2")
   const [usage, setUsage] = useState(
     categoryBySlug(listing.category)?.usage ?? USAGE_OPTIONS[0]!,
@@ -48,7 +54,13 @@ export function BookingWidget({ listing }: { listing: Listing }) {
     return quote(listing, unitsBetween(fromDate, toDate, unit))
   }, [listing, unit, fromDate, toDate, rangeInvalid])
 
-  const min = range ? toIso(range.from) : undefined
+  /*
+    The window starts at the later of „when the host opens the area" and
+    „today". Without the second half, an area whose season began in February
+    would offer February as a selectable start in July — a booking in the past,
+    accepted by the picker and priced by the summary.
+  */
+  const min = start
   const max = range ? toIso(range.to) : undefined
 
   function submit(e: React.FormEvent) {
@@ -108,24 +120,32 @@ export function BookingWidget({ listing }: { listing: Listing }) {
             </div>
           </Row>
 
-          <Row label="Für wie viele Personen?">
+          {/*
+            The `aria-label` that used to sit on these two fields said something
+            different from the question printed beside them — „Anzahl der User"
+            against „Für wie viele Personen?". A control whose spoken name does
+            not contain its visible label breaks voice control: the user says
+            what he reads, and nothing happens (WCAG 2.5.3). The visible
+            question is the label now, tied by id.
+          */}
+          <Row label="Für wie viele Personen?" htmlFor={`${fieldId}-users`}>
             <input
+              id={`${fieldId}-users`}
               type="number"
               min={1}
               max={99}
               value={users}
               onChange={(e) => setUsers(e.target.value)}
               className={fieldCls}
-              aria-label="Anzahl der User"
             />
           </Row>
 
-          <Row label="Wofür benötigst Du diese Fläche?">
+          <Row label="Wofür benötigst Du diese Fläche?" htmlFor={`${fieldId}-usage`}>
             <select
+              id={`${fieldId}-usage`}
               value={usage}
               onChange={(e) => setUsage(e.target.value)}
               className={fieldCls}
-              aria-label="Art der Flächennutzung"
             >
               {USAGE_OPTIONS.map((o) => (
                 <option key={o} value={o}>
@@ -178,10 +198,22 @@ export function BookingWidget({ listing }: { listing: Listing }) {
   )
 }
 
-function Row({ label, children }: { label: string; children: React.ReactNode }) {
+function Row({
+  label,
+  htmlFor,
+  children,
+}: {
+  label: string
+  /** When the row holds a single control, the question becomes its label. */
+  htmlFor?: string
+  children: React.ReactNode
+}) {
+  const Tag = htmlFor ? "label" : "span"
   return (
     <div className="grid gap-2 sm:grid-cols-[1fr_20rem] sm:items-center">
-      <span className="text-sm font-medium text-ink-900">{label}</span>
+      <Tag htmlFor={htmlFor} className="text-sm font-medium text-ink-900">
+        {label}
+      </Tag>
       {children}
     </div>
   )

@@ -2,7 +2,7 @@
  * Host dashboard data, read off the "Dashboard Host Desktop" Figma frame.
  * Static for Phase 1 — there is no backend yet.
  */
-import { LISTINGS, otherListingsByHost } from "@/lib/listings"
+import { hostStats, LISTINGS, otherListingsByHost } from "@/lib/listings"
 
 /*
   The dashboard host is one of the hosts in the listing data, not a second
@@ -25,9 +25,13 @@ if (!hostListing) {
 }
 const host = hostListing.host
 
+/* Reviews and average come from this host's own areas — see hostStats. */
+const stats = hostStats(HOST_NAME)
+
 export const HOST_PROFILE = {
   ...host,
-  ratingAvg: host.ratingAvg.toLocaleString("de-DE"),
+  reviews: stats.reviews,
+  ratingAvg: stats.ratingAvg.toLocaleString("de-DE", { maximumFractionDigits: 1 }),
   image: "/images/host-roland-schick.jpg",
 }
 

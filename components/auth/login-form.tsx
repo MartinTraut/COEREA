@@ -5,7 +5,7 @@ import { useId, useState } from "react"
 import { useRouter } from "next/navigation"
 import { ArrowRight, Eye, EyeOff, Info, PlayCircle } from "lucide-react"
 
-import { DEMO_HOST, nameFromEmail, signIn } from "@/lib/demo-session"
+import { DEMO_HOST, nameFromEmail, signIn, signOut, useDemoSession } from "@/lib/demo-session"
 
 /**
  * Sign-in and registration.
@@ -26,6 +26,7 @@ type Mode = "login" | "register"
 
 export function LoginForm() {
   const router = useRouter()
+  const user = useDemoSession()
   const mailId = useId()
   const passId = useId()
   const nameId = useId()
@@ -36,6 +37,7 @@ export function LoginForm() {
   const [password, setPassword] = useState("")
   const [show, setShow] = useState(false)
   const [terms, setTerms] = useState(false)
+  const [stayed, setStayed] = useState(true)
   const [touched, setTouched] = useState(false)
 
   const isRegister = mode === "register"
@@ -45,12 +47,46 @@ export function LoginForm() {
   const termsBad = touched && isRegister && !terms
 
   /*
+    Already signed in?
+
+    This page did not ask. A host who was signed in and pressed „Fläche
+    inserieren" in his own dashboard was shown „Willkommen bei CoArea — melde
+    Dich an", which reads as a session that has expired. Now it says who is
+    signed in and offers the two things that make sense from here.
+  */
+  if (user) {
+    return (
+      <div className="grid gap-5">
+        <div>
+          <span className="caps text-teal">Angemeldet</span>
+          <p className="mt-3 text-[clamp(1.125rem,0.6vw+0.95rem,1.375rem)]/[1.3] font-semibold text-ink-900">
+            Du bist als {user.name} angemeldet.
+          </p>
+          <p className="mt-2 text-sm text-ink">{user.email}</p>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/dashboard" className="btn btn-teal sheen min-h-12 px-6 text-sm">
+            zum Dashboard <ArrowRight className="h-4 w-4" />
+          </Link>
+          <button
+            type="button"
+            onClick={signOut}
+            className="btn btn-outline min-h-12 px-6 text-sm"
+          >
+            Konto wechseln
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  /*
     Signing in for real, as far as a prototype can: the session is written
     before the navigation, so the header, the account bar and the dashboard
     greeting are already in the signed-in state when the next page paints.
   */
   function enter(user: { name: string; email: string }) {
-    signIn({ ...user, role: "host" })
+    signIn({ ...user, role: "host" }, stayed)
     router.push("/dashboard")
   }
 
@@ -248,10 +284,18 @@ export function LoginForm() {
             </span>
           </label>
         ) : (
+          /*
+            „Angemeldet bleiben" was a checkbox with no name, no state and no
+            handler, ticked by default and wired to nothing — the one control on
+            the site that pretended to do something without saying it was a
+            mock-up. It is real now: unticked, the session lives in
+            sessionStorage and ends with the tab.
+          */
           <label className="flex items-center gap-3 text-xs text-ink">
             <input
               type="checkbox"
-              defaultChecked
+              checked={stayed}
+              onChange={(e) => setStayed(e.target.checked)}
               className="h-4 w-4 shrink-0 accent-[var(--teal)]"
             />
             Angemeldet bleiben
