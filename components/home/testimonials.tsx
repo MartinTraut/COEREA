@@ -86,8 +86,14 @@ export function Testimonials() {
                   The quote mark carries the brand instead; it is the one glyph
                   in the card that is allowed to be decorative.
                 */}
+                {/*
+                  Gold, like the stars in the same card. At 25% teal the mark
+                  was a grey smudge that read as a loading artefact; gold is
+                  the accent this site already uses for anything to do with a
+                  rating, so the card's two decorative marks now agree.
+                */}
                 <Quote
-                  className="h-10 w-10 shrink-0 text-teal/25"
+                  className="h-10 w-10 shrink-0 fill-gold text-gold"
                   strokeWidth={1.25}
                   aria-hidden
                 />

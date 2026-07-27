@@ -230,7 +230,7 @@ export function HostReviews() {
                 aria-hidden
                 className="absolute inset-x-0 top-0 h-[3px] [background:var(--grad-teal-bright)]"
               />
-              <span className="flex gap-1.5 text-teal/25" aria-hidden>
+              <span className="flex gap-1.5 text-gold" aria-hidden>
                 <span className="block h-9 w-2.5 bg-current" />
                 <span className="block h-9 w-2.5 bg-current" />
               </span>

@@ -62,13 +62,23 @@ export function Categories() {
   )
 }
 
+/*
+  Same treatment as the marker under each diamond, one size up: chip ground,
+  a 14px diamond, and `.hatch-mark` rather than `.hatch-fine` so the Schraffur
+  is legible at swatch size. The legend and the markers have to look like the
+  same system, or the legend explains nothing.
+*/
 function Legend({ hatched = false, label }: { hatched?: boolean; label: string }) {
   return (
-    <li className="flex items-center gap-2 text-[0.6875rem] font-semibold tracking-[0.1em] text-ink uppercase">
+    <li
+      className={`inline-flex items-center gap-2 rounded-[var(--radius-pill)] px-3 py-1.5 text-[0.6875rem] font-semibold tracking-[0.08em] uppercase ${
+        hatched ? "bg-teal-50 text-teal" : "bg-cream text-ink-900"
+      }`}
+    >
       <span
         aria-hidden
-        className={`h-3 w-3 shrink-0 [clip-path:polygon(50%_0,100%_50%,50%_100%,0_50%)] ${
-          hatched ? "hatch-fine" : "bg-teal/70"
+        className={`h-3.5 w-3.5 shrink-0 [clip-path:polygon(50%_0,100%_50%,50%_100%,0_50%)] ${
+          hatched ? "hatch-mark" : "bg-teal"
         }`}
       />
       {label}

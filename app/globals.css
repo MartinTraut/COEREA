@@ -589,6 +589,25 @@
     transform: scale(1.06);
   }
 
+  /*
+    Schraffur for swatches of ~12px and under.
+
+    `.hatch-fine` is drawn for the 60-100px category plate: 1px lines at 55%
+    teal on a 3px pitch. Inside a 7px legend square that is two pale strokes,
+    which renders as a grey smudge — the very mark that is supposed to say
+    „privater Grund" became the least legible thing in the row. Same angle and
+    pitch, but the lines are thicker and at full strength so they survive at
+    that size.
+  */
+  .hatch-mark {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--teal) 0,
+      var(--teal) 1.25px,
+      transparent 1.25px,
+      transparent 3.25px
+    );
+  }
   .hatch-white {
     background-image: repeating-linear-gradient(
       -45deg,

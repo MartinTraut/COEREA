@@ -153,21 +153,35 @@ export function CategoryDiamond({
       </span>
 
       {/*
-        Access marker. Small enough to read as metadata rather than as a second
-        label, and it names the thing the plate is showing — hatched swatch for
-        private ground, solid for public.
+        Access marker, as a chip.
+
+        It used to be 9px uppercase at 55% ink next to a 7px swatch — the two
+        states were told apart by a texture rendered across seven pixels, which
+        is two pale diagonals and reads as dirt on the screen. Under the whole
+        row it produced a line of grey specks that carried the single most
+        important distinction on the strip.
+
+        A chip fixes both halves: the ground behind the word separates private
+        from public before the word is read at all, and the swatch grows to
+        12px with `.hatch-mark`, where the Schraffur is actually visible as
+        Schraffur. Colour is never the only signal — the word is always there.
       */}
       <span
         className={cn(
-          "mt-1.5 flex items-center gap-1 text-[0.5625rem] font-semibold tracking-[0.12em] uppercase transition-colors",
-          active ? "text-teal" : "text-ink/55 group-hover:text-teal/80",
+          "mt-2 inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] px-2.5 py-1 text-[0.625rem] font-semibold tracking-[0.08em] uppercase transition-colors duration-300",
+          active
+            ? "bg-teal text-white"
+            : privat
+              ? "bg-teal-50 text-teal group-hover:bg-teal-100"
+              : "bg-cream text-ink-900 group-hover:bg-teal-50 group-hover:text-teal",
         )}
       >
         <span
           aria-hidden
           className={cn(
-            "h-[0.4375rem] w-[0.4375rem] shrink-0",
-            privat ? "hatch-fine" : "bg-teal/70",
+            "h-3 w-3 shrink-0",
+            DIAMOND,
+            active ? "bg-white" : privat ? "hatch-mark" : "bg-teal",
           )}
         />
         {privat ? "privat" : "öffentlich"}

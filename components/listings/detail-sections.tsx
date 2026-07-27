@@ -104,7 +104,7 @@ export function DetailSections({
                   aria-hidden
                   className="absolute inset-x-0 top-0 h-[3px] [background:var(--grad-teal-bright)]"
                 />
-                <Quote className="h-8 w-8 text-teal/20" strokeWidth={1.5} aria-hidden />
+                <Quote className="h-8 w-8 fill-gold text-gold" strokeWidth={1.5} aria-hidden />
                 <figcaption className="mt-4 text-[1.0625rem] font-semibold text-ink-900">
                   {r.title}
                 </figcaption>
