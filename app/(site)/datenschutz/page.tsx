@@ -1,9 +1,11 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 
 import { SITE } from "@/lib/site"
 import { LegalShell, Todo } from "@/components/layout/legal-shell"
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/datenschutz" },
   title: "Datenschutzerklärung",
   description:
     "Informationen zur Verarbeitung personenbezogener Daten bei CoArea gemäß DSGVO.",
@@ -73,18 +75,44 @@ export default function DatenschutzPage() {
 
       <h2>5. Kontaktaufnahme</h2>
       <p>
-        Wenn Du uns per Formular oder E-Mail kontaktierst, verarbeiten wir Deine
-        Angaben zur Bearbeitung der Anfrage. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b
-        bzw. lit. f DSGVO. Die Daten werden gelöscht, sobald sie für die Erreichung
+        Das Kontaktformular auf coarea.de überträgt keine Daten an unseren
+        Server: Es bereitet eine Nachricht in Deinem eigenen E-Mail-Programm vor.
+        Erst wenn Du sie dort absendest, erreichen uns Deine Angaben per E-Mail.
+      </p>
+      <p>
+        Wenn Du uns per E-Mail kontaktierst, verarbeiten wir Deine Angaben zur
+        Bearbeitung der Anfrage. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b bzw.
+        lit. f DSGVO. Die Daten werden gelöscht, sobald sie für die Erreichung
         des Zwecks nicht mehr erforderlich sind.
       </p>
 
       <h2>6. Nutzerkonto, Buchungen &amp; Vermittlung</h2>
       <p>
-        Zur Registrierung, Verwaltung von Flächen-Inseraten und Abwicklung von
-        Buchungsanfragen verarbeiten wir die von Dir angegebenen Bestands- und
-        Nutzungsdaten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertrag bzw.
-        vorvertragliche Maßnahmen).
+        Diese Vorabversion von CoArea führt keine Konten und übermittelt keine
+        Buchungsanfragen. Anmeldung, Merkliste und die im Prototyp ausgefüllte
+        Anfrage bleiben ausschließlich im Speicher Deines Browsers; welche
+        Einträge das sind, steht in der{" "}
+        <Link href="/cookies">Cookie-Richtlinie</Link>.
+      </p>
+      <p>
+        <Todo>
+          Sobald Konten und Buchungen serverseitig laufen: verarbeitete Bestands-
+          und Nutzungsdaten, Speicherdauer und Rechtsgrundlage (Art. 6 Abs. 1
+          lit. b DSGVO) hier beschreiben
+        </Todo>
+      </p>
+
+      <h2>6a. Newsletter</h2>
+      <p>
+        Das Newsletter-Feld auf der Startseite versendet derzeit nichts. Deine
+        Adresse wird nicht an uns übertragen, sondern nur lokal in Deinem Browser
+        vorgemerkt.
+      </p>
+      <p>
+        <Todo>
+          Vor dem Start des Newsletters: Double-Opt-In, Versanddienstleister,
+          Widerrufshinweis und Speicherdauer ergänzen
+        </Todo>
       </p>
 
       <h2>7. Zahlungsabwicklung</h2>

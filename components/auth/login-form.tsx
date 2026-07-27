@@ -259,16 +259,24 @@ export function LoginForm() {
               className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--teal)]"
             />
             <span>
-              {/* Only pages that exist are linked — there are no AGB yet, so
-                  the two that are published carry this. */}
-              Ich akzeptiere die{" "}
+              {/*
+                A privacy notice is information under Art. 13 GDPR, not a
+                document anybody agrees to — „ich akzeptiere die
+                Datenschutzerklärung" produces no valid consent and mixes an
+                information duty up with contract terms. Taken note of, not
+                accepted.
+
+                TODO: before this goes live it needs terms of use / AGB to
+                agree to; only pages that exist are linked here.
+              */}
+              Ich habe die{" "}
               <Link
                 href="/datenschutz"
                 className="font-medium text-teal hover:underline"
               >
                 Datenschutzerklärung
               </Link>{" "}
-              und den{" "}
+              zur Kenntnis genommen und akzeptiere den{" "}
               <Link
                 href="/haftungsausschluss"
                 className="font-medium text-teal hover:underline"

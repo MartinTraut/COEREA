@@ -9,6 +9,7 @@ import { Testimonials } from "@/components/home/testimonials"
 import { Newsletter } from "@/components/home/newsletter"
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/ueber-uns" },
   title: "Über uns",
   description:
     "CoArea: die Revolution der Flächennutzung. Unsere Mission, unsere Vision und die Menschen dahinter.",

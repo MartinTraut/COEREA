@@ -4,6 +4,7 @@ import { SITE } from "@/lib/site"
 import { LegalShell, Todo } from "@/components/layout/legal-shell"
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/impressum" },
   title: "Impressum",
   description: "Impressum und Anbieterkennzeichnung der CoArea GmbH gemäß § 5 DDG.",
   robots: { index: false, follow: true },
@@ -38,7 +39,9 @@ export default function ImpressumPage() {
 
       <h2>Registereintrag</h2>
       <p>
-        Eintragung im Handelsregister.
+        {/* Stand als Tatsachenbehauptung da, waehrend Gericht und Nummer offen
+            sind: halb behauptet ist schlechter als offen markiert. */}
+        <Todo>Bestehen des Handelsregistereintrags pruefen und bestaetigen</Todo>
         <br />
         Registergericht: <Todo>Amtsgericht ergänzen</Todo>
         <br />

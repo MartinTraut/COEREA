@@ -6,6 +6,7 @@ import { TabHeading } from "@/components/brand/tab-heading"
 import { Todo } from "@/components/layout/legal-shell"
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/presse" },
   title: "Presse",
   description:
     "Pressekontakt, Fakten und Materialien zu CoArea, der Plattform für gemeinschaftliche Flächennutzung.",

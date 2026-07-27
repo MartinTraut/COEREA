@@ -1,3 +1,5 @@
+import type { Metadata } from "next"
+
 import { SITE } from "@/lib/site"
 import { CATEGORIES } from "@/lib/categories"
 import { HOME_FAQ } from "@/lib/home-faq"
@@ -35,6 +37,16 @@ import { GetInTouch } from "@/components/home/get-in-touch"
   booking works, and never answered a question. The FAQ also carries the page's
   GEO weight — front-loaded answers to questions people genuinely type.
 */
+/*
+  The homepage exported no metadata at all, so it inherited the layout defaults
+  and declared no canonical. Every newsletter or ad link with a `?utm_source=`
+  on it was therefore a second, uncanonicalised copy of the most important page
+  on the site.
+*/
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+}
+
 export default function HomePage() {
   return (
     <>

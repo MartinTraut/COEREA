@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { LegalShell } from "@/components/layout/legal-shell"
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/haftungsausschluss" },
   title: "Haftungsausschluss",
   description: "Haftung für Inhalte und Links sowie Urheberrechtshinweise für CoArea.",
   robots: { index: false, follow: true },

@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { LegalShell, Todo } from "@/components/layout/legal-shell"
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/cookies" },
   title: "Cookie-Richtlinie (EU)",
   description: "Informationen zu Cookies und Deinen Einstellungsmöglichkeiten bei CoArea.",
   robots: { index: false, follow: true },
@@ -24,9 +25,12 @@ export default function CookiesPage() {
 
       <h2>Technisch notwendige Cookies</h2>
       <p>
-        Diese Cookies sind für den Betrieb der Website erforderlich, etwa um Deine
-        Anmeldung oder Deine Cookie-Auswahl zu speichern. Sie werden auf Grundlage
-        von § 25 Abs. 2 TDDDG ohne gesonderte Einwilligung gesetzt.
+        Technisch notwendige Cookies wären für den Betrieb erforderlich, etwa um
+        eine Anmeldung zu speichern; sie dürften nach § 25 Abs. 2 TDDDG ohne
+        gesonderte Einwilligung gesetzt werden.{" "}
+        <strong>Derzeit setzt CoArea keine Cookies.</strong> Anmeldung und
+        Merkliste dieses Prototyps liegen ausschließlich im lokalen Speicher
+        Deines Browsers, siehe unten.
       </p>
 
       <h2>Optionale Cookies (Statistik &amp; Marketing)</h2>
@@ -50,12 +54,33 @@ export default function CookiesPage() {
         derzeit nicht erforderlich, und aus demselben Grund gibt es bewusst kein
         Cookie-Banner.
       </p>
+      <h2>Was im Browser gespeichert wird</h2>
       <p>
-        Technisch notwendige Angaben, etwa Deine gemerkten Flächen, speichern wir
-        ausschließlich lokal in Deinem Browser (localStorage). Sie verlassen Dein
-        Gerät nicht und lassen sich über die Einstellungen Deines Browsers jederzeit
-        löschen.
+        Statt Cookies nutzt CoArea den lokalen Speicher Deines Browsers. Diese
+        Angaben verlassen Dein Gerät nicht, werden nicht an uns übertragen und
+        lassen sich über die Einstellungen Deines Browsers jederzeit löschen:
       </p>
+      <ul>
+        <li>
+          <strong>coarea:saved-listings</strong> — die Flächen, die Du Dir
+          gemerkt hast. Bleibt bis zum Löschen.
+        </li>
+        <li>
+          <strong>coarea:newsletter</strong> — eine vorgemerkte
+          E-Mail-Adresse, falls Du das Newsletter-Feld benutzt hast. Bleibt bis
+          zum Löschen.
+        </li>
+        <li>
+          <strong>coarea.demo-session</strong> — Name und E-Mail-Adresse aus der
+          Demo-Anmeldung. Ohne „Angemeldet bleiben" endet der Eintrag mit dem
+          Schließen des Tabs.
+        </li>
+        <li>
+          <strong>coarea:booking</strong> — die zuletzt im Prototyp ausgefüllte
+          Buchungsanfrage, damit die Bestätigungsseite sie anzeigen kann. Endet
+          mit dem Schließen des Tabs.
+        </li>
+      </ul>
       <p>
         <Todo>
           Sobald Analyse- oder Marketing-Tools eingeführt werden: Consent-Management-

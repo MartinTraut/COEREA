@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useId, useState } from "react"
 import { Check, Send } from "lucide-react"
 
@@ -80,9 +81,17 @@ export function Newsletter() {
             className="flex w-full items-start gap-3 rounded-[var(--radius-control)] border border-teal/25 border-l-[3px] border-l-teal bg-teal-50 px-5 py-4 md:flex-1"
           >
             <Check className="mt-0.5 h-5 w-5 shrink-0 text-teal" />
+            {/*
+              „Sobald der Newsletter startet, melden wir uns bei Dir" was the one
+              promise on the site that nobody could keep: the address never
+              leaves this browser, so no one will ever write to it. The rest of
+              the prototype says what it is; this said the opposite.
+            */}
             <p className="text-sm text-ink">
-              <span className="font-semibold text-teal">Notiert.</span> Sobald der
-              CoArea-Newsletter startet, melden wir uns bei {email.trim()}.
+              <span className="font-semibold text-teal">Notiert, vorerst nur auf
+              diesem Gerät.</span>{" "}
+              Der CoArea-Newsletter ist noch nicht gestartet. Deine Adresse wird
+              nicht übertragen, sondern nur lokal in Deinem Browser vorgemerkt.
             </p>
           </div>
         ) : (
@@ -133,6 +142,18 @@ export function Newsletter() {
                 <span className="hidden sm:inline">jetzt anmelden</span>
               </button>
             </div>
+
+            {/* Collecting an address without naming the purpose and without a
+                route to the privacy notice is the one thing this form must not
+                do once a backend is behind it. */}
+            <p className="mt-3 text-xs/[1.6] text-ink">
+              Wir schreiben Dir nur zum CoArea-Newsletter und Du kannst jederzeit
+              widersprechen. Wie wir mit Deinen Daten umgehen, steht in der{" "}
+              <Link href="/datenschutz" className="underline underline-offset-2 hover:text-teal">
+                Datenschutzerklärung
+              </Link>
+              .
+            </p>
             {state === "invalid" ? (
               <p
                 id={`${id}-err`}

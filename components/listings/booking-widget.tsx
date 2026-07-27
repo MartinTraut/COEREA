@@ -178,7 +178,13 @@ export function BookingWidget({ listing }: { listing: Listing }) {
               </p>
               {current ? (
                 <p className="mt-1.5 text-xs text-muted-foreground">
-                  {current.unitsLabel} · inkl. Servicegebühr &amp; MwSt.
+                  {/* `{value} · text` drops the space in front of the middle
+                      dot: React emits a comment node between the expression and
+                      the literal, and the leading whitespace of the literal goes
+                      with it. It rendered as „1 Tag· inkl.". */}
+                  {current.unitsLabel}
+                  {" · "}
+                  inkl. Servicegebühr &amp; MwSt.
                 </p>
               ) : null}
             </div>

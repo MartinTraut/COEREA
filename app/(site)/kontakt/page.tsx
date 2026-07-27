@@ -8,6 +8,7 @@ import { TabHeading } from "@/components/brand/tab-heading"
 import { ContactForm } from "@/components/contact/contact-form"
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/kontakt" },
   title: "Kontakt",
   description:
     "Kontaktiere CoArea per E-Mail, Telefon oder über unser Kontaktformular. Wir beraten Dich gern zur optimalen Nutzung Deiner Flächen.",

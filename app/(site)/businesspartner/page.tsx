@@ -6,6 +6,7 @@ import { SITE } from "@/lib/site"
 import { TabHeading } from "@/components/brand/tab-heading"
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/businesspartner" },
   title: "Businesspartner werden",
   description:
     "Kommunen, Unternehmen und Organisationen: Bringt eure Flächen auf CoArea und macht Leerstand produktiv.",

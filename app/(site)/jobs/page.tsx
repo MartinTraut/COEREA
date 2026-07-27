@@ -6,6 +6,7 @@ import { SITE } from "@/lib/site"
 import { TabHeading } from "@/components/brand/tab-heading"
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/jobs" },
   title: "Jobs",
   description:
     "Werde Teil von CoArea und gestalte die Zukunft der Flächennutzung mit. Offene Stellen und Initiativbewerbung.",

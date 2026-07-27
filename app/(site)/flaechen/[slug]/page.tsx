@@ -177,8 +177,9 @@ export default async function ListingDetailPage({
                   {/* Named rather than alluded to: „zzgl. Servicegebühr" tells
                       the visitor there is a surcharge without telling him how
                       much, which is the one thing he wants to know. */}
-                  pro {listing.price.unit} · zzgl. {Math.round(SERVICE_FEE_RATE * 100)} %
-                  Servicegebühr &amp; MwSt.
+                  pro {listing.price.unit}
+                  {" · zzgl. "}
+                  {Math.round(SERVICE_FEE_RATE * 100)} % Servicegebühr &amp; MwSt.
                 </span>
               </span>
               <div className="flex shrink-0 gap-1">
