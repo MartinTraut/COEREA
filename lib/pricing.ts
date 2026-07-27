@@ -83,8 +83,18 @@ export const eur = (value: number) =>
  * is the only sane reading without a time picker.
  */
 export function unitsBetween(from: Date, to: Date, unit: PriceUnit): number {
-  const ms = to.getTime() - from.getTime()
-  const days = Math.floor(ms / 86_400_000) + 1
+  /*
+    Counted as calendar days, not as elapsed milliseconds.
+
+    `parseIsoDate` builds local midnights, and the night the clocks go forward
+    is 23 hours long — so `Math.floor(elapsed / 86_400_000)` dropped a day for
+    every range spanning the last Sunday in March. 25.03. to 26.03. came out as
+    one day instead of two and undercharged by a full unit, identically on the
+    widget, the summary and the stored booking. Stripping the time of day and
+    subtracting in UTC has no such night.
+  */
+  const day = (d: Date) => Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())
+  const days = (day(to) - day(from)) / 86_400_000 + 1
   if (days <= 0) return 0
   if (unit === "Stunde") return days * 8
   return Math.max(1, Math.ceil(days / DAYS_PER_UNIT[unit]))

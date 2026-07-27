@@ -52,7 +52,10 @@ const ROUTES = [
   {
     href: "/hilfe",
     title: "Fragen zur Buchung",
-    text: "Ablauf, Kosten, Storno und Versicherung: im Hilfe-Bereich beantwortet.",
+    /* „Versicherung" stood here and wird im Hilfe-Bereich nirgends beantwortet:
+       ein Verweis auf eine Antwort, die es nicht gibt. Die drei genannten
+       Themen sind dort tatsächlich beantwortet. */
+    text: "Ablauf, Kosten und Storno: im Hilfe-Bereich Schritt für Schritt beantwortet.",
   },
   {
     href: "/businesspartner",

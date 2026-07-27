@@ -162,8 +162,14 @@ export function BookingWidget({ listing }: { listing: Listing }) {
                 </p>
               ) : null}
             </div>
+            {/*
+              The button said „Verfügbarkeit prüfen" and checked nothing: it
+              navigates straight to /buchen, whose heading is „Buchungsanfrage
+              abschließen". Somebody who thinks he is looking something up ends
+              up one step from sending a request. It now says where it goes.
+            */}
             <button type="submit" className="btn btn-teal sheen min-h-12 px-7 text-sm">
-              Verfügbarkeit prüfen
+              weiter zur Anfrage
             </button>
           </div>
         </div>

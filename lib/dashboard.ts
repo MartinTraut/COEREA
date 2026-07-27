@@ -51,11 +51,19 @@ export const QUICK_LINKS: { label: string; href?: string; count?: number }[] = [
 */
 export const LISTED_AREA_SLUGS = otherListingsByHost(HOST_NAME, "").map((l) => l.slug)
 
-/** Quarter overview — four vertices (axis, April, Mai, Juni) per series. */
+/*
+  Quarter overview — four vertices (axis, April, Mai, Juni) per series.
+
+  „geteilt" used to be #3083c1, a blue that appears nowhere else on the site:
+  four lines in one picture, three of them brand and one of them from a stock
+  chart palette. It is now the light end of the teal scale, so the whole figure
+  is teal, gold and grey, and the one line that matters most — Buchungen — is
+  the only full-strength teal in it.
+*/
 export const QUARTER_SERIES = [
-  { label: "angeschaut", color: "#707070", points: [190, 225, 252, 275] },
+  { label: "angeschaut", color: "#a8adab", points: [190, 225, 252, 275] },
   { label: "gespeichert", color: "#feca24", points: [110, 190, 240, 228] },
-  { label: "geteilt", color: "#3083c1", points: [72, 63, 173, 173] },
+  { label: "geteilt", color: "#7fc3bd", points: [72, 63, 173, 173] },
   { label: "Buchungen", color: "#008a84", points: [52, 53, 62, 123] },
 ]
 

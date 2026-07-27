@@ -14,17 +14,25 @@ import { cn } from "@/lib/utils"
  * have a destination now scroll to it; the ones whose area does not exist yet
  * are rendered as plain text rather than as links that lie.
  */
+/*
+  The counts are gone from „Buchungsanfragen" and „Meine Nachrichten".
+
+  Both areas are greyed out as „folgt", and both carried a gold badge saying
+  one request and three unread messages were waiting. A badge is a summons: it
+  claims something specific is there for you, and here it claimed it for a
+  section that does not exist and cannot be opened. Announcing three messages
+  nobody can read is worse than the missing feature itself.
+*/
 const ITEMS: {
   label: string
   href?: string
-  count?: number
 }[] = [
   { label: "Mein Konto", href: "/dashboard" },
   { label: "Meine CoArea", href: "/dashboard#inserierte-flaechen" },
   { label: "Meine Unterlagen" },
-  { label: "Buchungsanfragen", count: 1 },
+  { label: "Buchungsanfragen" },
   { label: "Upload Bereich" },
-  { label: "Meine Nachrichten", count: 3 },
+  { label: "Meine Nachrichten" },
   { label: "Fläche inserieren", href: "/host-werden" },
 ]
 
@@ -35,21 +43,18 @@ export function AccountNav() {
     <nav aria-label="Mein Konto" className="bg-teal text-white">
       <div className="container-page flex items-center gap-x-8 gap-y-3 overflow-x-auto py-4 text-[17px] font-medium [scrollbar-width:none] lg:justify-between [&::-webkit-scrollbar]:hidden">
         {ITEMS.map((item) => {
-          const badge = item.count ? (
-            <span className="grid h-7 w-7 place-items-center rounded-full bg-gold text-sm font-semibold text-ink">
-              +{item.count}
-            </span>
-          ) : null
-
           if (!item.href) {
             return (
               <span
                 key={item.label}
-                title="Dieser Bereich folgt"
-                className="inline-flex shrink-0 items-center gap-2.5 whitespace-nowrap text-white/60"
+                className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap text-white/60"
               >
                 {item.label}
-                {badge}
+                {/* Said „folgt" only in a title attribute, which a touch device
+                    never shows. */}
+                <span className="caps-xs rounded-[var(--radius-pill)] bg-white/15 px-2 py-0.5 text-white/80">
+                  folgt
+                </span>
               </span>
             )
           }
@@ -67,7 +72,6 @@ export function AccountNav() {
               )}
             >
               {item.label}
-              {badge}
             </Link>
           )
         })}

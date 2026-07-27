@@ -92,6 +92,10 @@ export const HELP_GROUPS: readonly HelpGroup[] = [
         q: "Worauf bezieht sich der Preis, den ich an der Fläche sehe?",
         a: "Auf die Einheit, die direkt neben dem Betrag steht. „220 € pro Tag“ heißt: der Host rechnet tageweise ab. Je nach Fläche ist das eine Stunde, ein Tag, eine Woche oder ein Monat, und der Host legt diese Einheit selbst fest. Im Buchungsfenster siehst Du vor dem Absenden, was Dein gewählter Zeitraum insgesamt ergibt.",
       },
+      {
+        q: "Kommt zum Preis des Hosts noch etwas dazu?",
+        a: "Ja, auf den Preis des Hosts kommen eine CoArea-Servicegebühr von 9 Prozent und die gesetzliche Umsatzsteuer. Beides siehst Du in der Buchungsübersicht einzeln aufgeschlüsselt, bevor Du die Anfrage absendest; es gibt keine Position, die erst später auftaucht. Eingezogen wird davon derzeit nichts über die Plattform: Solange die Zahlung über CoArea nicht live ist, rechnest Du direkt mit dem Host ab.",
+      },
     ],
   },
   {
@@ -139,7 +143,7 @@ export const HELP_GROUPS: readonly HelpGroup[] = [
     items: [
       {
         q: "Brauche ich ein Konto, um auf CoArea zu suchen?",
-        a: "Nein. Suchen, filtern und alle Flächen im Detail ansehen kannst Du ohne Konto. Ein Konto brauchst Du erst, wenn Du eine Anfrage stellst oder selbst eine Fläche anbietest, weil der Host dann wissen muss, mit wem er es zu tun hat.",
+        a: "Nein. Suchen, filtern und alle Flächen im Detail ansehen kannst Du ohne Konto, und auch für eine Anfrage reichen Name und E-Mail. Ein Konto lohnt sich, wenn Du Deine Anfragen und gemerkten Flächen an einer Stelle behalten oder selbst eine Fläche anbieten willst.",
       },
       {
         q: "Wie melde ich mich an, und was sehe ich danach?",

@@ -6,6 +6,7 @@ import { SITE } from "@/lib/site"
 import { LISTINGS, listingBySlug } from "@/lib/listings"
 import { categoryBySlug } from "@/lib/categories"
 import { BOOKING_FAQ } from "@/lib/faq"
+import { SERVICE_FEE_RATE } from "@/lib/pricing"
 import { breadcrumbNode, faqNode, listingNode, webPageNode } from "@/lib/schema"
 import { JsonLd } from "@/components/seo/json-ld"
 import { Breadcrumbs } from "@/components/layout/breadcrumbs"
@@ -151,8 +152,10 @@ export default async function ListingDetailPage({
               stating only what the data actually says.
             */}
             <p className="mt-6 max-w-2xl text-[clamp(1rem,0.35vw+0.85rem,1.125rem)]/[1.7] text-ink">
-              {listing.host.name} bietet hier {listing.size} in {listing.city} an
-              , Kategorie {cat?.label ?? "Fläche"}. {listing.excerpt}
+              {/* The line break in the source put a space in front of the comma,
+                  visible on every listing: „in Köln an , Kategorie". */}
+              {listing.host.name} bietet hier {listing.size} in {listing.city}{" "}
+              an, Kategorie {cat?.label ?? "Fläche"}. {listing.excerpt}
             </p>
           </div>
 
@@ -171,7 +174,11 @@ export default async function ListingDetailPage({
               <span className="text-[clamp(1.5rem,1.2vw+1rem,2.125rem)] leading-none font-bold text-ink-900">
                 {listing.price.amount}
                 <span className="mt-1.5 block text-xs font-medium text-muted-foreground">
-                  pro {listing.price.unit} · zzgl. Servicegebühr &amp; MwSt.
+                  {/* Named rather than alluded to: „zzgl. Servicegebühr" tells
+                      the visitor there is a surcharge without telling him how
+                      much, which is the one thing he wants to know. */}
+                  pro {listing.price.unit} · zzgl. {Math.round(SERVICE_FEE_RATE * 100)} %
+                  Servicegebühr &amp; MwSt.
                 </span>
               </span>
               <div className="flex shrink-0 gap-1">
