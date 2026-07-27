@@ -27,7 +27,7 @@ export default function PressePage() {
       </TabHeading>
       <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink">
         Du berichtest über nachhaltige Flächennutzung, Sharing Economy oder
-        StartUps aus Köln? Hier findest Du Fakten, Zitate und Materialien rund um
+        Start-ups aus Köln? Hier findest Du Fakten, Zitate und Materialien rund um
         CoArea. Für Interviews und O-Töne sind wir gern für Dich da.
       </p>
 

@@ -86,7 +86,9 @@ export default async function KategoriePage({
           itemListNode(inCategory, url, cat.label),
         ]}
       />
-      <Discover category={slug} />
+      {/* The editorial content is resolved here, on the server, and handed to
+          the client island — see the note on `page` in Discover. */}
+      <Discover category={slug} page={categoryPageBySlug(slug)} />
       <Benefits />
       <Testimonials />
     </>

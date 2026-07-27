@@ -38,7 +38,7 @@ export const HOST_PROFILE = {
   they render as plain labels, the way ACCOUNT_NAV already handles it.
 */
 export const QUICK_LINKS: { label: string; href?: string; count?: number }[] = [
-  { label: "Chat Nachrichten", count: 3 },
+  { label: "Chat-Nachrichten", count: 3 },
   { label: "Buchungsanfragen", count: 1 },
   { label: "Buchungsübersicht" },
   { label: "Deine Bestellungen" },
@@ -114,7 +114,7 @@ export const HOST_SUPPORT = {
 export const HOST_REVIEWS = [
   {
     title: "Buchung ging super schnell",
-    body: "Alles super. Buchung ging schnell und der Austausch mit dem Host war auch unkompliziert. Ich wollte mir mehr Wissen aneignen, wie man Lamas züchtet und richtig haltet, ohne dafür ein Vermögen ausgeben zu müssen. Mein Host hat mir dabei geholfen und CoArea hat mich unterstützt, dass ich für meine Lamas Wassertränke organisiere und die Fläche anständig umzäunt ist. Gerne wieder!",
+    body: "Alles super. Buchung ging schnell und der Austausch mit dem Host war auch unkompliziert. Ich wollte mir mehr Wissen aneignen, wie man Lamas züchtet und richtig hält, ohne dafür ein Vermögen ausgeben zu müssen. Mein Host hat mir dabei geholfen und CoArea hat mich unterstützt, dass ich für meine Lamas Wassertränke organisiere und die Fläche anständig umzäunt ist. Gerne wieder!",
     role: "User",
     author: "Dennis P",
   },

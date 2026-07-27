@@ -93,7 +93,7 @@ export function ContactPerson() {
     value?: string
     href?: string
   }[] = [
-    { icon: MessageSquare, label: "Chat Nachricht (folgt)" },
+    { icon: MessageSquare, label: "Chat-Nachricht (folgt)" },
     { icon: Mail, label: "E-Mail", value: HOST_SUPPORT.email, href: `mailto:${HOST_SUPPORT.email}` },
     { icon: Phone, label: "Telefon", value: HOST_SUPPORT.phone, href: `tel:${HOST_SUPPORT.phoneHref}` },
   ]
@@ -164,7 +164,7 @@ export function ContactPerson() {
             <p className="text-[19px] leading-snug text-ink">
               Biete Deinen Usern mehr mit
               <br />
-              Hilfe unserer Service Leistungen!
+              Hilfe unserer Serviceleistungen!
             </p>
             <Link
               href="/kontakt"
@@ -185,8 +185,8 @@ export function InsertCta() {
       <span aria-hidden className="hatch-white absolute inset-0 opacity-20" />
       <div className="relative container-page">
         <p className="max-w-[820px] text-[clamp(1.5rem,1.7vw+0.6rem,2.4rem)]/[1.25] font-semibold text-white">
-          Du hast eine leerstehende Fläche und weißt nicht was Du mit ihr anfangen
-          sollst? Dann lade noch heute deine CoArea hoch und teile sie mit der
+          Du hast eine leerstehende Fläche und weißt nicht, was Du mit ihr anfangen
+          sollst? Dann lade noch heute Deine CoArea hoch und teile sie mit der
           Community!
         </p>
         <Link

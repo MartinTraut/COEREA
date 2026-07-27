@@ -6,7 +6,7 @@ import Image from "next/image"
 import { Search, ChevronDown, ListFilter, Map, LayoutGrid, ChevronLeft, ChevronRight, ArrowRight, X } from "lucide-react"
 
 import { CATEGORIES, categoryBySlug } from "@/lib/categories"
-import { categoryPageBySlug } from "@/lib/category-pages"
+import type { CategoryPage } from "@/lib/category-pages"
 import { LISTINGS, availableOn, formatIsoDay } from "@/lib/listings"
 import { parseAmount } from "@/lib/pricing"
 import { cn } from "@/lib/utils"
@@ -53,10 +53,21 @@ export function Discover({
   initialQuery = "",
   /** From `?ab=` — the day the hero's date field asked for (ISO, yyyy-mm-dd). */
   initialDate = "",
+  page,
 }: {
   category?: string
   initialQuery?: string
   initialDate?: string
+  /*
+    The category's editorial content, resolved on the server and handed down.
+
+    It used to be looked up here with `categoryPageBySlug`, which pulled all of
+    lib/category-pages into the client bundle — four complete scenario stories,
+    some 14 kB of prose, of which a category page shows exactly one. None of it
+    is touched by the filtering that makes this a client component; it is static
+    text the server has already rendered.
+  */
+  page?: CategoryPage
 }) {
   const filterId = useId()
   const searchId = useId()
@@ -73,7 +84,6 @@ export function Discover({
   const [sort, setSort] = useState<Sort>("empfohlen")
 
   const cat = category ? categoryBySlug(category) : undefined
-  const page = category ? categoryPageBySlug(category) : undefined
 
   /*
     The scenario narrative is split at the first paragraph: that one is set as
@@ -120,6 +130,13 @@ export function Discover({
     setFCity("")
     setFUnit("")
     setFDate("")
+    /*
+      The search term was left standing. „alle zurücksetzen" cleared every chip
+      and the badge, so nothing on screen said a filter was still active — and
+      the list stayed narrowed to whatever had been typed. The visitor was
+      looking at two of 27 areas with no visible reason.
+    */
+    setQuery("")
     setSort("empfohlen")
     setPageNo(1)
   }
@@ -374,7 +391,14 @@ export function Discover({
             <FilterSelect
               label="Sortierung"
               value={sort}
-              onChange={(v) => setSort(v as Sort)}
+              /* Every other control resets the page; this one did not. Sorting
+                 by „Preis aufsteigend" from page 3 handed back positions 13 to
+                 24 of the newly sorted list — the most expensive areas, under
+                 the label „cheapest first". */
+              onChange={(v) => {
+                setSort(v as Sort)
+                setPageNo(1)
+              }}
               options={[
                 { value: "empfohlen", label: "Empfohlen" },
                 { value: "preis-auf", label: "Preis aufsteigend" },
@@ -492,7 +516,11 @@ export function Discover({
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="notch object-cover"
-                priority
+                /* No `priority`: this picture sits below the breadcrumb, the
+                   h1, the category strip and the whole filter toolbar. Marking
+                   it high priority made it race the card the visitor actually
+                   sees first. */
+                quality={65}
               />
             </Reveal>
           </div>
@@ -533,9 +561,21 @@ export function Discover({
             Figma gutters: 16px in the three-column category grid (496px cards),
             ~26px in the four-column overview grid (360px cards).
           */
+          <>
+          {/*
+            The grid hung under no heading at all: the served HTML went from the
+            h1 straight to twelve h3 card titles, so the main content of the
+            page was outside the outline. The line also carries the one thing
+            these pages never said — where the areas actually are. It is read
+            off the current result set, so it cannot claim a city that is not on
+            the page.
+          */}
+          <h2 className="h-plain mt-14 lg:mt-20">
+            {cat ? `${cat.label} in NRW und im Rheinland` : "Alle verfügbaren Flächen"}
+          </h2>
           <div
             className={cn(
-              "mt-14 grid gap-y-[34px] sm:grid-cols-2 lg:mt-20",
+              "mt-8 grid gap-y-[34px] sm:grid-cols-2",
               category
                 ? "gap-x-7 lg:grid-cols-3"
                 : "gap-x-[26px] lg:grid-cols-3 xl:grid-cols-4",
@@ -547,12 +587,19 @@ export function Discover({
               because the wrapper is the grid item now, so it has to stretch or
               the cards in a row stop lining up along the bottom.
             */}
+            {/*
+              The first card is the largest thing above the fold on this page,
+              so it is the LCP element — and every card was `loading="lazy"`,
+              which means the browser was told to deprioritise exactly the image
+              the score is measured on. It is preloaded now; the rest stay lazy.
+            */}
             {results.map((l, i) => (
               <Reveal key={l.slug} delay={Math.min(i, 5) * 60} className="h-full">
-                <ListingCard listing={l} />
+                <ListingCard listing={l} priority={i === 0} />
               </Reveal>
             ))}
           </div>
+          </>
         )}
 
         {emptyCategory ? (
@@ -565,8 +612,8 @@ export function Discover({
                 : "Keine Fläche passt zu diesen Filtern."}
             </p>
             <p className="mx-auto mt-3 max-w-md text-[15px] text-ink">
-              Versuch es mit einem anderen Ort oder einem allgemeineren Begriff.
-              oder setz alles zurück, um wieder alle Flächen zu sehen.
+              Versuch es mit einem anderen Ort oder einem allgemeineren
+              Begriff, oder setz alles zurück, um wieder alle Flächen zu sehen.
             </p>
             <button
               type="button"

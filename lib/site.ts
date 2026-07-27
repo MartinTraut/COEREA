@@ -32,7 +32,7 @@ export const SITE = {
   nav: [
     { label: "Flächen entdecken", href: "/flaechen" },
     { label: "Host werden", href: "/host-werden" },
-    { label: "Über Uns", href: "/ueber-uns" },
+    { label: "Über uns", href: "/ueber-uns" },
     { label: "Kontakt", href: "/kontakt" },
   ],
   footer: {

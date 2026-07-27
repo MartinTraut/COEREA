@@ -96,11 +96,11 @@ export const CATEGORY_PAGES: CategoryPage[] = [
     slug: "gewerbe",
     subline: "CoArea: Eine Erfolgsgeschichte des Zusammenkommens und Teilens",
     intro: [
-      "Gewerbeimmobilien zeichnen unser Stadtbild im ganz besonderen Maße aus. Sie nehmen insbesondere den Raum ein, der für die praktische Umsetzung ihrer Tätigkeiten benötigt wird. Dabei spielt es keine Rolle, ob Bürogebäude, kleine mittelständische Handwerksbetriebe oder Einzelhändler - bei jedem Gewerbe steckt großes Flächenpotenzial, welches insbesondere außerhalb der Betriebszeiten ertragsbringend mit der Gemeinschaft geteilt werden kann. Das nachfolgende Szenario beschäftigt sich dabei mit einer besonders charmanten Möglichkeit der Teilhabe.",
+      "Gewerbeimmobilien zeichnen unser Stadtbild im ganz besonderen Maße aus. Sie nehmen insbesondere den Raum ein, der für die praktische Umsetzung ihrer Tätigkeiten benötigt wird. Dabei spielt es keine Rolle, ob Bürogebäude, kleine mittelständische Handwerksbetriebe oder Einzelhändler — bei jedem Gewerbe steckt großes Flächenpotenzial, welches insbesondere außerhalb der Betriebszeiten ertragsbringend mit der Gemeinschaft geteilt werden kann. Das nachfolgende Szenario beschäftigt sich dabei mit einer besonders charmanten Möglichkeit der Teilhabe.",
     ],
     introImage: "/images/kategorie-gewerbe-intro.jpg",
     story: {
-      heading: "CoArea - eine zentrale Plattform für nachhaltige Flächennutzung",
+      heading: "CoArea — eine zentrale Plattform für nachhaltige Flächennutzung",
       image: "/images/kategorie-gewerbe-story.jpg",
       paragraphs: [
         "In einem kleinen Quartier leben die Eltern von Maja, Alina, Julia, Christian, Paul und Melanie. Sie kannten sich gut untereinander und ihre Kinder haben gerade die Geschwister-Scholl-Grundschule abgeschlossen. Mit dem Schulabschluss kam auch die Frage auf, was mit den alten Schulsachen wie Schulranzen, Schulbüchern und weiteren Gegenständen geschehen sollte. Die Elterngemeinschaft beschloss, diese Gegenstände gemeinsam zu verkaufen und die Einnahmen wohltätigen Zwecken zukommen zu lassen.",

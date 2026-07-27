@@ -53,7 +53,7 @@ export function BookingConfirmation({ listing }: { listing: Listing }) {
         <p className="mt-4 max-w-2xl leading-relaxed text-ink">
           Für „{listing.title}“ ist in dieser Sitzung keine Buchungsanfrage
           hinterlegt. Wähle einen Zeitraum aus und schließe die Anfrage ab.
-          danach findest Du die Bestätigung hier.
+          Danach findest Du die Bestätigung hier.
         </p>
         <Link
           href={`/flaechen/${listing.slug}#verfuegbarkeit`}
@@ -95,7 +95,7 @@ export function BookingConfirmation({ listing }: { listing: Listing }) {
         */}
         <a
           href={`mailto:${SITE.contact.email}?subject=${encodeURIComponent(
-            `Frage zu „${record.title}" (Host: ${listing.host.name})`,
+            `Frage zu „${record.title}“ (Host: ${listing.host.name})`,
           )}`}
           className="btn btn-teal sheen min-h-11 px-5 text-sm"
         >

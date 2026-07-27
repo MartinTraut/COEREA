@@ -37,7 +37,7 @@ export const BOOKING_FAQ: readonly FaqItem[] = [
   },
   {
     q: "Kann ich eine Buchung wieder stornieren und was kostet mich das?",
-    a: "Solange der Host Deine Anfrage noch nicht bestätigt hat, kostet ein Rückzieher nichts. Verbindlich wird die Buchung erst mit seiner Bestätigung. Danach vereinbarst Du eine Storno direkt mit dem Host; einheitliche Fristen und Gebühren gibt es bei CoArea derzeit nicht. Melde Dich in dem Fall so früh wie möglich, damit er die Fläche neu vergeben kann.",
+    a: "Solange der Host Deine Anfrage noch nicht bestätigt hat, kostet ein Rückzieher nichts. Verbindlich wird die Buchung erst mit seiner Bestätigung. Danach vereinbarst Du die Stornierung direkt mit dem Host; einheitliche Fristen und Gebühren gibt es bei CoArea derzeit nicht. Melde Dich in dem Fall so früh wie möglich, damit er die Fläche neu vergeben kann.",
   },
   {
     q: "Wie viele Personen dürfen die Fläche gleichzeitig mit mir nutzen?",

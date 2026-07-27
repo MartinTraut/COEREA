@@ -28,6 +28,7 @@ export function ListingImage({
   rounded = "",
   sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw",
   priority = false,
+  quality = 65,
 }: {
   category: string
   tone?: number
@@ -38,6 +39,8 @@ export function ListingImage({
   rounded?: string
   sizes?: string
   priority?: boolean
+  /** 65 for anything in a grid; pass 75 for a full-width hero. */
+  quality?: number
 }) {
   const cat = categoryBySlug(category)
   const Icon = cat?.icon
@@ -57,6 +60,7 @@ export function ListingImage({
           fill
           sizes={sizes}
           priority={priority}
+          quality={quality}
           className="object-cover"
         />
       ) : (

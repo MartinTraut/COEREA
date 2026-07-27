@@ -9,7 +9,7 @@ import { Testimonials } from "@/components/home/testimonials"
 import { Newsletter } from "@/components/home/newsletter"
 
 export const metadata: Metadata = {
-  title: "Über Uns",
+  title: "Über uns",
   description:
     "CoArea: die Revolution der Flächennutzung. Unsere Mission, unsere Vision und die Menschen dahinter.",
 }
@@ -37,13 +37,13 @@ const FOUNDERS = [
   {
     role: "Digital Architect",
     name: "Leonard Thomas",
-    credential: "Master of Science - MS, Architektur",
+    credential: "Master of Science — M.Sc., Architektur",
     image: "/images/founder-leonard.jpg",
   },
   {
     role: "Projektentwickler",
     name: "Rudolf Traut",
-    credential: "Master of Science - MS, Architektur",
+    credential: "Master of Science — M.Sc., Architektur",
     image: "/images/founder-rudolf.jpg",
   },
 ]
@@ -53,7 +53,7 @@ export default function UeberUnsPage() {
     <>
       <div className="container-page py-10 md:py-16">
         <TabHeading as="h1" className="text-[clamp(1.6rem,3vw+0.5rem,2.5rem)]">
-          Über Uns
+          Über uns
         </TabHeading>
 
         {/* Intro */}
@@ -101,7 +101,7 @@ export default function UeberUnsPage() {
           <blockquote className="mx-auto mt-10 max-w-2xl rounded-[var(--radius)] border border-teal/60 bg-teal/[0.04] px-8 py-7 text-center text-[clamp(1.1rem,1.6vw+0.5rem,1.5rem)] leading-snug font-semibold text-teal text-balance">
             „Kreativ, smart und innovativ: Mit CoArea erschaffen wir unbeachtete
             Flächenpotenziale
-            neu.&quot;
+            neu.“
           </blockquote>
         </section>
 
@@ -177,8 +177,8 @@ export default function UeberUnsPage() {
         <span aria-hidden className="hatch-white absolute inset-0 opacity-20" />
         <div className="relative container-page py-[clamp(3rem,5vw,5.5rem)]">
           <p className="max-w-3xl text-[clamp(1.3rem,2vw+0.5rem,2rem)] leading-snug font-semibold text-balance">
-            Du hast eine leerstehende Fläche und weißt nicht was Du mit ihr anfangen
-            sollst? Dann lade noch heute deine CoArea hoch und teile sie mit der
+            Du hast eine leerstehende Fläche und weißt nicht, was Du mit ihr anfangen
+            sollst? Dann lade noch heute Deine CoArea hoch und teile sie mit der
             Community!
           </p>
           <Link

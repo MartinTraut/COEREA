@@ -31,7 +31,7 @@ const ITEMS: {
   { label: "Meine CoArea", href: "/dashboard#inserierte-flaechen" },
   { label: "Meine Unterlagen" },
   { label: "Buchungsanfragen" },
-  { label: "Upload Bereich" },
+  { label: "Upload-Bereich" },
   { label: "Meine Nachrichten" },
   { label: "Fläche inserieren", href: "/host-werden" },
 ]

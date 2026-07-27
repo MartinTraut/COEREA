@@ -20,7 +20,14 @@ import { SaveButton } from "@/components/listings/save-button"
   Nothing here can trigger a reflow, which matters because twelve of these sit
   in the discover grid at once.
 */
-export function ListingCard({ listing }: { listing: Listing }) {
+export function ListingCard({
+  listing,
+  priority = false,
+}: {
+  listing: Listing
+  /** Set on the first card of a grid: that photo is the page's LCP element. */
+  priority?: boolean
+}) {
   const cat = categoryBySlug(listing.category)
   const date =
     listing.dateText ??
@@ -42,6 +49,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
             tone={listing.tone}
             image={listing.image}
             alt={listing.title}
+            priority={priority}
             className="aspect-[4/3]"
           />
         </Link>
@@ -83,7 +91,14 @@ export function ListingCard({ listing }: { listing: Listing }) {
         */}
         <div className="absolute inset-x-3 bottom-3 flex items-center justify-between gap-2">
           <span className="text-[clamp(1.125rem,0.6vw+0.95rem,1.5rem)] leading-none font-bold text-white tabular-nums drop-shadow-[0_1px_5px_rgba(0,0,0,0.55)]">
-            {listing.price.amount.replace(/\s€$/, "€")}
+            {/*
+              This used to be `.replace(/\s€$/, "€")`, which printed „179€" on
+              every card on the site. In German the currency symbol keeps its
+              space after the amount (DIN 5008), and the data now carries a
+              narrow no-break space so the pair can never be split across a line
+              break — a regex on `\s` would have eaten exactly that.
+            */}
+            {listing.price.amount}
             <span className="ml-1 text-[0.62em] font-medium text-white/85">
               / {listing.price.unit}
             </span>

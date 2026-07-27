@@ -123,8 +123,8 @@ export function Hero() {
             <p className="max-w-[42ch] text-[clamp(1rem,0.62vw+0.62rem,1.3125rem)]/[1.55] text-ink">
               Willkommen in der Welt von CoArea, wo gemeinsames Handeln und
               Freiflächen auf innovative Weise verschmelzen. Unser Name
-              „CoArea&quot; leitet sich von den Begriffen „Common&quot; und
-              „Area&quot; ab, und genau das ist unser Ziel: Gemeinschaften
+              „CoArea“ leitet sich von den Begriffen „Common“ und
+              „Area“ ab, und genau das ist unser Ziel: Gemeinschaften
               zusammenbringen, um Freiflächen optimal zu nutzen.
             </p>
             <div className="mt-[clamp(1.5rem,1.8vw,2.25rem)] flex flex-wrap gap-[clamp(0.75rem,1.1vw,1.25rem)]">
@@ -141,7 +141,7 @@ export function Hero() {
                 href="/ueber-uns"
                 className="btn btn-outline h-[clamp(2.875rem,2.9vw,3.5rem)] px-[clamp(1.4rem,2vw,2.4rem)] text-[clamp(0.9375rem,0.42vw+0.6rem,1.125rem)]"
               >
-                Über Uns
+                Über uns
               </Link>
             </div>
           </Reveal>

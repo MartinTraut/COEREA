@@ -123,7 +123,7 @@ export function BookingForm({
           <Link href="/anmelden" className="font-semibold text-teal hover:underline">
             registriere Dich
           </Link>
-          , um Teil der CoArea Community zu werden!
+          , um Teil der CoArea-Community zu werden!
         </p>
 
         <div className="mt-6 grid max-w-xl gap-4">
@@ -148,7 +148,7 @@ export function BookingForm({
 
           <Field
             id={mailId}
-            label="E-Mail Adresse*"
+            label="E-Mail-Adresse*"
             error={emailError ? "Bitte gib eine gültige E-Mail-Adresse an." : undefined}
           >
             <input

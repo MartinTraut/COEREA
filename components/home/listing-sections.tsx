@@ -57,7 +57,9 @@ function FeatureCard({ listing }: { listing: Listing }) {
           image={listing.image}
           alt={listing.title}
           sizes="(max-width: 768px) 100vw, 55vw"
-          priority
+          /* Was `priority`. This card sits below the hero AND below the whole
+             category band, so preloading it only took bandwidth away from the
+             first screen. */
           className="aspect-[16/10] h-full md:aspect-auto md:min-h-[26rem]"
         />
         <span className="absolute top-4 left-4 z-10 rounded-[var(--radius-control)] bg-teal/95 px-3 py-1.5 text-xs font-semibold tracking-[0.08em] text-white uppercase backdrop-blur-sm">
@@ -174,7 +176,7 @@ export function PopularListings() {
   return (
     <section className="container-page pb-[clamp(2rem,3vw,3.5rem)]">
       <Reveal>
-        <SectionHead eyebrow="Von der Community gewählt" title="Derzeitig beliebt" />
+        <SectionHead eyebrow="Von der Community gewählt" title="Derzeit beliebt" />
       </Reveal>
       {/* Cards fade in one after another rather than as one block. */}
       <div className="grid gap-[clamp(1rem,1.6vw,1.75rem)] sm:grid-cols-2 lg:grid-cols-4">

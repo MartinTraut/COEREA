@@ -108,7 +108,7 @@ export function BookingWidget({ listing }: { listing: Listing }) {
             </div>
           </Row>
 
-          <Row label="Für wieviele User?">
+          <Row label="Für wie viele Personen?">
             <input
               type="number"
               min={1}
@@ -120,7 +120,7 @@ export function BookingWidget({ listing }: { listing: Listing }) {
             />
           </Row>
 
-          <Row label="Für was benötigst Du diese Fläche?">
+          <Row label="Wofür benötigst Du diese Fläche?">
             <select
               value={usage}
               onChange={(e) => setUsage(e.target.value)}

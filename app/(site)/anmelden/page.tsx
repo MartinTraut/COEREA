@@ -60,7 +60,7 @@ export default function AnmeldenPage() {
             />
 
             <div className="relative">
-              <span className="eyebrow eyebrow-invert">Dein CoArea Konto</span>
+              <span className="eyebrow eyebrow-invert">Dein CoArea-Konto</span>
               <h1 className="mt-5 text-[clamp(1.6rem,1.7vw+1rem,2.375rem)]/[1.15] font-semibold text-balance">
                 Fläche teilen, statt sie liegen zu lassen.
               </h1>

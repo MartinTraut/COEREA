@@ -90,7 +90,7 @@ export default function DatenschutzPage() {
       <h2>7. Zahlungsabwicklung</h2>
       <p>
         <Todo>
-          Eingesetzten Zahlungsdienstleister (z. B. Stripe) samt Datenverarbeitung
+          Eingesetzten Zahlungsdienstleister (z. B. Stripe) samt Datenverarbeitung
           und Rechtsgrundlage ergänzen
         </Todo>
       </p>

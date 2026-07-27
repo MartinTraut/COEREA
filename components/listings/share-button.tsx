@@ -53,7 +53,7 @@ export function ShareButton({
     <button
       type="button"
       onClick={share}
-      aria-label={copied ? "Link kopiert" : `„${title}" teilen`}
+      aria-label={copied ? "Link kopiert" : `„${title}“ teilen`}
       className={cn(
         "grid min-h-11 min-w-11 place-items-center rounded-[var(--radius-control)] text-teal transition-colors hover:text-teal-600",
         className,

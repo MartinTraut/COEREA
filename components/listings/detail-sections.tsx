@@ -67,7 +67,7 @@ export function DetailSections({
         {/* Other listings from host */}
         {show("more") && (
           <section className="mt-14">
-            <h2 className="h-plain">Weitere inserierte Flächen vom Host</h2>
+            <h2 className="h-plain">Weitere inserierte Flächen des Hosts</h2>
             <div className="mt-8 grid gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
               {others.map((l) => (
                 <ListingCard key={l.slug} listing={l} />
