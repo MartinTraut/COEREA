@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react"
   Imported rather than referenced by path, so the build knows each file's real
   width and height — see the note on <Photo>.
 */
-import heroPhoto from "@/public/images/ueberuns-hero-2.jpg"
+import heroPhoto from "@/public/images/ueberuns-hero-3.jpg"
 import missionPhoto from "@/public/images/ueberuns-mission.jpg"
 import visionPhoto from "@/public/images/ueberuns-vision.jpg"
 
