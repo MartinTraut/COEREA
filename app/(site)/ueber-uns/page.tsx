@@ -1,8 +1,10 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
+import { ArrowRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { SERVICE_FEE_RATE } from "@/lib/pricing"
 import { TabHeading } from "@/components/brand/tab-heading"
 import { Benefits } from "@/components/home/benefits"
 import { Testimonials } from "@/components/home/testimonials"
@@ -33,6 +35,30 @@ function Photo({
     </div>
   )
 }
+
+/*
+  The same three figures the Kosten block on /host-werden states, kept in sync
+  through SERVICE_FEE_RATE rather than typed out a second time. Nothing here is
+  a promise the prototype cannot keep: the fee is what `lib/pricing` adds, and
+  the payout line says plainly that no platform payment exists yet.
+*/
+const HOST_FACTS = [
+  {
+    label: "Inserat einstellen",
+    value: "kostenlos",
+    note: "Keine Grundgebühr, keine Laufzeit, keine Mindestdauer.",
+  },
+  {
+    label: "Servicegebühr",
+    value: `${Math.round(SERVICE_FEE_RATE * 100)} %`,
+    note: "Trägt die mietende Person zusätzlich. Dein Preis kommt ungeschmälert bei Dir an.",
+  },
+  {
+    label: "Du entscheidest",
+    value: "jede Anfrage",
+    note: "Zeitraum, Preis und Regeln legst Du selbst fest.",
+  },
+]
 
 const FOUNDERS = [
   {
@@ -163,31 +189,58 @@ export default function UeberUnsPage() {
       <Testimonials />
 
       {/*
-        CTA band. This was a flat `bg-teal` div with a hand-built button, and it
-        sat directly above the teal newsletter strip and the deep-teal footer —
-        three untreated teal blocks in a row that merged into one mass of colour
-        with no edges. It now gets the same deep gradient, blooms, grain and
-        Schraffur as every other band, so the sequence reads
-        deep → bright → deep: alternation rather than mush.
+        CTA band.
 
-        The hatch runs through the whole band (client's instruction,
-        2026-07-26) rather than as a 24px edge; at 20% it stays under the white
-        type sitting on top of it.
+        Two things were wrong with it. The Schraffur ran across the full band at
+        20% — together with the newsletter strip and the footer that made three
+        hatched teal blocks stacked on top of each other, and the drawing stopped
+        reading as a motif and started reading as noise (client, 2026-07-28:
+        „zu viele Linien, im Footer ist gut"). It survives here as a top edge
+        that dissolves, which is enough to tie the band to the footer; the
+        footer keeps the full-strength version.
+
+        And the claim sat alone in the left half of a 1520px column, so half the
+        band was empty teal. The three facts that decide whether anybody clicks
+        „Fläche inserieren" — what it costs, who pays the fee, who decides — now
+        occupy the other half. They are the same numbers the booking calculates,
+        not new promises.
       */}
       <section className="mesh mesh-dark grain relative isolate overflow-hidden [background:var(--grad-teal-deep)] text-white">
-        <span aria-hidden className="hatch-white absolute inset-0 opacity-20" />
-        <div className="relative container-page py-[clamp(3rem,5vw,5.5rem)]">
-          <p className="max-w-3xl text-[clamp(1.3rem,2vw+0.5rem,2rem)] leading-snug font-semibold text-balance">
-            Du hast eine leerstehende Fläche und weißt nicht, was Du mit ihr anfangen
-            sollst? Dann lade noch heute Deine CoArea hoch und teile sie mit der
-            Community!
-          </p>
-          <Link
-            href="/host-werden"
-            className="btn mt-8 bg-white px-7 py-3.5 text-[15px] text-teal shadow-[var(--shadow-md)] hover:-translate-y-0.5"
-          >
-            Fläche inserieren
-          </Link>
+        <span
+          aria-hidden
+          className="hatch-white absolute inset-x-0 top-0 h-48 opacity-25 [mask-image:linear-gradient(to_bottom,black_0,transparent_100%)]"
+        />
+        <div className="relative container-page grid gap-[clamp(2rem,3.5vw,4rem)] py-[clamp(3rem,5vw,5.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:items-center">
+          <div>
+            <p className="max-w-[26ch] text-[clamp(1.3rem,2vw+0.5rem,2rem)] leading-snug font-semibold text-balance">
+              Du hast eine leerstehende Fläche und weißt nicht, was Du mit ihr
+              anfangen sollst? Dann teile sie mit der Community.
+            </p>
+            <Link
+              href="/host-werden"
+              className="btn group mt-8 bg-white px-7 py-3.5 text-[15px] text-teal shadow-[var(--shadow-md)] hover:-translate-y-0.5"
+            >
+              Fläche inserieren
+              <span className="arrow-nudge inline-flex">
+                <ArrowRight className="h-4 w-4" />
+              </span>
+            </Link>
+          </div>
+
+          <ul className="grid gap-px overflow-hidden rounded-[var(--radius)] bg-white/20 ring-1 ring-white/20">
+            {HOST_FACTS.map((f) => (
+              <li
+                key={f.label}
+                className="flex flex-wrap items-baseline gap-x-3 gap-y-1 bg-teal-900/40 px-5 py-4 backdrop-blur-[2px]"
+              >
+                <span className="text-[0.9375rem] font-semibold text-white">{f.label}</span>
+                <span className="ml-auto text-[0.9375rem] font-bold text-white tabular-nums">
+                  {f.value}
+                </span>
+                <span className="w-full text-[13px]/[1.5] text-white/75">{f.note}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

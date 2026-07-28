@@ -37,43 +37,42 @@ export function Newsletter() {
 
   return (
     /*
-      A teal band, not a white one. This is the only pure conversion block on
-      the page, and it sat between two quiet sections where a faint hatch on
-      cream disappeared entirely. The white card floats on the brand colour with
-      the Schraffur showing through around it; its elevation is a drop-shadow
-      filter rather than box-shadow because clip-path would cut a shadow off.
+      Not a band any more — an object.
+
+      It used to be a full-width teal strip with its own Schraffur, and on
+      /ueber-uns it landed between the teal CTA band and the deep-teal footer:
+      three hatched teal blocks in a row (client, 2026-07-28: „zu viele Linien,
+      im Footer ist gut"). A strip cannot solve that, however it is coloured,
+      because the problem is that three consecutive sections all claim the same
+      full-bleed treatment.
+
+      So the colour moves inside: a deep-teal card on the quiet cream ground.
+      The block still reads as the one conversion moment on the page — it is the
+      darkest thing in view — but it has edges, it sits in the page grid with
+      the footer below it, and the Schraffur is now the footer's alone.
+
+      Elevation is a drop-shadow filter on the wrapper rather than a box-shadow,
+      because the notch is a clip-path and clip-path cuts a box-shadow off.
     */
-    /*
-      The band uses the BRIGHT gradient, not the text-safe one: nothing sits on
-      it directly — the heading, form and confirmation are all inside the white
-      card — so there is no contrast requirement, and the lighter teal is what
-      keeps this strip distinct from the deep-teal footer instead of merging
-      into one continuous block of colour.
-    */
-    <section className="mesh mesh-dark grain relative isolate overflow-hidden [background:var(--grad-teal-bright)] py-[clamp(2.75rem,4vw,4.5rem)]">
-      {/*
-        The white card covers most of this band, so a full-height Schraffur only
-        ever showed in a 2–4rem margin around it, where it read as fraying
-        rather than as the brand's diagonal. It runs along the top edge and
-        dissolves instead — the same treatment as the benefits band above, so
-        the two teal bands announce themselves the same way.
-      */}
-      <span
-        aria-hidden
-        className="hatch-white absolute inset-0 opacity-30 [mask-image:linear-gradient(to_bottom,black_0,black_14%,transparent_42%)]"
-      />
-      <div className="relative container-page">
-        {/*
-          `justify-between` on the full 1520px column pushed the heading and the
-          form to opposite ends with ~480px of nothing between them — on the only
-          pure conversion block of the page. The card is capped and the two parts
-          sit next to each other with a real gap instead.
-        */}
-        <div className="notch notch-lg mx-auto flex max-w-[64rem] flex-col items-start gap-[clamp(1.5rem,3vw,3.5rem)] bg-white p-[clamp(1.5rem,2.6vw,3rem)] [filter:drop-shadow(0_26px_50px_rgba(0,60,56,0.32))] md:flex-row md:items-center">
-        <TabHeading className="text-[clamp(1.15rem,1.5vw+0.5rem,1.75rem)]">
-          Nichts mehr verpassen &amp; zum
-          <br className="hidden sm:block" /> Newsletter anmelden!
+    <section className="relative bg-cream py-[clamp(2.5rem,4vw,4.5rem)]">
+      <div className="container-page">
+        <div className="[filter:drop-shadow(0_24px_44px_rgba(0,60,56,0.22))]">
+        <div className="mesh mesh-dark grain notch notch-lg relative isolate flex flex-col items-start gap-[clamp(1.5rem,3vw,3.5rem)] overflow-hidden [background:var(--grad-teal-deep)] p-[clamp(1.5rem,2.8vw,3.25rem)] text-white md:flex-row md:items-center">
+        <div className="md:w-[min(24rem,40%)]">
+        {/* No manual line break: the column is narrower than the old full-width
+            card, so a hard break landed mid-phrase („Nichts mehr / verpassen &
+            zum"). `text-balance` distributes the three lines evenly instead. */}
+        <TabHeading
+          variant="white"
+          className="text-[clamp(1.15rem,1.5vw+0.5rem,1.75rem)] text-balance"
+        >
+          Nichts mehr verpassen &amp; zum Newsletter anmelden!
         </TabHeading>
+        {/* Says what arrives, before the address is asked for. */}
+        <p className="mt-4 text-[0.9375rem]/[1.6] text-white/80">
+          Neue Flächen, Nachbarschaftsprojekte und was CoArea als Nächstes baut.
+        </p>
+        </div>
 
         {state === "done" ? (
           <div
@@ -113,7 +112,9 @@ export function Newsletter() {
               The radius now lives on the wrapper, which clips both children,
               and the children are square. One shape, one focus state.
             */}
-            <div className="flex items-stretch overflow-hidden rounded-[var(--radius-control)] border border-input transition-colors duration-200 focus-within:border-teal focus-within:ring-2 focus-within:ring-teal/25">
+            {/* On the dark card the neutral input border disappeared, so the
+                pair carries a white outline and a white focus ring. */}
+            <div className="flex items-stretch overflow-hidden rounded-[var(--radius-control)] border border-white/30 bg-white transition-colors duration-200 focus-within:border-white focus-within:ring-2 focus-within:ring-white/40">
               <input
                 id={id}
                 type="email"
@@ -146,25 +147,29 @@ export function Newsletter() {
             {/* Collecting an address without naming the purpose and without a
                 route to the privacy notice is the one thing this form must not
                 do once a backend is behind it. */}
-            <p className="mt-3 text-xs/[1.6] text-ink">
+            <p className="mt-3 text-xs/[1.6] text-white/75">
               Wir schreiben Dir nur zum CoArea-Newsletter und Du kannst jederzeit
               widersprechen. Wie wir mit Deinen Daten umgehen, steht in der{" "}
-              <Link href="/datenschutz" className="underline underline-offset-2 hover:text-teal">
+              <Link href="/datenschutz" className="underline underline-offset-2 hover:text-white">
                 Datenschutzerklärung
               </Link>
               .
             </p>
             {state === "invalid" ? (
+              /* `.field-error` is the destructive red, which on deep teal drops
+                 to around 2:1. The brand gold carries the same alarm at a
+                 contrast a reader can actually resolve. */
               <p
                 id={`${id}-err`}
                 role="alert"
-                className="field-error mt-2 text-xs"
+                className="mt-2 text-xs font-medium text-[var(--gold)]"
               >
                 Bitte gib eine gültige E-Mail-Adresse an.
               </p>
             ) : null}
           </form>
         )}
+        </div>
         </div>
       </div>
     </section>
