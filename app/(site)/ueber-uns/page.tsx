@@ -1,7 +1,15 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import Image from "next/image"
+import Image, { type StaticImageData } from "next/image"
 import { ArrowRight } from "lucide-react"
+
+/*
+  Imported rather than referenced by path, so the build knows each file's real
+  width and height — see the note on <Photo>.
+*/
+import heroPhoto from "@/public/images/ueberuns-hero-2.jpg"
+import missionPhoto from "@/public/images/ueberuns-mission.jpg"
+import visionPhoto from "@/public/images/ueberuns-vision.jpg"
 
 import { cn } from "@/lib/utils"
 import { SERVICE_FEE_RATE } from "@/lib/pricing"
@@ -17,21 +25,49 @@ export const metadata: Metadata = {
     "CoArea: die Revolution der Flächennutzung. Unsere Mission, unsere Vision und die Menschen dahinter.",
 }
 
-/* Photo frame using the design's own photography. */
+/*
+  Photo frame using the design's own photography.
+
+  Two modes, and the difference is who decides the proportion.
+
+  Passing an imported image lets the FRAME follow the FILE: Next reads the real
+  width and height at build time, the frame takes exactly that ratio, and
+  nothing is cropped or letterboxed — whatever the file happens to be. The three
+  landscape photos here run between 1,65:1 and 2:1, so a single fixed frame
+  could only fit one of them; the other two were being cut (the Mission photo
+  lost a quarter of its height to a 4:3 box).
+
+  Passing a path plus an aspect class is the opposite deal: the frame is fixed
+  and the photo is cropped to fill it. That is right where the shape matters
+  more than the photo — the two founder portraits, which have to be the same
+  square next to each other.
+*/
 function Photo({
   src,
   alt = "",
   className,
   sizes,
 }: {
-  src: string
+  src: string | StaticImageData
   alt?: string
   className?: string
   sizes?: string
 }) {
+  const intrinsic = typeof src !== "string"
   return (
-    <div className={cn("media-zoom relative overflow-hidden rounded-[var(--radius)] border border-border", className)}>
-      <Image src={src} alt={alt} fill sizes={sizes ?? "(max-width: 1024px) 100vw, 50vw"} className="object-cover" />
+    <div
+      className={cn(
+        "media-zoom relative overflow-hidden rounded-[var(--radius)] border border-border",
+        className,
+      )}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        {...(intrinsic ? {} : { fill: true })}
+        sizes={sizes ?? "(max-width: 1024px) 100vw, 50vw"}
+        className={intrinsic ? "h-auto w-full" : "object-cover"}
+      />
     </div>
   )
 }
@@ -100,9 +136,8 @@ export default function UeberUnsPage() {
             </p>
           </div>
           <Photo
-            src="/images/ueberuns-hero-2.jpg"
+            src={heroPhoto}
             alt="Gemeinsames Fest auf einer CoArea-Fläche"
-            className="aspect-[16/10] rounded-[var(--radius)]"
           />
         </div>
 
@@ -154,19 +189,15 @@ export default function UeberUnsPage() {
               </p>
             </div>
           </div>
-          <Photo
-            src="/images/ueberuns-mission.jpg"
-            alt="Belebter Stadtraum mit Grünflächen"
-            className="aspect-[4/3] rounded-[var(--radius)]"
-          />
+          <Photo src={missionPhoto} alt="Belebter Stadtraum mit Grünflächen" />
         </section>
 
         {/* Vision */}
         <section className="mt-16 grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-center">
           <Photo
-            src="/images/ueberuns-vision.jpg"
+            src={visionPhoto}
             alt="Luftaufnahme einer gewachsenen Gemeinde"
-            className="aspect-[4/3] rounded-[var(--radius)] lg:order-1"
+            className="lg:order-1"
           />
           <div className="lg:order-2">
             <h2 className="h-plain">Unsere Vision</h2>
