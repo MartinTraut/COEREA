@@ -100,7 +100,7 @@ export default function UeberUnsPage() {
             </p>
           </div>
           <Photo
-            src="/images/ueberuns-hero.jpg"
+            src="/images/ueberuns-hero-2.jpg"
             alt="Gemeinsames Fest auf einer CoArea-Fläche"
             className="aspect-[16/10] rounded-[var(--radius)]"
           />

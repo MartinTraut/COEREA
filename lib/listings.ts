@@ -161,7 +161,7 @@ export const LISTINGS: Listing[] = [
   },
   {
     slug: "hobby-garten-essen",
-    image: "/images/listing-hobby-garten-essen.jpg",
+    image: "/images/listing-hobby-garten-essen-2.jpg",
     category: "private-gaerten",
     title: "Dein kleiner Hobby-Garten am Stadtwald",
     excerpt:
@@ -375,7 +375,7 @@ export const LISTINGS: Listing[] = [
   },
   {
     slug: "skateanlage-dortmund",
-    image: "/images/listing-skateanlage-dortmund.jpg",
+    image: "/images/listing-skateanlage-dortmund-2.jpg",
     category: "oeffentlicher-sport",
     title: "Skate- & Freizeitanlage für private Events buchen",
     excerpt:

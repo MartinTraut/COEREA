@@ -33,7 +33,7 @@ export const CATEGORY_PAGES: CategoryPage[] = [
     introImage: "/images/kategorie-private-gaerten-intro.jpg",
     story: {
       heading: "Urbanes Leben und seine Probleme",
-      image: "/images/kategorie-private-gaerten-story.jpg",
+      image: "/images/kategorie-private-gaerten-story-2.jpg",
       quote: {
         text: "Wir können mitten in der Stadt gärtnern und unsere Kinder sind begeistert.",
         author: "Familie Müller",
