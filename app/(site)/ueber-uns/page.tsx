@@ -119,22 +119,13 @@ export default function UeberUnsPage() {
           Über uns
         </TabHeading>
 
-        {/*
-          Intro.
-
-          The text column used to be the wider of the two (1,15fr against 1fr).
-          That made sense while the photo was a tall 16:10 block; at its real
-          2:1 it is only half as high as the paragraph beside it, and a wide
-          column of body copy next to a small picture is what reads as
-          unbalanced. The ratio is now inverted: the photo leads, the text runs
-          at a proper reading measure instead of filling whatever is left.
-        */}
-        <div className="mt-8 grid gap-[clamp(2rem,3.5vw,4rem)] lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-center">
+        {/* Intro */}
+        <div className="mt-8 grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-center">
           <div>
             <h2 className="text-xl font-semibold text-teal">
               CoArea: die Revolution der Flächennutzung
             </h2>
-            <p className="mt-4 max-w-[46ch] leading-relaxed text-ink">
+            <p className="mt-4 max-w-xl leading-relaxed text-ink">
               CoArea ist eine Plattform, die es Menschen ermöglicht, ihre ungenutzten
               Flächen wie beispielsweise Gärten, Parkplätze oder Veranstaltungsräume mit
               anderen Menschen zu teilen. Dieses Konzept der gemeinsamen Nutzung ist
