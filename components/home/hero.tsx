@@ -263,8 +263,23 @@ function Field({
   onChange: (value: string) => void
   className?: string
 }) {
+  /*
+    The input kills its own outline, and the only thing that marked the focused
+    field was the icon turning teal — a colour change on a 16px glyph, which is
+    neither a focus indicator a keyboard user can find nor one that survives
+    being colour-blind. The form already lights up as a whole on focus-within,
+    but that says "somewhere in here", not "this field".
+
+    The ring goes on the label rather than the input because the input has no box
+    of its own — it is a transparent line inside a shared white card — so a ring
+    on it would trace the text, not the field. On the label it encloses caption
+    and input together, which is what the visitor is actually in. The offset is
+    white because the card is.
+  */
   return (
-    <label className={`group/f flex min-w-0 flex-col gap-1.5 ${className ?? ""}`}>
+    <label
+      className={`group/f flex min-w-0 flex-col gap-1.5 rounded-[var(--radius-control)] transition-shadow duration-200 focus-within:ring-2 focus-within:ring-teal focus-within:ring-offset-2 focus-within:ring-offset-white ${className ?? ""}`}
+    >
       <span className="flex items-center gap-2 text-[clamp(0.8125rem,0.28vw+0.7rem,0.9375rem)] font-semibold text-ink-900">
         <Icon
           className="h-4 w-4 shrink-0 text-ink transition-colors duration-200 group-focus-within/f:text-teal"

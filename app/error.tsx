@@ -73,9 +73,18 @@ export default function Error({
           </div>
 
           {/* The digest is the only handle we would have if somebody reports
-              this, so it is shown rather than swallowed. */}
+              this, so it is shown rather than swallowed.
+
+              It was set in `.caps-xs` — 9px, uppercase, wide-tracked. That class
+              is for decorative micro-labels, and this is the opposite: a code
+              the reader has to transcribe into a mail or read out on a call. It
+              now sits at 13px in normal case, with the code itself in tabular
+              figures so no two characters collapse into each other. */}
           {error.digest ? (
-            <p className="caps-xs mt-10 text-ink">Fehlerkennung: {error.digest}</p>
+            <p className="mt-10 text-[0.8125rem] text-ink">
+              Fehlerkennung:{" "}
+              <span className="font-semibold tabular-nums">{error.digest}</span>
+            </p>
           ) : null}
         </section>
       </main>
