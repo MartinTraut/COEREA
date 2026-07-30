@@ -12,7 +12,6 @@ import { JsonLd } from "@/components/seo/json-ld"
 import { Breadcrumbs } from "@/components/layout/breadcrumbs"
 import { SaveButton } from "@/components/listings/save-button"
 import { ShareButton } from "@/components/listings/share-button"
-import { TabHeading } from "@/components/brand/tab-heading"
 import { CategoryStrip } from "@/components/brand/category-strip"
 import { ListingGallery } from "@/components/listings/listing-gallery"
 import { BookingWidget } from "@/components/listings/booking-widget"
@@ -112,11 +111,17 @@ export default async function ListingDetailPage({
       <div className="container-page pt-8 md:pt-12">
         <Breadcrumbs trail={trail} />
 
-        {/* Category heading + diamond navigation */}
+        {/* Category heading + diamond navigation.
+
+            This label was the largest type on the page: `.h-section` set it to
+            48px while the listing's own H1 runs to 44px, so the category
+            outranked the title of the thing being sold. `.h-plain` is the
+            section-heading size (37.6px) and draws the identical frame — same
+            rule width, same air, same wash — so the motif is untouched and only
+            the rank changes. It stays a <span>: it labels the page, it does not
+            open a section. */}
         <span className="eyebrow mt-6">Fläche in {cityLabel(listing)}</span>
-        <TabHeading as="span" className="mt-4 h-section">
-          {cat?.label}
-        </TabHeading>
+        <span className="h-plain mt-4">{cat?.label}</span>
 
         <div className="mt-8">
           <CategoryStrip
@@ -171,7 +176,7 @@ export default async function ListingDetailPage({
               className="absolute inset-x-0 top-0 h-[3px] [background:var(--grad-teal-bright)]"
             />
             <div className="flex items-start justify-between gap-3">
-              <span className="text-[clamp(1.5rem,1.2vw+1rem,2.125rem)] leading-none font-bold text-ink-900">
+              <span className="price-lead text-ink-900">
                 {listing.price.amount}
                 <span className="mt-1.5 block text-xs font-medium text-muted-foreground">
                   {/* Named rather than alluded to: „zzgl. Servicegebühr" tells

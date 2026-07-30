@@ -91,7 +91,7 @@ export function ListingCard({
           They now carry the weight their job deserves.
         */}
         <div className="absolute inset-x-3 bottom-3 flex items-center justify-between gap-2">
-          <span className="text-[clamp(1.125rem,0.6vw+0.95rem,1.5rem)] leading-none font-bold text-white tabular-nums drop-shadow-[0_1px_5px_rgba(0,0,0,0.55)]">
+          <span className="price text-white drop-shadow-[0_1px_5px_rgba(0,0,0,0.55)]">
             {/*
               This used to be `.replace(/\s€$/, "€")`, which printed „179€" on
               every card on the site. In German the currency symbol keeps its

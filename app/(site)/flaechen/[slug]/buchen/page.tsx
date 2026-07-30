@@ -90,7 +90,11 @@ export default async function BuchenPage({
   return (
     <div className="pb-6">
       <div className="container-page pt-8 md:pt-12">
-        <TabHeading as="h1" className="text-[clamp(1.4rem,2.5vw+0.5rem,2.1rem)]">
+        {/* The smallest H1 on the site by a wide margin — 22.4px on a phone,
+            which put it below the `text-2xl` subheadings inside the form. It now
+            carries the same size as the listing page this flow comes from, so
+            the funnel does not shrink its own typography halfway through. */}
+        <TabHeading as="h1" className="text-[clamp(1.6rem,2.2vw+0.7rem,2.75rem)]">
           Buchungsanfrage abschließen
         </TabHeading>
 

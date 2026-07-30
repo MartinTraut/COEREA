@@ -67,10 +67,25 @@ export function Benefits() {
             largest thing on the homepage after the H1 — the framed motif at
             `h-section` size was the same 40px as five unframed section titles
             and read as just another row.
+
+            „after the H1" was the intent and not what the code did: at 56px it
+            was 2px LARGER than the homepage H1 (hero.tsx, 54px), so the strongest
+            type on the page belonged to a section rather than to the page. The
+            intent survives — 48px still clears every other section heading
+            (37.6px) by a wide margin — it just no longer outranks the headline
+            it is supposed to sit under.
+
+            Both ends of the clamp matter, and the first attempt only fixed the
+            top: at a 1.7rem floor the band was 27.2px on a phone against an H1
+            floor of 25.6px, so the very fault being repaired survived at the one
+            width where most people would meet it. The floor sits at 1.5rem — over
+            the 1.45rem of a section heading, under the 1.6rem of the H1 — and
+            the gap holds at every width in between, because the H1 gains 2.55vw
+            against this heading's 2.2vw.
           */}
           <TabHeading
             variant="white"
-            className="mt-5 text-[clamp(1.85rem,2.9vw+0.55rem,3.5rem)]"
+            className="mt-5 text-[clamp(1.5rem,2.2vw+0.6rem,3rem)]"
           >
             Deine Vorteile mit CoArea
           </TabHeading>

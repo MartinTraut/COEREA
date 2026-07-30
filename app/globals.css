@@ -929,13 +929,37 @@
   }
 
   /*
-    One fluid size for every section heading. It lives here rather than as a
-    clamp repeated at eight call sites — and as a plain class it also sidesteps
-    tailwind-merge, which would treat a `text-[…]` utility as conflicting with
-    the line-height the heading component sets.
+    `.h-section` used to live here — one fluid size for every section heading.
+    `.h-plain` took that job over on 2026-07-26 (see the note there) and by
+    2026-07-30 the class was down to a single call site, where it was doing
+    damage: the category label above a listing was set at 48px over an H1 of
+    44px, so the label outranked the title of the thing being sold. That call
+    site now uses `.h-plain`, whose geometry is identical by design, and the
+    class is gone. Anything that needs a heading larger than a section heading
+    says so at the call site, because there is exactly one such heading.
+
+    Price sizes. The same figure appeared at six sizes across the site, and the
+    one that mattered most — the total in the booking form, the number the whole
+    screen exists to produce — was the smallest of them at a fixed 18px, below
+    every card price on the site. Two sizes now, and the distinction is what the
+    price is FOR: `.price` quotes a price in a list or on a card, `.price-lead`
+    is the price a screen is about.
+
+    Weight and line-height are baked in rather than repeated at the call sites,
+    and so is `tabular-nums` — these are figures that sit above or below one
+    another and have to align.
   */
-  .h-section {
-    font-size: clamp(1.6rem, 2.2vw + 0.55rem, 3rem);
+  .price {
+    font-size: clamp(1.25rem, 1vw + 0.9rem, 1.75rem);
+    line-height: 1;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .price-lead {
+    font-size: clamp(1.5rem, 1.2vw + 1rem, 2.125rem);
+    line-height: 1;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
   }
 
   /*

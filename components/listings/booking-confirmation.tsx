@@ -47,9 +47,11 @@ export function BookingConfirmation({ listing }: { listing: Listing }) {
   if (!state.record) {
     return (
       <div className="mt-8 border border-border bg-card px-6 py-9 sm:px-10">
-        <h2 className="text-2xl font-semibold text-teal">
-          Hier liegt noch keine Anfrage vor
-        </h2>
+        {/* `text-2xl` — a fixed 24px — was larger on a phone than the page's own
+            H1, which bottoms out at 22.4px. Two problems in one class: it did
+            not scale, and it outranked its own headline. `.h-plain` is the
+            section heading of the brand and it is fluid. */}
+        <h2 className="h-plain">Hier liegt noch keine Anfrage vor</h2>
         <p className="mt-4 max-w-2xl leading-relaxed text-ink">
           Für „{listing.title}“ ist in dieser Sitzung keine Buchungsanfrage
           hinterlegt. Wähle einen Zeitraum aus und schließe die Anfrage ab.
@@ -69,9 +71,8 @@ export function BookingConfirmation({ listing }: { listing: Listing }) {
 
   return (
     <div className="mt-8 border border-border bg-card px-6 py-9 sm:px-10">
-      <h2 className="text-2xl font-semibold text-teal">
-        Deine Buchungsanfrage ist abgeschlossen!
-      </h2>
+      {/* Same as above: fixed 24px, on a phone larger than the H1 it sits under. */}
+      <h2 className="h-plain">Deine Buchungsanfrage ist abgeschlossen!</h2>
       <p className="mt-4 max-w-2xl leading-relaxed text-ink">
         Danke, {record.name.split(" ")[0]}! Deine Anfrage für „{record.title}“ ist
         vorbereitet. Sobald CoArea live ist, geht sie an {listing.host.name}, und
@@ -122,7 +123,10 @@ function Row({ label, value, strong }: { label: string; value: string; strong?: 
   return (
     <div className="grid gap-1 sm:grid-cols-[12rem_1fr] sm:gap-6">
       <dt className="text-sm text-ink">{label}</dt>
-      <dd className={strong ? "text-sm font-bold text-ink" : "text-sm font-medium text-ink"}>
+      {/* `font-bold` at 14px in a definition list reads as a block of ink rather
+          than as emphasis; 600 against the 500 of its neighbours is the step the
+          rest of the site uses to mark a row as the important one. */}
+      <dd className={strong ? "text-sm font-semibold text-ink" : "text-sm font-medium text-ink"}>
         {value}
       </dd>
     </div>

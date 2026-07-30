@@ -135,7 +135,7 @@ function FeatureCard({ listing }: { listing: Listing }) {
               <ArrowRight className="h-4 w-4" />
             </span>
           </Link>
-          <span className="text-right text-[clamp(1.25rem,1vw+0.7rem,1.75rem)] leading-none font-bold text-ink-900">
+          <span className="price text-right text-ink-900">
             {listing.price.amount}
             <span className="mt-1 block text-xs font-medium text-ink">
               pro {listing.price.unit}

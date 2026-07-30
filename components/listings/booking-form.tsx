@@ -257,7 +257,11 @@ export function BookingForm({
         <div className="mt-6 flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="grid gap-1 sm:grid-cols-[16rem_auto] sm:items-center sm:gap-6">
             <span className="text-sm text-ink">Gesamtbetrag</span>
-            <span className="text-lg font-bold text-ink">
+            {/* Was `text-lg` — a fixed 18px, the smallest price on the entire
+                site, on the one screen whose whole purpose is to produce this
+                number. Every card in the grid quoted a larger figure than the
+                total the visitor was about to commit to. */}
+            <span className="price-lead text-ink">
               {current ? eur(current.total) : "auf Anfrage"}
             </span>
           </div>

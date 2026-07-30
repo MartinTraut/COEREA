@@ -27,7 +27,8 @@ export default async function ErfolgreichPage({
   return (
     <div className="pb-6">
       <div className="container-page pt-8 md:pt-12">
-        <TabHeading as="h1" className="text-[clamp(1.4rem,2.5vw+0.5rem,2.1rem)]">
+        {/* Same size as /buchen and the listing page — see the note there. */}
+        <TabHeading as="h1" className="text-[clamp(1.6rem,2.2vw+0.7rem,2.75rem)]">
           Buchungsanfrage abgeschlossen
         </TabHeading>
 

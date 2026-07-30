@@ -173,7 +173,7 @@ export function BookingWidget({ listing }: { listing: Listing }) {
               <span className="text-[11px] font-semibold tracking-[0.1em] text-muted-foreground uppercase">
                 Gesamtbetrag
               </span>
-              <p className="mt-1 text-[clamp(1.375rem,1vw+0.9rem,1.875rem)] leading-none font-bold text-ink-900">
+              <p className="price-lead mt-1 text-ink-900">
                 {current ? eur(current.total) : "auf Anfrage"}
               </p>
               {current ? (
