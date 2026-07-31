@@ -65,21 +65,32 @@ export default async function BuchenPage({
     Anfrage" without a word of explanation, and still allowed the request to be
     sent.
 
-    Both are now parsed, ordered, and clamped to what the host actually offers:
-    never before today, never outside the listing's window. A range that cannot
-    be salvaged is dropped rather than repaired into something the visitor did
-    not choose — `BookingForm` then says the period is missing instead of
+    Both are now parsed, ordered, and checked against what the host actually
+    offers: never before today, never outside the listing's window. A range that
+    cannot be salvaged is dropped rather than repaired into something the visitor
+    did not choose — `BookingForm` then says the period is missing instead of
     inventing one.
+
+    2026-07-31: that last sentence was the intent and the opposite of what the
+    code did. `maxIso(…, todayIso())` does not reject a date in the past, it
+    LIFTS it — so a bookmarked or shared link like `?von=2026-04-13&bis=2026-04-20`
+    silently became „31.07.2026 bis 31.07.2026", one day, priced and ready to
+    send. Nobody chose that period, and nothing on the page said it had been
+    changed. Same for a date before the window opens.
+
+    A date outside the allowed span is now dropped in both directions. Only the
+    reversal below is still repaired, because there the visitor's intent is not
+    in doubt — the two dates they picked are both valid, they just arrived in the
+    wrong order.
   */
   const range = listingRange(listing)
   const clamp = (value: string | undefined): string | undefined => {
     const date = value ? parseIsoDate(value) : null
     if (!date) return undefined
-    let iso = maxIso(toIso(date), todayIso())
-    if (range) {
-      iso = maxIso(iso, toIso(range.from))
-      if (iso > toIso(range.to)) return undefined
-    }
+    const iso = toIso(date)
+    const floor = range ? maxIso(todayIso(), toIso(range.from)) : todayIso()
+    if (iso < floor) return undefined
+    if (range && iso > toIso(range.to)) return undefined
     return iso
   }
   let von = clamp(one(q.von))

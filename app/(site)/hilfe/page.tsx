@@ -21,6 +21,10 @@ import { Reveal } from "@/components/brand/reveal"
 import { FaqAccordion } from "@/components/listings/faq-accordion"
 
 export const metadata: Metadata = {
+  /* The only indexable page on the site without one, while carrying FAQPage
+     markup and being explicitly allowed in robots.ts — so every ?utm_-tagged
+     link to it was a second, uncanonicalised copy. */
+  alternates: { canonical: "/hilfe" },
   title: "Hilfe",
   description:
     "Antworten auf die häufigsten Fragen zu CoArea: Fläche finden, anfragen und buchen, Preise und Bezahlung, eigene Fläche anbieten, Sicherheit und Konto.",

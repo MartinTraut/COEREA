@@ -1,5 +1,6 @@
 import { Quote, Star } from "lucide-react"
 
+import { cn } from "@/lib/utils"
 import type { Listing } from "@/lib/listings"
 import { LISTINGS, otherListingsByHost } from "@/lib/listings"
 import { Reveal } from "@/components/brand/reveal"
@@ -100,8 +101,22 @@ export function DetailSections({
                   className="stars-pop flex gap-0.5"
                   aria-label={`${listing.rating.toFixed(1).replace(".", ",")} von 5 Sternen`}
                 >
+                  {/* Every one of these was filled regardless of the rating, so
+                      a 4,3 sat next to five full stars and the picture
+                      contradicted the number beside it — and the aria-label,
+                      which said 4,3 all along. `listing-card.tsx` already draws
+                      it correctly; same rule here. */}
                   {Array.from({ length: 5 }).map((_, s) => (
-                    <Star key={s} className="h-4 w-4 fill-gold text-gold" aria-hidden />
+                    <Star
+                      key={s}
+                      className={cn(
+                        "h-4 w-4",
+                        s < Math.round(listing.rating)
+                          ? "fill-gold text-gold"
+                          : "fill-transparent text-gold/45",
+                      )}
+                      aria-hidden
+                    />
                   ))}
                 </span>
                 <span className="mt-1.5 block text-xs text-ink">

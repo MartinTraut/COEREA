@@ -9,6 +9,7 @@ import {
   eur,
   formatGermanDate,
   isPriceUnit,
+  parseAmount,
   parseIsoDate,
   quote,
   SERVICE_FEE_RATE,
@@ -66,6 +67,10 @@ export function BookingForm({
   const fromDate = von ? parseIsoDate(von) : null
   const toDate = bis ? parseIsoDate(bis) : null
   const unit = isPriceUnit(listing.price.unit) ? listing.price.unit : null
+
+  /* „auf Anfrage" is a property of the LISTING, not of what the visitor has
+     filled in — see the note at the price block below. */
+  const priceOnRequest = !unit || parseAmount(listing.price.amount) === null
 
   const current = useMemo(() => {
     if (!unit || !fromDate || !toDate || toDate < fromDate) return null
@@ -228,15 +233,30 @@ export function BookingForm({
               />
             </>
           ) : (
+            /*
+              Two different reasons landed on one sentence, and for one of them
+              it was false. `current` is null both when the area has no numeric
+              price AND when no period was carried over — so a 499 €/Monat area
+              opened without query parameters announced „Für diese Fläche wird
+              der Preis individuell abgestimmt", which contradicts its own
+              listing. Only the first case is a price statement; the second is a
+              missing input, and the alert below already says so.
+            */
             <p className="text-sm text-ink">
-              Für diese Fläche wird der Preis individuell abgestimmt. Wähle einen{" "}
-              <Link
-                href={`/flaechen/${listing.slug}#verfuegbarkeit`}
-                className="text-teal underline underline-offset-2"
-              >
-                Zeitraum
-              </Link>
-              , um den Betrag zu berechnen.
+              {priceOnRequest ? (
+                "Für diese Fläche wird der Preis individuell abgestimmt. Den Betrag stimmst Du direkt mit dem Host ab."
+              ) : (
+                <>
+                  Sobald ein Zeitraum feststeht, rechnen wir den Betrag hier aus.{" "}
+                  <Link
+                    href={`/flaechen/${listing.slug}#verfuegbarkeit`}
+                    className="text-teal underline underline-offset-2"
+                  >
+                    Zeitraum wählen
+                  </Link>
+                  .
+                </>
+              )}
             </p>
           )}
         </div>

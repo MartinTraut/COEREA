@@ -165,9 +165,31 @@ export function quote(listing: Listing, units: number): Quote | null {
 
   const count = Math.max(1, Math.round(units))
   const unit = listing.price.unit
-  const net = unitPrice * count
-  const serviceFee = net * SERVICE_FEE_RATE
-  const vat = (net + serviceFee) * VAT_RATE
+
+  /*
+    Rounded to whole cents HERE, not on the way to the screen.
+
+    The three lines and the total used to be carried at full float precision and
+    rounded individually by `eur()` at the moment of printing. So the summary
+    showed three rounded figures and a total that was the sum of the UNROUNDED
+    ones, and in 110 of 10.000 price/duration combinations across the site's own
+    data the column did not add up: „3.050,00 + 274,50 + 631,66" printed under a
+    total of „3.956,15", one cent short of its own sum. A visitor who checks the
+    arithmetic on an invoice-looking block finds an error, and there is no
+    explaining it away as a display artefact — a money figure that cannot be
+    reproduced from the figures above it is simply wrong.
+
+    Cents are the unit money actually comes in, so each line is rounded to a cent
+    and the total is the sum of the lines. That the fee and the tax are each
+    rounded before the tax is applied to the fee is the standard German
+    treatment: VAT is charged on the invoiced net plus the invoiced fee, not on
+    unrounded intermediates.
+  */
+  const cents = (value: number) => Math.round(value * 100) / 100
+
+  const net = cents(unitPrice * count)
+  const serviceFee = cents(net * SERVICE_FEE_RATE)
+  const vat = cents((net + serviceFee) * VAT_RATE)
 
   return {
     unit,
@@ -177,7 +199,7 @@ export function quote(listing: Listing, units: number): Quote | null {
     net,
     serviceFee,
     vat,
-    total: net + serviceFee + vat,
+    total: cents(net + serviceFee + vat),
   }
 }
 

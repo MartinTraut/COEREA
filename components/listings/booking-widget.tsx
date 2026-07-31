@@ -1,12 +1,13 @@
 "use client"
 
-import { useId, useMemo, useState } from "react"
+import { useEffect, useId, useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 
 import type { Listing } from "@/lib/listings"
 import { categoryBySlug, USAGE_OPTIONS } from "@/lib/categories"
 import {
   eur,
+  formatGermanDate,
   isPriceUnit,
   listingRange,
   maxIso,
@@ -28,17 +29,50 @@ import {
 const fieldCls =
   "w-full border border-input bg-white px-3.5 py-3 text-sm text-ink-900 outline-none transition-colors hover:border-teal/50 focus-visible:border-teal focus-visible:outline-none"
 
+/* ISO day → „01.02.2026". The picker speaks ISO, the visitor does not. */
+const de = (iso: string | undefined) => {
+  const date = iso ? parseIsoDate(iso) : null
+  return date ? formatGermanDate(date) : ""
+}
+
 export function BookingWidget({ listing }: { listing: Listing }) {
   const router = useRouter()
   const fieldId = useId()
   const range = listingRange(listing)
   const unit = isPriceUnit(listing.price.unit) ? listing.price.unit : null
 
-  /* Prefilled with the first day that is actually bookable, not with the first
-     day of the host's window — that one can lie in the past. */
-  const start = range ? maxIso(toIso(range.from), todayIso()) : todayIso()
-  const [from, setFrom] = useState(start)
-  const [to, setTo] = useState(start)
+  /*
+    Prefilled with the first day that is actually bookable, not with the first
+    day of the host's window — that one can lie in the past.
+
+    „Today" cannot be read while rendering. These pages are prerendered through
+    `generateStaticParams`, so `todayIso()` in the render body is the BUILD date:
+    it is baked into the delivered HTML as both the prefill and the `min`, and it
+    stays there until the next deploy. Two consequences, both real — the client
+    renders a different value than the server sent (hydration mismatch), and a
+    visitor arriving weeks later is offered a floor that has long since passed,
+    so the picker accepts a date in the past and the widget prices it.
+
+    So the first render uses only listing data, which is build-stable, and the
+    clock is read once on the client. `today` is empty until then.
+  */
+  const windowFrom = range ? toIso(range.from) : ""
+  const [today, setToday] = useState("")
+  useEffect(() => {
+    setToday(todayIso())
+  }, [])
+
+  const start = today ? maxIso(windowFrom, today) : windowFrom
+  const [from, setFrom] = useState(windowFrom)
+  const [to, setTo] = useState(windowFrom)
+
+  /* Once the real date is known, lift a prefill that the build left in the past. */
+  useEffect(() => {
+    if (!today) return
+    const floor = maxIso(windowFrom, today)
+    setFrom((f) => (f && f >= floor ? f : floor))
+    setTo((t) => (t && t >= floor ? t : floor))
+  }, [today, windowFrom])
   const [users, setUsers] = useState("2")
   const [usage, setUsage] = useState(
     categoryBySlug(listing.category)?.usage ?? USAGE_OPTIONS[0]!,
@@ -49,11 +83,6 @@ export function BookingWidget({ listing }: { listing: Listing }) {
   const toDate = parseIsoDate(to)
   const rangeInvalid = Boolean(fromDate && toDate && toDate < fromDate)
 
-  const current = useMemo(() => {
-    if (!unit || !fromDate || !toDate || rangeInvalid) return null
-    return quote(listing, unitsBetween(fromDate, toDate, unit))
-  }, [listing, unit, fromDate, toDate, rangeInvalid])
-
   /*
     The window starts at the later of „when the host opens the area" and
     „today". Without the second half, an area whose season began in February
@@ -63,10 +92,37 @@ export function BookingWidget({ listing }: { listing: Listing }) {
   const min = start
   const max = range ? toIso(range.to) : undefined
 
+  /*
+    `min` and `max` are only hints to the date picker, and the form carries
+    `noValidate`, so a typed date outside the window sailed through: the widget
+    priced „15.01.2027" on an area open until 31.10., showed a total across
+    several months, and the summary page — which does check — then answered „Für
+    diese Anfrage fehlt der Zeitraum". The visitor saw a price, pressed on, and
+    arrived at a page saying they had chosen nothing. The two screens have to
+    agree on what a valid range is, so the check happens here too.
+
+    An area whose season is over is a separate case: with `range.to` in the past
+    the field gets `min` later than `max` and there is no date left to pick.
+    Saying so is better than a picker that silently refuses every choice.
+  */
+  const seasonOver = Boolean(max && today && max < today)
+  const outsideWindow = Boolean(
+    !seasonOver && ((min && from < min) || (max && to > max)),
+  )
+  const blocked = rangeInvalid || outsideWindow || seasonOver
+
+  /* No total for a range the form would refuse to send. Carrying a figure to a
+     page that then denies the range exists is the confusion this whole check
+     is here to end. */
+  const current = useMemo(() => {
+    if (!unit || !fromDate || !toDate || blocked) return null
+    return quote(listing, unitsBetween(fromDate, toDate, unit))
+  }, [listing, unit, fromDate, toDate, blocked])
+
   function submit(e: React.FormEvent) {
     e.preventDefault()
     setTouched(true)
-    if (!fromDate || !toDate || rangeInvalid) return
+    if (!fromDate || !toDate || blocked) return
     const params = new URLSearchParams({ von: from, bis: to, users, nutzung: usage })
     router.push(`/flaechen/${listing.slug}/buchen?${params}`)
   }
@@ -155,11 +211,19 @@ export function BookingWidget({ listing }: { listing: Listing }) {
             </select>
           </Row>
 
-          {touched && (!fromDate || !toDate || rangeInvalid) ? (
+          {/* The season being over is not the visitor's mistake, so it is stated
+              whether or not they have tried to submit. */}
+          {seasonOver ? (
+            <p role="status" className="field-error text-sm">
+              Diese Fläche ist für die aktuelle Saison nicht mehr buchbar.
+            </p>
+          ) : touched && (!fromDate || !toDate || blocked) ? (
             <p role="alert" className="field-error text-sm">
               {rangeInvalid
                 ? "Das Enddatum liegt vor dem Startdatum."
-                : "Bitte wähle einen Zeitraum aus."}
+                : outsideWindow
+                  ? `Bitte wähle einen Zeitraum zwischen ${de(min)} und ${de(max)}.`
+                  : "Bitte wähle einen Zeitraum aus."}
             </p>
           ) : null}
 

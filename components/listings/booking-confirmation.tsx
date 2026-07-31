@@ -17,6 +17,33 @@ import { BOOKING_KEY, type BookingRecord } from "@/components/listings/booking-f
  * says so and points back into the flow instead of confirming a booking that
  * never happened.
  */
+/*
+  `JSON.parse(raw) as BookingRecord` was a promise to the type checker, not a
+  check. The try/catch only covered malformed JSON, so any well-formed object
+  from an older build of this prototype — or one a visitor typed into the
+  console — walked straight through: the render below calls `record.name.split(" ")`,
+  and a record without `name` threw a TypeError that took the whole page down to
+  the error boundary. sessionStorage is untrusted input like any other.
+
+  Every field is read as a string because every field is printed as one.
+*/
+function asRecord(value: unknown, slug: string): BookingRecord | null {
+  if (!value || typeof value !== "object") return null
+  const r = value as Record<string, unknown>
+  const keys: (keyof BookingRecord)[] = [
+    "slug",
+    "title",
+    "name",
+    "email",
+    "period",
+    "users",
+    "usage",
+    "total",
+  ]
+  if (!keys.every((k) => typeof r[k] === "string")) return null
+  return r.slug === slug ? (r as BookingRecord) : null
+}
+
 export function BookingConfirmation({ listing }: { listing: Listing }) {
   const [state, setState] = useState<{ record: BookingRecord | null } | null>(null)
 
@@ -30,8 +57,8 @@ export function BookingConfirmation({ listing }: { listing: Listing }) {
     const id = setTimeout(() => {
       try {
         const raw = window.sessionStorage.getItem(BOOKING_KEY)
-        const parsed = raw ? (JSON.parse(raw) as BookingRecord) : null
-        setState({ record: parsed && parsed.slug === listing.slug ? parsed : null })
+        const parsed: unknown = raw ? JSON.parse(raw) : null
+        setState({ record: asRecord(parsed, listing.slug) })
       } catch {
         setState({ record: null })
       }
