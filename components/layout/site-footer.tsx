@@ -30,15 +30,29 @@ function Column({
               — same movement language as the header nav, and it costs a
               transform rather than a repaint of the text box.
             */}
+            {/*
+              44px tall on a phone, unchanged from `lg` up.
+
+              Twelve links per page at 23px, on all 19 routes — under the 24px
+              WCAG asks for and far under what a thumb hits, with „Impressum"
+              and „Datenschutzerklärung" stacked 6px apart. Hitting the wrong
+              legal page is the most likely mis-tap on the whole site.
+
+              The height goes on the link, the underline stays on an inner span:
+              anchored to the 44px box it would have drawn 10px below the text,
+              detached from the word it belongs to.
+            */}
             <Link
               href={l.href}
-              className="group relative inline-block text-[0.9375rem] text-white/85 transition-colors hover:text-white"
+              className="group inline-flex min-h-11 items-center text-[0.9375rem] text-white/85 transition-colors hover:text-white lg:min-h-0"
             >
-              {l.label}
-              <span
-                aria-hidden
-                className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-white/70 transition-transform duration-300 ease-out group-hover:scale-x-100"
-              />
+              <span className="relative">
+                {l.label}
+                <span
+                  aria-hidden
+                  className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-white/70 transition-transform duration-300 ease-out group-hover:scale-x-100"
+                />
+              </span>
             </Link>
           </li>
         ))}

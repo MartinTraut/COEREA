@@ -132,7 +132,7 @@ export function Newsletter() {
                 aria-describedby={state === "invalid" ? `${id}-err` : undefined}
                 /* Square: the wrapper owns the corners. `outline-none` is safe
                    here only because the wrapper carries a visible focus ring. */
-                className="min-w-0 flex-1 rounded-none border-0 bg-white px-4 py-3.5 text-sm text-ink-900 outline-none placeholder:text-ink/70 focus-visible:outline-none"
+                className="min-w-0 flex-1 rounded-none border-0 bg-white px-4 py-3.5 text-sm text-ink-900 outline-none placeholder:text-ink focus-visible:outline-none"
               />
               <button
                 type="submit"

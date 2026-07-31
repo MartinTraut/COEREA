@@ -281,7 +281,7 @@ export function Discover({
                   setPageNo(1)
                 }}
                 placeholder="Ort, Stadt oder Fläche suchen…"
-                className="h-full min-h-12 w-full bg-transparent py-2.5 pr-4 pl-11 text-[15px] text-ink-900 outline-none placeholder:text-ink/55 focus-visible:outline-none"
+                className="h-full min-h-12 w-full bg-transparent py-2.5 pr-4 pl-11 text-[15px] text-ink-900 outline-none placeholder:text-ink focus-visible:outline-none"
               />
               {/* Underline that grows from the left while the field has focus —
                   feedback without adding a box to the bar. */}

@@ -297,7 +297,7 @@ function Field({
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full truncate bg-transparent pr-3 text-[clamp(0.9375rem,0.4vw+0.65rem,1.125rem)] text-ink-900 outline-none placeholder:text-ink/70 focus-visible:outline-none"
+        className="w-full truncate bg-transparent pr-3 text-[clamp(0.9375rem,0.4vw+0.65rem,1.125rem)] text-ink-900 outline-none placeholder:text-ink focus-visible:outline-none"
       />
     </label>
   )

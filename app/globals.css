@@ -127,9 +127,27 @@
         var(--teal) 48%,
         var(--teal-700) 100%
     );
+    /*
+      Every surface that carries white body text — footer, benefits band, the
+      newsletter card, the CTA bands — is painted with this, so its lightest
+      point decides whether that text is readable.
+
+      It used to start at `--teal` (#008a84). White on that is 4,23 : 1 and the
+      design layers opacity on top of it: `text-white/85` came out at 3,48 and
+      the footer's copyright at `text-white/70` at 2,85, against the 4,5 : 1 that
+      normal-size text has to clear. Everything above the 45 % stop failed, on
+      all 19 routes.
+
+      Starting at `--teal-700` fixes the whole family at once and keeps the
+      design's own device intact: white is 6,94, /85 is 5,50, /80 is 5,05 and
+      /75 is 4,67 — so the opacity steps still express hierarchy instead of
+      having to be flattened to solid white everywhere. The band is darker than
+      it was; the lift from the top-left corner comes from `.mesh-dark`, which
+      washes it with white at 16 %, not from the gradient's first stop.
+    */
     --grad-teal-deep: linear-gradient(
         160deg,
-        var(--teal) 0%,
+        var(--teal-700) 0%,
         var(--teal-700) 45%,
         var(--teal-900) 100%
     );
@@ -192,7 +210,15 @@
       darkening it keeps the edge quiet while making it exist.
     */
     --border-cream: color-mix(in srgb, var(--teal) 18%, #e4e4e4);
-    --input: #dbdbdb;
+    /*
+      The field outline is the ONLY thing that says „you can type here": every
+      input on the site is a white box on a white or cream ground, with no fill
+      of its own. At #dbdbdb it sat at 1,38 : 1 against that ground, where
+      WCAG 1.4.11 asks 3 : 1 for a boundary that carries meaning — on a phone,
+      outdoors, the fields simply were not there. #949494 is 3,03 : 1 and still
+      a hairline rather than a frame.
+    */
+    --input: #949494;
     --ring: var(--teal);
     --chart-1: var(--teal);
     --chart-2: #6bbcae;
@@ -321,6 +347,28 @@
   textarea,
   select {
     border-radius: var(--radius-control);
+  }
+  /*
+    Nothing on a phone may drop below 16px inside a field.
+
+    Safari on iOS zooms the page in whenever a focused field's text is smaller
+    than 16px, and it does not zoom back out afterwards — the visitor is left on
+    a magnified, sideways-scrolling layout and has to pinch their way back. Every
+    field on this site was under that line: the hero search at 15px, the filter
+    bar, the booking form, the login and the contact form all at 14–15px. That is
+    every conversion path the prototype has.
+
+    A single rule at the base layer rather than a correction at ~20 call sites,
+    and deliberately scoped to the width where the behaviour exists: the fields
+    keep their designed size from `sm` upwards, where the desktop composition
+    depends on it.
+  */
+  @media (max-width: 639px) {
+    input:not([type="checkbox"]):not([type="radio"]),
+    textarea,
+    select {
+      font-size: 1rem;
+    }
   }
   /*
     One focus ring for the whole site. Keyboard users get a visible, on-brand
@@ -897,7 +945,14 @@
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--teal);
+    /*
+      `--teal` on white is 4,23 : 1. That clears the 3 : 1 that large text needs,
+      which is why the framed headings may keep it — but an eyebrow is 12px in
+      caps, the hardest thing on the page to read, and it needs 4,5 : 1. The
+      darker step of the same brand colour is 6,94 : 1 and, at this size, is not
+      perceptibly a different teal.
+    */
+    color: var(--teal-700);
   }
   .eyebrow::before {
     content: "";
