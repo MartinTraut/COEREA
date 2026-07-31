@@ -79,19 +79,31 @@ export const QUARTER_MONTHS = ["April", "Mai", "Juni"]
   figure. Real amounts let the chart carry a euro axis, and the headline total
   is summed from them rather than typed out a second time.
 */
-export const EARNINGS_BY_MONTH: { month: string; euros: number }[] = [
-  { month: "J", euros: 92 },
-  { month: "F", euros: 128 },
-  { month: "M", euros: 215 },
-  { month: "A", euros: 284 },
-  { month: "M", euros: 361 },
-  { month: "J", euros: 398 },
-  { month: "J", euros: 398 },
-  { month: "A", euros: 0 },
-  { month: "S", euros: 0 },
-  { month: "O", euros: 0 },
-  { month: "N", euros: 0 },
-  { month: "D", euros: 0 },
+
+/*
+  `month` is the initial under the bar, where only one character fits; `name` is
+  the readable form. Twelve axis labels reading „J F M A M J J A S O N D" are
+  unambiguous as a sequence and useless as individual labels, so anywhere the
+  months are read one at a time — the list under the chart, the bar tooltips —
+  uses the name.
+*/
+export const EARNINGS_BY_MONTH: {
+  month: string
+  name: string
+  euros: number
+}[] = [
+  { month: "J", name: "Januar", euros: 92 },
+  { month: "F", name: "Februar", euros: 128 },
+  { month: "M", name: "März", euros: 215 },
+  { month: "A", name: "April", euros: 284 },
+  { month: "M", name: "Mai", euros: 361 },
+  { month: "J", name: "Juni", euros: 398 },
+  { month: "J", name: "Juli", euros: 398 },
+  { month: "A", name: "August", euros: 0 },
+  { month: "S", name: "September", euros: 0 },
+  { month: "O", name: "Oktober", euros: 0 },
+  { month: "N", name: "November", euros: 0 },
+  { month: "D", name: "Dezember", euros: 0 },
 ]
 
 export const EARNINGS_TOTAL = EARNINGS_BY_MONTH.reduce((sum, m) => sum + m.euros, 0)

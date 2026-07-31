@@ -179,12 +179,23 @@ export function ListingGallery({
                   the tile shows.
                 */}
                 {last ? (
+                  /*
+                    On a 360px phone the tile is about 158px wide and this label
+                    needs some 175px, so the button pushed out past its own tile
+                    and over the one beside it. The wording shortens below `sm`
+                    rather than the type — „alle Fotos" says the same thing, and
+                    the full sentence stays where there is room for it.
+                  */
                   <button
                     type="button"
                     onClick={() => open(src ? photos.indexOf(src) : undefined)}
-                    className="btn btn-teal absolute inset-x-2 bottom-2 z-10 px-3 py-2 text-xs"
+                    aria-label={`Alle ${photos.length} Fotos anzeigen`}
+                    className="btn btn-teal absolute inset-x-2 bottom-2 z-10 min-w-0 px-2.5 py-2 text-xs sm:px-3"
                   >
-                    <Images className="h-3.5 w-3.5" /> alle Fotos anzeigen
+                    <Images className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                    <span className="truncate">
+                      alle Fotos<span className="hidden sm:inline"> anzeigen</span>
+                    </span>
                   </button>
                 ) : null}
               </div>

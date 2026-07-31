@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useId, useState } from "react"
+import { useEffect, useId, useRef, useState } from "react"
 import { Check, Send } from "lucide-react"
 
 import { TabHeading } from "@/components/brand/tab-heading"
@@ -20,6 +20,18 @@ export function Newsletter() {
   const id = useId()
   const [email, setEmail] = useState("")
   const [state, setState] = useState<"idle" | "invalid" | "done">("idle")
+  const doneRef = useRef<HTMLDivElement>(null)
+
+  /*
+    Submitting removes the form, and with it the button that was focused — the
+    focus ring then falls back to `<body>`, so a keyboard visitor's next Tab
+    restarts at the top of the page and a screen reader is left in a document
+    that has silently changed under it. The confirmation takes the focus
+    instead: it is where the story continues.
+  */
+  useEffect(() => {
+    if (state === "done") doneRef.current?.focus()
+  }, [state])
 
   function submit(e: React.FormEvent) {
     e.preventDefault()
@@ -76,8 +88,10 @@ export function Newsletter() {
 
         {state === "done" ? (
           <div
+            ref={doneRef}
             role="status"
-            className="flex w-full items-start gap-3 rounded-[var(--radius-control)] border border-teal/25 border-l-[3px] border-l-teal bg-teal-50 px-5 py-4 md:flex-1"
+            tabIndex={-1}
+            className="flex w-full items-start gap-3 rounded-[var(--radius-control)] border border-teal/25 border-l-[3px] border-l-teal bg-teal-50 px-5 py-4 outline-none focus-visible:ring-2 focus-visible:ring-white/60 md:flex-1"
           >
             <Check className="mt-0.5 h-5 w-5 shrink-0 text-teal" />
             {/*

@@ -50,20 +50,33 @@ export function ShareButton({
   }
 
   return (
-    <button
-      type="button"
-      onClick={share}
-      aria-label={copied ? "Link kopiert" : `„${title}“ teilen`}
-      className={cn(
-        "grid min-h-11 min-w-11 place-items-center rounded-[var(--radius-control)] text-teal transition-colors hover:text-teal-600",
-        className,
-      )}
-    >
-      {copied ? (
-        <Check className="h-6 w-6" aria-hidden />
-      ) : (
-        <Share2 className="h-6 w-6" aria-hidden />
-      )}
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={share}
+        aria-label={`„${title}“ teilen`}
+        className={cn(
+          "grid min-h-11 min-w-11 place-items-center rounded-[var(--radius-control)] text-teal transition-colors hover:text-teal-600",
+          className,
+        )}
+      >
+        {copied ? (
+          <Check className="h-6 w-6" aria-hidden />
+        ) : (
+          <Share2 className="h-6 w-6" aria-hidden />
+        )}
+      </button>
+      {/*
+        The confirmation used to live in the button's own `aria-label`, which is
+        the one place it could not be heard: renaming a control the visitor has
+        just activated is not an announcement, and after two seconds the name
+        silently changed back. The tick is the sighted feedback; this live region
+        is the same message for everyone else, and it is the button's name that
+        stays constant.
+      */}
+      <span role="status" aria-live="polite" className="sr-only">
+        {copied ? "Link kopiert." : ""}
+      </span>
+    </>
   )
 }

@@ -466,10 +466,14 @@ export function Discover({
                 }}
               />
             ) : null}
+            {/* Sits in a row of chips a thumb is already aiming at, at 12px and
+                16px tall — under the 24px WCAG 2.5.8 asks for, and the two
+                nearest targets clear a filter each. The box grows, the type
+                does not. */}
             <button
               type="button"
               onClick={resetFilters}
-              className="text-xs font-semibold text-ink underline-offset-4 transition-colors hover:text-teal hover:underline"
+              className="inline-flex min-h-9 items-center px-1 text-xs font-semibold text-ink underline-offset-4 transition-colors hover:text-teal hover:underline"
             >
               alle zurücksetzen
             </button>

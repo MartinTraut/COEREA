@@ -86,7 +86,10 @@ export function DashboardCharts() {
             Deine diesjährigen Einnahmen
           </h3>
           <p className="mt-2 text-[0.8125rem] text-ink">
-            Monatlich in Euro. Fahr über einen Balken für den genauen Betrag.
+            {/* „Fahr über einen Balken für den genauen Betrag" instructed the
+                reader to do the one thing a phone cannot. The amounts are
+                written under the chart now, so the line says where they are. */}
+            Monatlich in Euro, mit den genauen Beträgen unter dem Diagramm.
           </p>
           <EarningsChart />
         </article>
@@ -131,7 +134,14 @@ function Figure({
 
 const W = 620
 const H = 330
-const PAD = { left: 54, right: 18, top: 18, bottom: 42 }
+/*
+  `right: 18` clipped the last month label. The three names are centred on their
+  data points and the last point sits exactly at `W - PAD.right`, so half of
+  „Juni" fell outside the viewBox — and `.chart-label` is 23px below 640px
+  width, which is where it showed as „Jun". The padding now clears half of the
+  widest month name at that size.
+*/
+const PAD = { left: 54, right: 34, top: 18, bottom: 42 }
 const Y_TICKS = [0, 100, 200, 300]
 const Y_MAX = 320
 
@@ -313,7 +323,7 @@ function EarningsChart() {
                   fill="url(#coarea-bar)"
                   className="transition-opacity duration-200 hover:opacity-80"
                 >
-                  <title>{`${m.month}: ${eur(m.euros)}`}</title>
+                  <title>{`${m.name}: ${eur(m.euros)}`}</title>
                 </rect>
               ) : null}
               <text
@@ -329,6 +339,32 @@ function EarningsChart() {
           )
         })}
       </svg>
+
+      {/*
+        The amounts, in text.
+
+        Every euro figure in this chart lived in an SVG `<title>`, which is a
+        hover tooltip — and a phone has no hover. On the device the dashboard is
+        most likely to be opened on, the twelve bars carried no readable number
+        at all: you could see that June was the best month and not what June was
+        worth. There is no touch equivalent of a tooltip worth building here, so
+        the values are simply written down.
+
+        Months with nothing in them are left out rather than listed as „0 €":
+        the empty tracks in the chart already say the year is not over.
+      */}
+      <figcaption className="mt-5 border-t border-border pt-4">
+        <dl className="flex flex-wrap gap-x-5 gap-y-2 text-[0.8125rem]">
+          {EARNINGS_BY_MONTH.filter((m) => m.euros > 0).map((m, i) => (
+            <div key={`${m.name}-${i}`} className="flex items-baseline gap-1.5">
+              <dt className="text-muted-foreground">{m.name}</dt>
+              <dd className="font-semibold text-ink-900 tabular-nums">
+                {eur(m.euros)}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </figcaption>
     </figure>
   )
 }

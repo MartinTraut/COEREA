@@ -15,6 +15,7 @@ import { ShareButton } from "@/components/listings/share-button"
 import { CategoryStrip } from "@/components/brand/category-strip"
 import { ListingGallery } from "@/components/listings/listing-gallery"
 import { BookingWidget } from "@/components/listings/booking-widget"
+import { MobileBookingBar } from "@/components/listings/mobile-booking-bar"
 import { DetailSections } from "@/components/listings/detail-sections"
 
 export function generateStaticParams() {
@@ -226,6 +227,9 @@ export default async function ListingDetailPage({
 
       {/* Host band + other listings + reviews + FAQ */}
       <DetailSections listing={listing} />
+
+      {/* Phones only — see the component for why. */}
+      <MobileBookingBar listing={listing} />
     </div>
   )
 }

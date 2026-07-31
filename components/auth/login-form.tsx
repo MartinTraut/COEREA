@@ -30,6 +30,9 @@ export function LoginForm() {
   const mailId = useId()
   const passId = useId()
   const nameId = useId()
+  const panelId = useId()
+  const tabId = useId()
+  const termsId = useId()
 
   const [mode, setMode] = useState<Mode>("login")
   const [name, setName] = useState("")
@@ -118,6 +121,19 @@ export function LoginForm() {
         Two modes in one surface, not two pages. Registering is the more
         valuable of the two actions and it is one click away, visible from the
         moment the screen loads, rather than hidden in a sentence underneath.
+
+        ── The tab pattern, completed ──────────────────────────────────────────
+        `role="tablist"` was announced without any of what the role promises:
+        no `tabpanel`, no `aria-controls`, and both tabs in the tab order. A
+        screen reader said „Reiter 1 von 2" and then had nothing to point the
+        visitor at, and keyboard users tabbed through the switch instead of
+        arrowing along it. Either the role goes or the pattern does — and the
+        pattern is the right one here, because the form underneath really is
+        the panel the switch controls.
+
+        Roving tabindex: only the selected tab is a tab stop, the other is
+        reached with ← / →, which also selects it (automatic activation — the
+        panel is cheap to swap, so there is no reason to require Enter).
       */}
       <div
         role="tablist"
@@ -132,9 +148,19 @@ export function LoginForm() {
         ).map(([value, label]) => (
           <button
             key={value}
+            id={`${tabId}-${value}`}
             type="button"
             role="tab"
             aria-selected={mode === value}
+            aria-controls={panelId}
+            tabIndex={mode === value ? 0 : -1}
+            onKeyDown={(e) => {
+              if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return
+              e.preventDefault()
+              const next: Mode = isRegister ? "login" : "register"
+              switchTo(next)
+              document.getElementById(`${tabId}-${next}`)?.focus()
+            }}
             onClick={() => switchTo(value)}
             className={`rounded-[calc(var(--radius-control)-0.2rem)] px-4 py-2.5 transition-colors duration-300 ${
               mode === value
@@ -147,7 +173,14 @@ export function LoginForm() {
         ))}
       </div>
 
-      <form onSubmit={submit} noValidate className="mt-6 grid gap-4">
+      <form
+        id={panelId}
+        role="tabpanel"
+        aria-labelledby={`${tabId}-${mode}`}
+        onSubmit={submit}
+        noValidate
+        className="mt-6 grid gap-4"
+      >
         {isRegister ? (
           <label className="grid gap-1.5" htmlFor={nameId}>
             <span className="text-[13px] font-medium text-muted-foreground">
@@ -196,11 +229,22 @@ export function LoginForm() {
           ) : null}
         </label>
 
-        <label className="grid gap-1.5" htmlFor={passId}>
+        {/*
+          A `<div>`, not a `<label>`: this block holds the „Passwort vergessen?"
+          link and the show/hide button, and a label that wraps other
+          interactive controls makes them part of its own click target — tapping
+          the reveal button also toggled focus into the field, and assistive
+          technology read the link's text as part of the field's name. The
+          caption below is the label and points at the input by id.
+        */}
+        <div className="grid gap-1.5">
           <span className="flex items-baseline justify-between gap-3">
-            <span className="text-[13px] font-medium text-muted-foreground">
+            <label
+              htmlFor={passId}
+              className="text-[13px] font-medium text-muted-foreground"
+            >
               Passwort
-            </span>
+            </label>
             {!isRegister ? (
               /* No reset flow exists, so this is the address that answers. */
               <a
@@ -247,18 +291,32 @@ export function LoginForm() {
               {isRegister ? "Mindestens 8 Zeichen." : "Mindestens 6 Zeichen."}
             </span>
           ) : null}
-        </label>
+        </div>
 
         {isRegister ? (
-          <label className="flex items-start gap-3 text-xs leading-relaxed text-ink">
+          /*
+            Same reason as the password block: the sentence contains two links,
+            so it cannot be a `<label>` — tapping „Datenschutzerklärung" would
+            have toggled the box as well as followed the link, and the box's
+            accessible name would have swallowed both link texts as flat prose.
+            The text names the box through `aria-labelledby` instead, which
+            keeps the name without capturing the taps.
+          */
+          <div className="text-xs leading-relaxed text-ink">
+            <div className="flex items-start gap-3">
+            {/* 24px hit area (WCAG 2.5.8) around a 16px box, pulled back out
+                with a negative margin so the row still lines up on the text. */}
             <input
+              id={termsId}
               type="checkbox"
               checked={terms}
               onChange={(e) => setTerms(e.target.checked)}
               aria-invalid={termsBad || undefined}
-              className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--teal)]"
+              aria-labelledby={`${termsId}-txt`}
+              aria-describedby={termsBad ? `${termsId}-err` : undefined}
+              className="-m-1 mt-[-0.125rem] h-6 w-6 shrink-0 p-1 accent-[var(--teal)]"
             />
-            <span>
+            <span id={`${termsId}-txt`}>
               {/*
                 A privacy notice is information under Art. 13 GDPR, not a
                 document anybody agrees to — „ich akzeptiere die
@@ -284,13 +342,20 @@ export function LoginForm() {
                 Haftungsausschluss
               </Link>
               .
-              {termsBad ? (
-                <span role="alert" className="field-error mt-1 block">
-                  Ohne Zustimmung können wir kein Konto anlegen.
-                </span>
-              ) : null}
             </span>
-          </label>
+            </div>
+            {/* Outside the naming span, or the box would announce its own error
+                message as part of its name. */}
+            {termsBad ? (
+              <span
+                id={`${termsId}-err`}
+                role="alert"
+                className="field-error mt-1 block"
+              >
+                Ohne Zustimmung können wir kein Konto anlegen.
+              </span>
+            ) : null}
+          </div>
         ) : (
           /*
             „Angemeldet bleiben" was a checkbox with no name, no state and no

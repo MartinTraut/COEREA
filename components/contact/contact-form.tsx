@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Send, Mail } from "lucide-react"
 
 import { SITE } from "@/lib/site"
@@ -23,6 +23,19 @@ const labelCls = "text-[13px] font-semibold text-ink-900"
 export function ContactForm() {
   const [handedOff, setHandedOff] = useState(false)
   const [mailHref, setMailHref] = useState("")
+  const doneRef = useRef<HTMLDivElement>(null)
+
+  /*
+    The form is replaced outright, so the focused submit button ceases to exist
+    and focus drops to `<body>`: the next Tab starts again at the site header,
+    and nothing announces that the page has changed. Moving focus to the
+    confirmation keeps the visitor where the instructions are — and those
+    instructions matter here, because handing off to a mail client is the one
+    step that can quietly fail.
+  */
+  useEffect(() => {
+    if (handedOff) doneRef.current?.focus()
+  }, [handedOff])
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -43,7 +56,12 @@ export function ContactForm() {
 
   if (handedOff) {
     return (
-      <div className="flex flex-col items-start gap-3 rounded-[var(--radius)] border border-teal/60 bg-accent p-8">
+      <div
+        ref={doneRef}
+        role="status"
+        tabIndex={-1}
+        className="flex flex-col items-start gap-3 rounded-[var(--radius)] border border-teal/60 bg-accent p-8 outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2"
+      >
         {/*
           Shared plate. This was the only `rounded-full` icon container on the
           homepage, sitting a few centimetres from three 12px-cornered ones in

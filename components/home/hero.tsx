@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   ArrowRight,
   CalendarDays,
@@ -37,6 +37,20 @@ export function Hero() {
   const router = useRouter()
   const [ort, setOrt] = useState("")
   const [datum, setDatum] = useState("")
+
+  /*
+    Today's date, set after mount rather than during render.
+
+    The page is statically generated, so `new Date()` in the render body would
+    be frozen to the build date and every visitor from then on would be offered
+    a floor in the past. Empty on the server and on the first client paint, so
+    the two agree; the browser's own date picker is unrestricted for the split
+    second before this lands, which is harmless.
+  */
+  const [heute, setHeute] = useState("")
+  useEffect(() => {
+    setHeute(new Date().toLocaleDateString("sv-SE"))
+  }, [])
 
   /*
     Both fields carry their value over to /flaechen, which reads `suche` into its
@@ -172,11 +186,18 @@ export function Hero() {
                 className="sm:flex-[1.4_1_0%]"
               />
               <Divider />
+              {/*
+                „Ab welchem Tag?" rather than „Zeitraum": the field takes one
+                date and /flaechen reads it as the earliest day, so „Zeitraum"
+                promised a span that cannot be entered here. The placeholder is
+                gone because a date input never shows one — the browser paints
+                „TT.MM.JJJJ" over it, so the text was written for nobody.
+              */}
               <Field
                 icon={CalendarDays}
-                label="Zeitraum"
-                placeholder="Wähle ein Datum"
+                label="Ab welchem Tag?"
                 type="date"
+                min={heute || undefined}
                 value={datum}
                 onChange={setDatum}
                 className="sm:flex-[1_1_0%]"
@@ -251,14 +272,18 @@ function Field({
   label,
   placeholder,
   type = "text",
+  min,
   value,
   onChange,
   className,
 }: {
   icon: React.ComponentType<{ className?: string; strokeWidth?: number }>
   label: string
-  placeholder: string
+  /** Text fields only — a date input paints its own format hint over it. */
+  placeholder?: string
   type?: "text" | "date" | "number"
+  /** Earliest selectable day, for `type="date"`. */
+  min?: string
   value: string
   onChange: (value: string) => void
   className?: string
@@ -293,7 +318,7 @@ function Field({
       */}
       <input
         type={type}
-        min={type === "number" ? 1 : undefined}
+        min={type === "number" ? 1 : min}
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}

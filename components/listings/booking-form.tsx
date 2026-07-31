@@ -95,12 +95,29 @@ export function BookingForm({
   const nameError = touched && name.trim().length < 2
   const emailError = touched && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())
 
+  /*
+    Send the visitor to the field that stopped the request.
+
+    The name and address sit in the first block of the page and the submit
+    button in the last, roughly two screens below on a phone. Pressing „Anfrage
+    senden" with an empty name did mark the field red — off screen, above the
+    fold that was on it — and from where the visitor stood nothing whatsoever
+    happened. `focus()` scrolls the field into view and puts the caret in it, so
+    the answer to „why did that not work" is on screen and ready to be typed
+    into. A frame's delay, because the error state has to render first.
+  */
+  function focusField(id: string) {
+    requestAnimationFrame(() => document.getElementById(id)?.focus())
+  }
+
   function submit(e: React.FormEvent) {
     e.preventDefault()
     setTouched(true)
+    /* The missing-period notice renders directly above this button, so it needs
+       no scrolling — it is already in view when it appears. */
     if (!hasPeriod) return
-    if (name.trim().length < 2) return
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) return
+    if (name.trim().length < 2) return focusField(nameId)
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) return focusField(mailId)
 
     const record: BookingRecord = {
       slug: listing.slug,

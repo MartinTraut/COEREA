@@ -206,7 +206,14 @@ export function SiteHeader() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-[clamp(1rem,2.9vw,3.5rem)] md:flex">
+        {/* Named, because a page carries several landmarks of this role — this
+            one, the mobile panel's, the pagination on /flaechen, the account bar
+            and the breadcrumbs. Unnamed they are all just „Navigation" in the
+            landmark list, which is no help in choosing between them. */}
+        <nav
+          aria-label="Hauptnavigation"
+          className="hidden items-center gap-[clamp(1rem,2.9vw,3.5rem)] md:flex"
+        >
           {SITE.nav.map((item) => {
             const active = pathname === item.href;
             return (
@@ -314,15 +321,24 @@ export function SiteHeader() {
         is scaled by a scroll-driven CSS animation (see .scroll-progress) — no
         listener, no state, no per-frame work on the main thread.
       */}
-      <div aria-hidden className="relative h-[3px] w-full overflow-hidden">
-        <div
-          className={cn(
-            "absolute inset-0 transition-colors duration-300",
-            scrolled ? "bg-teal/15" : "bg-[#e6e6e6]",
-          )}
-        />
-        <div className="scroll-progress absolute inset-0 [background:var(--grad-teal-bright)]" />
-      </div>
+      {/*
+        Hidden while the mobile menu is up. The header keeps its `z-50` above the
+        panel, so the rule drew a teal reading-progress line straight across the
+        top of the open menu — progress through a page nobody is reading, on top
+        of the thing they are. The panel starts at `top-16`, exactly where the
+        rule sits, so there was no gap to hide in either.
+      */}
+      {open ? null : (
+        <div aria-hidden className="relative h-[3px] w-full overflow-hidden">
+          <div
+            className={cn(
+              "absolute inset-0 transition-colors duration-300",
+              scrolled ? "bg-teal/15" : "bg-[#e6e6e6]",
+            )}
+          />
+          <div className="scroll-progress absolute inset-0 [background:var(--grad-teal-bright)]" />
+        </div>
+      )}
 
       {/* Mobile full-screen teal overlay */}
       {open ? (
@@ -336,7 +352,10 @@ export function SiteHeader() {
               `justify-center` then clipped the navigation at both ends with no way
               to reach it. `my-auto` keeps it centred while there is room and gives
               way to the top edge when there is not. */}
-          <nav className="flex flex-1 flex-col items-center overflow-y-auto overscroll-contain px-6 py-8">
+          <nav
+            aria-label="Hauptnavigation (Menü)"
+            className="flex flex-1 flex-col items-center overflow-y-auto overscroll-contain px-6 py-8"
+          >
             <div className="my-auto flex flex-col items-center gap-7">
               {SITE.nav.map((item) => (
                 <Link

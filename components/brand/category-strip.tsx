@@ -1,5 +1,6 @@
 import { CATEGORIES } from "@/lib/categories"
 import { CategoryDiamond } from "@/components/brand/category-diamond"
+import { EdgeFadeScroller } from "@/components/brand/edge-fade-scroller"
 
 /*
   The row of eight category diamonds that sits under the page heading on both
@@ -9,6 +10,11 @@ import { CategoryDiamond } from "@/components/brand/category-diamond"
   790px of room, so releasing the scroller at `md` (768px) pushed the last one
   past the viewport and gave the whole page a horizontal scrollbar at tablet
   widths.
+
+  On a phone that scroller ended at the viewport edge with nothing to say the
+  remaining categories were there — see EdgeFadeScroller, which supplies the
+  fade. This file stays a server component so `hrefFor` can keep being a
+  function.
 */
 export function CategoryStrip({
   active,
@@ -20,7 +26,7 @@ export function CategoryStrip({
   hrefFor?: (slug: string) => string
 }) {
   return (
-    <div className="-mx-5 overflow-x-auto px-5 [scrollbar-width:none] lg:mx-0 lg:overflow-visible lg:px-0 [&::-webkit-scrollbar]:hidden">
+    <EdgeFadeScroller className="-mx-5 overflow-x-auto px-5 [scrollbar-width:none] lg:mx-0 lg:overflow-visible lg:px-0 [&::-webkit-scrollbar]:hidden">
       <div className="flex min-w-max justify-between gap-3 pb-1 lg:min-w-0">
         {CATEGORIES.map((c) => (
           <CategoryDiamond
@@ -39,6 +45,6 @@ export function CategoryStrip({
           />
         ))}
       </div>
-    </div>
+    </EdgeFadeScroller>
   )
 }
