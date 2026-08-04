@@ -12,7 +12,6 @@ import missionPhoto from "@/public/images/ueberuns-mission.jpg"
 import visionPhoto from "@/public/images/ueberuns-vision.jpg"
 
 import { cn } from "@/lib/utils"
-import { SERVICE_FEE_RATE } from "@/lib/pricing"
 import { TabHeading } from "@/components/brand/tab-heading"
 import { Benefits } from "@/components/home/benefits"
 import { Testimonials } from "@/components/home/testimonials"
@@ -73,10 +72,10 @@ function Photo({
 }
 
 /*
-  The same three figures the Kosten block on /host-werden states, kept in sync
-  through SERVICE_FEE_RATE rather than typed out a second time. Nothing here is
-  a promise the prototype cannot keep: the fee is what `lib/pricing` adds, and
-  the payout line says plainly that no platform payment exists yet.
+  The same three figures the Kosten block on /host-werden states. Nothing here
+  is a promise the prototype cannot keep: the host really is charged nothing —
+  `lib/pricing` builds CoArea's share into the quoted price instead — and the
+  payout line says plainly that no platform payment exists yet.
 */
 const HOST_FACTS = [
   {
@@ -85,9 +84,9 @@ const HOST_FACTS = [
     note: "Keine Grundgebühr, keine Laufzeit, keine Mindestdauer.",
   },
   {
-    label: "Servicegebühr",
-    value: `${Math.round(SERVICE_FEE_RATE * 100)} %`,
-    note: "Trägt die mietende Person zusätzlich. Dein Preis kommt ungeschmälert bei Dir an.",
+    label: "Deine Provision",
+    value: "0 %",
+    note: "Von Deinem Preis geht nichts ab. Du bekommst genau den Betrag, den Du einträgst.",
   },
   {
     label: "Du entscheidest",

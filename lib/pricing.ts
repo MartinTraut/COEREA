@@ -9,10 +9,62 @@
  */
 import type { Listing } from "@/lib/listings"
 
-/** Service fee CoArea charges on top of the host's price, as a fraction. */
+/** Service fee CoArea earns on top of the host's payout, as a fraction. */
 export const SERVICE_FEE_RATE = 0.09
-/** German standard VAT. */
+/** German standard VAT, charged on CoArea's own service. */
 export const VAT_RATE = 0.19
+
+/**
+ * Factor from what the host wants to be paid to what the renter is quoted.
+ *
+ * The VAT is added on top of the fee rather than carved out of it. Carving it
+ * out would leave CoArea with 9 % minus the tax it has to hand on — 7,56 % —
+ * for a fee that is stated as 9 %.
+ */
+const DISPLAY_FACTOR = 1 + SERVICE_FEE_RATE * (1 + VAT_RATE)
+
+/**
+ * The price a renter is quoted for one unit, from the host's payout price.
+ *
+ * A single number, everywhere: card, category grid, detail page, widget,
+ * summary, confirmation. The site used to show the host's price on the card and
+ * add the fee and the tax as their own lines in the booking summary, so the
+ * figure that got somebody to click was never the figure he was asked to
+ * commit to — a 220 € area asked for 285,56 € once a fortnight was picked. The
+ * surcharge is a part of the price now, not a line item appended to it, which
+ * is also what the Preisangabenverordnung asks of a price shown to consumers:
+ * the total, from the first time it appears.
+ *
+ * Rounded up to the whole euro the source data is already written in, so the
+ * grid keeps reading as prices rather than as the output of a calculation.
+ */
+export function displayAmount(hostAmount: number): number {
+  return Math.ceil(hostAmount * DISPLAY_FACTOR)
+}
+
+/** The renter-facing unit price, or null for an area that has no numeric one. */
+export function displayUnitPrice(listing: Listing): number | null {
+  const host = parseAmount(listing.price.amount)
+  return host === null ? null : displayAmount(host)
+}
+
+/**
+ * The unit price as it goes on screen — "249 €", "3.393 €".
+ *
+ * Areas priced on request keep whatever their listing says; inventing a number
+ * for them would be worse than the missing one.
+ */
+export function formatUnitPrice(listing: Listing): string {
+  const value = displayUnitPrice(listing)
+  if (value === null) return listing.price.amount
+  /*
+    A narrow no-break space before the sign, as the listing data carries it —
+    German typography keeps the space (DIN 5008) but must not let the amount and
+    the symbol break across two lines. `toLocaleString` alone gives an ordinary
+    space here.
+  */
+  return `${value.toLocaleString("de-DE")} €`
+}
 
 export type PriceUnit = "Stunde" | "Tag" | "Woche" | "Monat"
 
@@ -40,8 +92,11 @@ export const HOURS_PER_BOOKING_DAY = 8
  * day, week and month can be sorted against each other.
  */
 export function pricePerDay(amount: string, unit: string): number {
-  const value = parseAmount(amount)
-  if (value === null) return Number.POSITIVE_INFINITY
+  const host = parseAmount(amount)
+  if (host === null) return Number.POSITIVE_INFINITY
+  /* Sorted on the quoted price, so „Preis aufsteigend" orders the grid by the
+     figures the grid actually shows. */
+  const value = displayAmount(host)
   const days =
     unit === "Stunde" ? 1 / HOURS_PER_BOOKING_DAY : unit === "Woche" ? 7 : unit === "Monat" ? 30 : 1
   return value / days
@@ -145,14 +200,22 @@ export function unitsBetween(from: Date, to: Date, unit: PriceUnit): number {
 
 export type Quote = {
   unit: PriceUnit
+  /** The renter-facing unit price — the one on the card. */
   unitPrice: number
   units: number
   /** e.g. "14 Tage" — ready to print next to the line total. */
   unitsLabel: string
-  net: number
+  /** What the renter pays. `unitPrice × units`, exactly. */
+  total: number
+  /*
+    The three figures below split the total into who ends up with what. None of
+    them goes on a customer screen — they exist for the payout, the invoice and
+    the host's own dashboard, and they are computed here so that the split can
+    never contradict the total it came out of.
+  */
+  hostPayout: number
   serviceFee: number
   vat: number
-  total: number
 }
 
 /**
@@ -160,8 +223,8 @@ export type Quote = {
  * areas are genuinely "auf Anfrage" and must not be given an invented total.
  */
 export function quote(listing: Listing, units: number): Quote | null {
-  const unitPrice = parseAmount(listing.price.amount)
-  if (unitPrice === null || !isPriceUnit(listing.price.unit)) return null
+  const hostUnitPrice = parseAmount(listing.price.amount)
+  if (hostUnitPrice === null || !isPriceUnit(listing.price.unit)) return null
 
   const count = Math.max(1, Math.round(units))
   const unit = listing.price.unit
@@ -169,7 +232,7 @@ export function quote(listing: Listing, units: number): Quote | null {
   /*
     Rounded to whole cents HERE, not on the way to the screen.
 
-    The three lines and the total used to be carried at full float precision and
+    The lines and the total used to be carried at full float precision and
     rounded individually by `eur()` at the moment of printing. So the summary
     showed three rounded figures and a total that was the sum of the UNROUNDED
     ones, and in 110 of 10.000 price/duration combinations across the site's own
@@ -178,28 +241,36 @@ export function quote(listing: Listing, units: number): Quote | null {
     arithmetic on an invoice-looking block finds an error, and there is no
     explaining it away as a display artefact — a money figure that cannot be
     reproduced from the figures above it is simply wrong.
-
-    Cents are the unit money actually comes in, so each line is rounded to a cent
-    and the total is the sum of the lines. That the fee and the tax are each
-    rounded before the tax is applied to the fee is the standard German
-    treatment: VAT is charged on the invoiced net plus the invoiced fee, not on
-    unrounded intermediates.
   */
   const cents = (value: number) => Math.round(value * 100) / 100
 
-  const net = cents(unitPrice * count)
-  const serviceFee = cents(net * SERVICE_FEE_RATE)
-  const vat = cents((net + serviceFee) * VAT_RATE)
+  /*
+    The total is built UP from the quoted unit price, and the split is derived
+    back DOWN out of it — not the other way round.
+
+    Computing the fee and the tax from the host's price and adding them would
+    land a cent or two away from `unitPrice × units`, because the quoted unit
+    price is rounded up to the whole euro. The renter would then be shown a
+    per-unit price on the card that does not multiply out to the total on the
+    summary, which is the exact defect this model was meant to remove. So the
+    total is the multiplication, and the fee absorbs the rounding.
+  */
+  const unitPrice = displayAmount(hostUnitPrice)
+  const total = cents(unitPrice * count)
+  const hostPayout = cents(hostUnitPrice * count)
+  const feeGross = cents(total - hostPayout)
+  const serviceFee = cents(feeGross / (1 + VAT_RATE))
 
   return {
     unit,
     unitPrice,
     units: count,
     unitsLabel: `${count} ${count === 1 ? unit : PLURAL[unit]}`,
-    net,
+    total,
+    hostPayout,
     serviceFee,
-    vat,
-    total: cents(net + serviceFee + vat),
+    /* The remainder, so the three parts always add back up to `total`. */
+    vat: cents(feeGross - serviceFee),
   }
 }
 

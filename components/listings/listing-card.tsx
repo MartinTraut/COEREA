@@ -4,6 +4,7 @@ import { MapPin, Star, Clock, ArrowUpRight } from "lucide-react"
 import type { Listing } from "@/lib/listings"
 import { categoryBySlug } from "@/lib/categories"
 import { cityLabel } from "@/lib/listings"
+import { formatUnitPrice } from "@/lib/pricing"
 import { AreaChip } from "@/components/brand/area-chip"
 import { ListingImage } from "@/components/brand/listing-image"
 import { SaveButton } from "@/components/listings/save-button"
@@ -99,7 +100,7 @@ export function ListingCard({
               narrow no-break space so the pair can never be split across a line
               break — a regex on `\s` would have eaten exactly that.
             */}
-            {listing.price.amount}
+            {formatUnitPrice(listing)}
             <span className="ml-1 text-[0.62em] font-medium text-white/85">
               / {listing.price.unit}
             </span>

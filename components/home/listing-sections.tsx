@@ -5,6 +5,7 @@ import { LISTINGS, listingBySlug } from "@/lib/listings"
 import type { Listing } from "@/lib/listings"
 import { categoryBySlug } from "@/lib/categories"
 import { cityLabel } from "@/lib/listings"
+import { formatUnitPrice } from "@/lib/pricing"
 import { AreaChip } from "@/components/brand/area-chip"
 import { Reveal } from "@/components/brand/reveal"
 import { ListingCard } from "@/components/listings/listing-card"
@@ -136,7 +137,7 @@ function FeatureCard({ listing }: { listing: Listing }) {
             </span>
           </Link>
           <span className="price text-right text-ink-900">
-            {listing.price.amount}
+            {formatUnitPrice(listing)}
             <span className="mt-1 block text-xs font-medium text-ink">
               pro {listing.price.unit}
             </span>

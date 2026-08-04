@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { ArrowRight } from "lucide-react"
 
 import type { Listing } from "@/lib/listings"
-import { SERVICE_FEE_RATE } from "@/lib/pricing"
+import { formatUnitPrice } from "@/lib/pricing"
 
 /**
  * The booking action, kept within reach on a phone.
@@ -71,11 +71,10 @@ export function MobileBookingBar({ listing }: { listing: Listing }) {
         <div className="container-page flex items-center justify-between gap-4 py-3">
           <span className="min-w-0">
             <span className="price block truncate text-ink-900">
-              {listing.price.amount}
+              {formatUnitPrice(listing)}
             </span>
             <span className="mt-0.5 block truncate text-[0.6875rem] text-muted-foreground">
-              pro {listing.price.unit} · zzgl.{" "}
-              {Math.round(SERVICE_FEE_RATE * 100)} % Servicegebühr
+              pro {listing.price.unit} · Endpreis
             </span>
           </span>
           {/*

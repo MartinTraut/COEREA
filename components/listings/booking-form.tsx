@@ -12,9 +12,7 @@ import {
   parseAmount,
   parseIsoDate,
   quote,
-  SERVICE_FEE_RATE,
   unitsBetween,
-  VAT_RATE,
 } from "@/lib/pricing"
 
 /**
@@ -236,17 +234,20 @@ export function BookingForm({
         <div className="mt-6 grid gap-3 border-t border-border pt-6">
           {current ? (
             <>
+              {/*
+                One line, and it multiplies out to the total below it.
+
+                This block used to append „Servicegebühr (9 %)" and
+                „Umsatzsteuer (19 %)" to the host's price, so the figure that
+                brought somebody here from the grid was never the figure he was
+                asked to commit to. The surcharge now sits inside the quoted
+                price everywhere on the site; `Quote` still carries the split
+                for the payout and the invoice, but it is not a customer-facing
+                number.
+              */}
               <PriceRow
                 label={`${eur(current.unitPrice)} × ${current.unitsLabel}`}
-                value={eur(current.net)}
-              />
-              <PriceRow
-                label={`Servicegebühr (${Math.round(SERVICE_FEE_RATE * 100)} %)`}
-                value={eur(current.serviceFee)}
-              />
-              <PriceRow
-                label={`Umsatzsteuer (${Math.round(VAT_RATE * 100)} %)`}
-                value={eur(current.vat)}
+                value={eur(current.total)}
               />
             </>
           ) : (

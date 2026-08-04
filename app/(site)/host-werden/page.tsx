@@ -92,9 +92,9 @@ const COSTS = [
     note: "Keine Grundgebühr, keine Laufzeit, keine Mindestdauer.",
   },
   {
-    label: "Servicegebühr",
-    value: `${FEE} %`,
-    note: `Wird der mietenden Person zusätzlich zu Deinem Preis berechnet, nicht von ihm abgezogen. Dein Preis kommt ungeschmälert bei Dir an.`,
+    label: "Deine Provision",
+    value: "0 %",
+    note: "Von Deinem Preis geht nichts ab. Unser Anteil steckt im Mietpreis, den wir daraus errechnen.",
   },
   {
     label: "Auszahlung",
@@ -218,7 +218,7 @@ export default function HostWerdenPage() {
           <span className="eyebrow">Kosten</span>
           <h2 className="h-plain mt-4">Was kostet Dich das?</h2>
           <p className="mt-4 max-w-2xl text-[clamp(1rem,0.4vw+0.9rem,1.0625rem)]/[1.65] text-ink">
-            Kurz: das Inserat nichts. Die Servicegebühr trägt die mietende
+            Kurz: nichts. Weder für das Inserat noch für eine Buchung. Die mietende
             Person, nicht Du.
           </p>
         </Reveal>
@@ -237,9 +237,10 @@ export default function HostWerdenPage() {
           <p className="mt-8 flex items-start gap-3 text-[0.9375rem]/[1.6] text-ink">
             <BadgeEuro aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-teal" strokeWidth={1.5} />
             <span>
-              Beispiel: Du setzt 220 € pro Tag an. Die mietende Person sieht
-              220 € plus {FEE} % Servicegebühr und Umsatzsteuer, aufgeschlüsselt
-              vor dem Absenden. Bei Dir kommen die 220 € pro Tag an.
+              Beispiel: Du möchtest 220 € pro Tag verdienen. Ausgeschrieben wird
+              die Fläche für 244 € pro Tag — darin sind unsere {FEE} % und die
+              Umsatzsteuer darauf schon enthalten. Bei Dir kommen die vollen
+              220 € pro Tag an.
             </span>
           </p>
         </Reveal>

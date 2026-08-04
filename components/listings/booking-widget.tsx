@@ -248,7 +248,7 @@ export function BookingWidget({ listing }: { listing: Listing }) {
                       with it. It rendered as „1 Tag· inkl.". */}
                   {current.unitsLabel}
                   {" · "}
-                  inkl. Servicegebühr &amp; MwSt.
+                  Endpreis, keine weiteren Kosten
                 </p>
               ) : null}
             </div>

@@ -1,6 +1,6 @@
 import { SITE } from "@/lib/site"
 import type { Listing } from "@/lib/listings"
-import { parseAmount } from "@/lib/pricing"
+import { displayAmount, parseAmount } from "@/lib/pricing"
 
 /**
  * Schema.org node builders.
@@ -29,7 +29,12 @@ const UNIT_CODE: Record<string, string> = {
 }
 
 /**
- * "2,50 €" → 2.5 · "1600 €" → 1600 · "auf Anfrage" → undefined
+ * The price to publish in an Offer: "220 €" → 244 · "auf Anfrage" → undefined
+ *
+ * The quoted price, not the host's payout price. A structured-data price that
+ * undercuts the page it describes is the version of this mistake with the
+ * highest cost — Google prints it in the search result, and the visitor arrives
+ * on a page that asks for more than the result promised.
  *
  * This duplicated `parseAmount` from lib/pricing and got the one case that
  * matters wrong: for "auf Anfrage" the strip left an empty string, `Number("")`
@@ -38,7 +43,8 @@ const UNIT_CODE: Record<string, string> = {
  * to the single implementation that already handles that.
  */
 export function parsePrice(amount: string): number | undefined {
-  return parseAmount(amount) ?? undefined
+  const host = parseAmount(amount)
+  return host === null ? undefined : displayAmount(host)
 }
 
 /** "85,5 m²" → { value: 85.5, unitCode: "MTK" } · "1,2 ha" → { 1.2, HAR } */

@@ -6,7 +6,7 @@ import { SITE } from "@/lib/site"
 import { cityLabel, LISTINGS, listingBySlug } from "@/lib/listings"
 import { categoryBySlug } from "@/lib/categories"
 import { BOOKING_FAQ } from "@/lib/faq"
-import { SERVICE_FEE_RATE } from "@/lib/pricing"
+import { formatUnitPrice } from "@/lib/pricing"
 import { breadcrumbNode, faqNode, listingNode, webPageNode } from "@/lib/schema"
 import { JsonLd } from "@/components/seo/json-ld"
 import { Breadcrumbs } from "@/components/layout/breadcrumbs"
@@ -178,14 +178,11 @@ export default async function ListingDetailPage({
             />
             <div className="flex items-start justify-between gap-3">
               <span className="price-lead text-ink-900">
-                {listing.price.amount}
+                {formatUnitPrice(listing)}
                 <span className="mt-1.5 block text-xs font-medium text-muted-foreground">
-                  {/* Named rather than alluded to: „zzgl. Servicegebühr" tells
-                      the visitor there is a surcharge without telling him how
-                      much, which is the one thing he wants to know. */}
-                  pro {listing.price.unit}
-                  {" · zzgl. "}
-                  {Math.round(SERVICE_FEE_RATE * 100)} % Servicegebühr &amp; MwSt.
+                  {/* The quoted price is the whole price — there is no line
+                      appended later, so there is nothing to warn about here. */}
+                  pro {listing.price.unit} · Endpreis
                 </span>
               </span>
               <div className="flex shrink-0 gap-1">

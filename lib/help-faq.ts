@@ -94,7 +94,7 @@ export const HELP_GROUPS: readonly HelpGroup[] = [
       },
       {
         q: "Kommt zum Preis des Hosts noch etwas dazu?",
-        a: "Ja, auf den Preis des Hosts kommen eine CoArea-Servicegebühr von 9 Prozent und die gesetzliche Umsatzsteuer. Beides siehst Du in der Buchungsübersicht einzeln aufgeschlüsselt, bevor Du die Anfrage absendest; es gibt keine Position, die erst später auftaucht. Eingezogen wird davon derzeit nichts über die Plattform: Solange die Zahlung über CoArea nicht live ist, rechnest Du direkt mit dem Host ab.",
+        a: "Nein. Der Preis an der Fläche ist der Preis, den Du zahlst — auf der Karte, in der Suche, im Buchungsformular und in der Bestätigung steht dieselbe Zahl. Es kommt keine Servicegebühr, keine Bearbeitungspauschale und keine Umsatzsteuer obendrauf; alles ist bereits eingerechnet. Der einzige Betrag, der sich noch ändern kann, ist der Gesamtbetrag selbst, wenn Du den Zeitraum änderst. Eingezogen wird derzeit nichts über die Plattform: Solange die Zahlung über CoArea nicht live ist, rechnest Du direkt mit dem Host ab.",
       },
     ],
   },
