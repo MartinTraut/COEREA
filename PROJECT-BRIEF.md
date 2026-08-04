@@ -181,6 +181,9 @@ App-Bereich (Host-/User-Dashboard). Das Design im Video ist durchgehend Mobile.
   Host-Dashboard, Nachrichten/Chat, Bewertungen → braucht Backend (DB/Auth/API).
 - **Phase 3 — Betrieb:** Zahlungen, echte Kartendaten, Uploads, Support-Flows.
 
+> Die Architektur für Phase 2/3 (Postgres-Schema, Stripe Connect, Preismodell,
+> Rechtliches) steht in [`docs/BACKEND-ARCHITEKTUR.md`](docs/BACKEND-ARCHITEKTUR.md).
+
 ## 13. Quellen-Status & offene Punkte
 
 **Quellen (vollständig ausgewertet):**
