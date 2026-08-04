@@ -837,6 +837,84 @@
     border-radius: calc(var(--radius) * 2);
   }
 
+  /* ── Anchor targets ────────────────────────────────────────────────────── */
+
+  /*
+    Where a jump link lands.
+
+    The six topic cards on /hilfe are anchors into six sections of that same
+    page, and the host page links straight into one of them. The root
+    deliberately does not scroll smoothly (see the note on `html`), so following
+    one of those links teleports: the viewport is somewhere else, all six
+    sections are built identically, and nothing says which one was asked for.
+    The visitor has to read a heading to find out whether the click worked.
+
+    So the target announces itself twice, on two different clocks:
+
+    · a wash that fades up and back down over ~2,4s — enough to catch the eye
+      at the moment of arrival, gone before it can be mistaken for a permanent
+      state or for a selected/disabled style;
+    · the heading and its rule, which stay marked for as long as the hash does,
+      so „you are here" survives the animation and a later scroll back up.
+
+    The wash sits on a pseudo-element bled outside the box, so nothing about it
+    can move the layout — a padding that appears only on `:target` would shift
+    the page under the reader at the instant he arrives.
+  */
+  .anchor-target {
+    position: relative;
+  }
+  .anchor-target::before {
+    content: "";
+    position: absolute;
+    inset: -1.25rem -1.25rem;
+    z-index: -1;
+    border-radius: calc(var(--radius) * 1.25);
+    background: color-mix(in srgb, var(--teal) 9%, transparent);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .anchor-target:target::before {
+    animation: anchor-wash 2400ms var(--ease-brand) forwards;
+  }
+  @keyframes anchor-wash {
+    0% {
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    62% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  /*
+    The lasting half of the mark — colour on the heading, a longer rule — lives
+    in the utilities layer at the foot of this file, not here. The heading
+    carries `text-ink-900` and the rule carries `w-12`, and a cascade layer
+    beats specificity: anything written here loses to a utility on the same
+    element no matter how many classes the selector has.
+  */
+  .anchor-title,
+  .anchor-rule {
+    transition:
+      color 420ms var(--ease-brand),
+      width 420ms var(--ease-brand);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    /*
+      No pulse, but the arrival still has to be legible — the wash simply stays
+      up instead of animating in and out.
+    */
+    .anchor-target:target::before {
+      animation: none;
+      opacity: 1;
+    }
+  }
+
   /*
     Light. Two soft teal blooms behind a section — this is what makes the cream
     bands read as lit instead of flat grey. Sits on a pseudo-element so the
@@ -1494,5 +1572,20 @@
     .chart-label {
       font-size: 23px;
     }
+  }
+}
+
+/*
+  Anchor-target overrides.
+
+  In the utilities layer purely so they can win against the `text-ink-900` and
+  `w-12` on the elements they target — see the note in `.anchor-target`.
+*/
+@layer utilities {
+  .anchor-target:target .anchor-title {
+    color: var(--teal);
+  }
+  .anchor-target:target .anchor-rule {
+    width: 4.5rem;
   }
 }

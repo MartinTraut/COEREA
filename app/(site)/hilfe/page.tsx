@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import {
-  ArrowRight,
+  ArrowDown,
   CalendarCheck,
   CreditCard,
   Home,
@@ -75,55 +75,98 @@ export default function HilfePage() {
         ]}
       />
 
-      <div className="container-page py-12 md:py-16">
-        <Reveal>
-          <TabHeading as="h1" className="text-[clamp(1.6rem,3vw+0.5rem,2.5rem)]">
-            Wie können wir helfen?
-          </TabHeading>
-          <p className="mt-6 max-w-2xl text-[clamp(1rem,0.5vw+0.85rem,1.1875rem)]/[1.65] text-ink">
-            Such Dir das Thema aus, um das es geht. Jede Frage darunter ist so
-            beantwortet, wie es heute wirklich läuft: Was noch im Aufbau ist,
-            steht als solches da. Kommst Du nicht weiter, sind wir persönlich
-            für Dich da.
-          </p>
-        </Reveal>
+      {/*
+        Opening band on the brand's lit cream, not on the page white.
 
-        {/* Topics — anchors into the groups below */}
-        <Reveal
-          delay={90}
-          className="mt-[clamp(2.5rem,4vw,4rem)] grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          {HELP_GROUPS.map((g) => {
-            const Icon = ICONS[g.id] ?? Search
-            return (
-              <a
-                key={g.id}
-                href={`#${g.id}`}
-                className="surface surface-hover group flex items-start gap-4 p-[clamp(1.25rem,1.8vw,1.75rem)]"
-              >
-                <span className="icon-plate icon-plate-hover">
-                  <Icon strokeWidth={1.5} />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="flex items-center gap-2 text-[1.0625rem] leading-tight font-semibold text-ink-900 transition-colors duration-300 group-hover:text-teal">
-                    {g.title}
-                    <ArrowRight
+        Six white cards on a white page have nothing to separate them but a
+        #e4e4e4 hairline, and the block read as an empty sheet with text on it —
+        the same problem the contact channels had. On cream the cards are the
+        lit thing and the ground is the quiet one, which is the arrangement this
+        site uses wherever a row of cards opens a page.
+      */}
+      <section className="mesh grain relative isolate overflow-hidden border-b border-border/60 bg-cream">
+        {/*
+          The Schraffur under the mesh, at a fraction of its strength.
+
+          Cream plus two soft blooms is a very quiet ground — measured against
+          the white cards on top of it the band was barely a band at all. The
+          hatch is the mark this brand already carries (it comes off the city
+          plans the identity is drawn from), and at 30% it registers as texture
+          rather than as stripes, which is all this needs to stop reading as an
+          empty sheet.
+        */}
+        <span aria-hidden className="hatch-soft absolute inset-0 -z-10 opacity-30" />
+        <div className="relative container-page py-[clamp(2.75rem,4.5vw+0.5rem,5rem)]">
+          <Reveal>
+            <span className="eyebrow">Hilfe</span>
+            <TabHeading as="h1" className="mt-4 text-[clamp(1.6rem,3vw+0.5rem,2.5rem)]">
+              Wie können wir helfen?
+            </TabHeading>
+            <p className="mt-6 max-w-2xl text-[clamp(1rem,0.5vw+0.85rem,1.1875rem)]/[1.65] text-ink">
+              Such Dir das Thema aus, um das es geht. Jede Frage darunter ist so
+              beantwortet, wie es heute wirklich läuft: Was noch im Aufbau ist,
+              steht als solches da. Kommst Du nicht weiter, sind wir persönlich
+              für Dich da.
+            </p>
+          </Reveal>
+
+          {/*
+            Topics — anchors into the groups below.
+
+            Composed as a column rather than icon-beside-text. The old card put
+            a plate on the left and stacked title, lead and count in the narrow
+            strip that was left, so three type sizes fought over about 60% of
+            the card width and the count — the one number that says how much is
+            behind a topic — ended up as the smallest thing on it. Icon and
+            count now share the top line, and the title gets the full width.
+          */}
+          <div className="mt-[clamp(2.5rem,4vw,3.5rem)] grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {HELP_GROUPS.map((g, i) => {
+              const Icon = ICONS[g.id] ?? Search
+              return (
+                <Reveal key={g.id} delay={90 + i * 60} className="h-full">
+                  <a
+                    href={`#${g.id}`}
+                    className="surface surface-on-cream surface-hover group flex h-full flex-col p-[clamp(1.25rem,1.6vw,1.625rem)]"
+                  >
+                    <span
                       aria-hidden
-                      className="h-4 w-4 shrink-0 text-teal transition-transform duration-300 group-hover:translate-x-1"
+                      className="absolute inset-x-0 top-0 h-[3px] [background:linear-gradient(90deg,var(--teal-500),var(--teal))]"
                     />
-                  </span>
-                  <span className="mt-1.5 block text-[0.9375rem]/[1.55] text-ink">
-                    {g.lead}
-                  </span>
-                  <span className="caps-xs mt-3 block text-teal">
-                    {g.items.length} Fragen
-                  </span>
-                </span>
-              </a>
-            )
-          })}
-        </Reveal>
+                    <span className="flex items-center justify-between gap-3">
+                      <span className="icon-plate icon-plate-hover">
+                        <Icon strokeWidth={1.5} />
+                      </span>
+                      <span className="caps-xs rounded-[var(--radius-pill)] bg-teal-50 px-3 py-1.5 text-teal ring-1 ring-teal/15 ring-inset">
+                        {g.items.length} Fragen
+                      </span>
+                    </span>
 
+                    <span className="mt-5 flex items-center gap-2 text-[clamp(1.0625rem,0.3vw+0.95rem,1.1875rem)] leading-tight font-semibold text-ink-900 transition-colors duration-300 group-hover:text-teal">
+                      {g.title}
+                      {/*
+                        Down, not right. These six do not leave the page — they
+                        jump further down it, and a horizontal arrow promised a
+                        navigation that never happened. The nudge follows the
+                        direction of travel for the same reason.
+                      */}
+                      <ArrowDown
+                        aria-hidden
+                        className="h-4 w-4 shrink-0 text-teal transition-transform duration-300 group-hover:translate-y-1"
+                      />
+                    </span>
+                    <span className="mt-2 block text-[0.9375rem]/[1.55] text-ink">
+                      {g.lead}
+                    </span>
+                  </a>
+                </Reveal>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      <div className="container-page pb-12 md:pb-16">
         {/* One block per topic */}
         {/*
           Title beside the questions, not above them.
@@ -138,13 +181,13 @@ export default function HilfePage() {
           <section
             key={g.id}
             id={g.id}
-            className="mt-[clamp(3rem,5vw,4.5rem)] grid scroll-mt-32 gap-x-10 gap-y-6 lg:grid-cols-[minmax(0,17rem)_1fr]"
+            className="anchor-target mt-[clamp(3rem,5vw,4.5rem)] grid scroll-mt-32 gap-x-10 gap-y-6 lg:grid-cols-[minmax(0,17rem)_1fr]"
           >
             <Reveal className="lg:sticky lg:top-32 lg:self-start">
-              <h2 className="text-[clamp(1.3rem,1vw+1rem,1.75rem)]/[1.2] font-semibold text-ink-900">
+              <h2 className="anchor-title text-[clamp(1.3rem,1vw+1rem,1.75rem)]/[1.2] font-semibold text-ink-900">
                 {g.title}
               </h2>
-              <span aria-hidden className="mt-4 block h-[3px] w-12 bg-teal" />
+              <span aria-hidden className="anchor-rule mt-4 block h-[3px] w-12 bg-teal" />
               <p className="mt-4 text-[0.9375rem]/[1.6] text-ink">{g.lead}</p>
             </Reveal>
             <Reveal delay={80}>

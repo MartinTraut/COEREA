@@ -29,10 +29,21 @@ export const SITE = {
     country: "Deutschland",
     hours: "Mo bis Fr 09:00 bis 18:00 Uhr & nach Terminvereinbarung",
   },
+  /*
+    The header navigation, and the menu overlay — both read this list.
+
+    „Hilfe" sits in front of „Kontakt" on purpose. It answers the same questions
+    the contact form receives, only immediately and without a reply to wait for,
+    and /kontakt itself opens by saying so („Viele Fragen sind hier schon
+    beantwortet. Das geht schneller als eine Mail."). Reaching a person stays
+    the last stop rather than the only signposted one; the page used to be
+    linked from the footer alone.
+  */
   nav: [
     { label: "Flächen entdecken", href: "/flaechen" },
     { label: "Host werden", href: "/host-werden" },
     { label: "Über uns", href: "/ueber-uns" },
+    { label: "Hilfe", href: "/hilfe" },
     { label: "Kontakt", href: "/kontakt" },
   ],
   footer: {

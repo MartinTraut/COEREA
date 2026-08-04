@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowRight, Clock, Mail, MapPin, Phone } from "lucide-react"
+import { ArrowRight, ArrowUpRight, Clock, Mail, MapPin, Phone } from "lucide-react"
 
 import { SITE } from "@/lib/site"
 import { Reveal } from "@/components/brand/reveal"
@@ -18,26 +18,33 @@ export const metadata: Metadata = {
   The three ways to reach us, as their own cards rather than as a bullet list.
   Two of them act on click (write, call); the third is an address, so it stays
   plain text instead of pretending to be a link to a map we do not embed.
+
+  The address is split into two lines. As one string it was the longest value of
+  the three by a wide margin, so it wrapped at an arbitrary point — „Baacher
+  Str. 46, 50999" / „Köln" at one width, mid-street-name at another — and the
+  card it sat in was the only one whose value block was two lines tall. A postal
+  address has a line break of its own; using it makes the wrap deliberate and
+  the same at every width.
 */
 const CHANNELS = [
   {
     icon: Mail,
     label: "E-Mail",
-    value: SITE.contact.email,
+    lines: [SITE.contact.email],
     href: `mailto:${SITE.contact.email}`,
     note: "Antwort in der Regel am selben Werktag.",
   },
   {
     icon: Phone,
     label: "Telefon",
-    value: SITE.contact.phone,
+    lines: [SITE.contact.phone],
     href: `tel:${SITE.contact.phoneHref}`,
     note: SITE.contact.hours,
   },
   {
     icon: MapPin,
     label: "Adresse",
-    value: `${SITE.contact.street}, ${SITE.contact.zip} ${SITE.contact.city}`,
+    lines: [SITE.contact.street, `${SITE.contact.zip} ${SITE.contact.city}`],
     href: null,
     note: "Besuche bitte nach Terminvereinbarung.",
   },
@@ -89,40 +96,100 @@ export default function KontaktPage() {
             </p>
           </Reveal>
 
-          <div className="mt-[clamp(2rem,3vw,3rem)] grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {/*
+            The three channels, composed vertically rather than as icon-beside-
+            text rows.
+
+            The row used to be three interchangeable boxes: the same pale square
+            on the left, the same three lines of steadily shrinking grey on the
+            right, no brand colour anywhere and no edge — plain `.surface` on the
+            cream band draws #e4e4e4 on #f0edeb, which at 1,1 : 1 is not a
+            boundary. Three findings drove the rebuild:
+
+            · The value is what somebody came for — the address, the number to
+              dial. It was set at 17px, a hair above the note under it, so the
+              card had no focal point and all three read as one grey mass.
+            · The notes are one, two and one line long, so the cards ended on
+              three different baselines. The note now sits on `mt-auto` above a
+              hairline: whatever the value block does, every card closes on the
+              same line.
+            · Nothing distinguished the address — the only card that does not
+              act on click — from the two that do. The corner arrow appears on
+              those two alone, so the difference is stated instead of merely
+              being there.
+
+            The 3px lit edge and `.icon-plate` are both devices this site already
+            uses (the price card on a listing, every icon on the homepage); this
+            row was simply not using them.
+          */}
+          {/*
+            Three cards in a two-column grid leave a hole, and this row sat in
+            one from 640px to 1024px — two cards, then a lone card beside an
+            empty half. The third spans the full width for exactly that range
+            instead; an address is the one of the three that reads fine wide.
+            Above 768px all three fit abreast, so the special case ends there.
+          */}
+          <div className="mt-[clamp(2rem,3vw,3rem)] grid gap-4 sm:grid-cols-2 md:grid-cols-3">
             {CHANNELS.map((c, i) => {
               const body = (
                 <>
-                  <span className="grid h-11 w-11 shrink-0 place-items-center bg-teal-50 text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white">
-                    <c.icon className="h-5 w-5" strokeWidth={1.75} />
+                  {/*
+                    Led horizontally, not on the shared 135° ramp.
+
+                    `--grad-teal-bright` is built for a surface with some height
+                    to it. Run across a 3px × ~590px edge, a 135° ramp completes
+                    inside the first handful of pixels and the remaining 99 % of
+                    the bar is its dark end — on screen it read as a black rule,
+                    not as the brand colour. Kept to the lit half of the scale
+                    for the same reason: --teal-700 at this size reads as ink.
+                  */}
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-0 top-0 h-[3px] [background:linear-gradient(90deg,var(--teal-500),var(--teal))]"
+                  />
+                  <span className="flex items-start justify-between gap-3">
+                    <span className="icon-plate icon-plate-hover">
+                      <c.icon strokeWidth={1.75} />
+                    </span>
+                    {c.href ? (
+                      <span className="arrow-nudge mt-1 text-teal/70 transition-colors group-hover:text-teal">
+                        <ArrowUpRight className="h-5 w-5" />
+                      </span>
+                    ) : null}
                   </span>
-                  <span className="min-w-0">
-                    <span className="block text-[11px] font-semibold tracking-[0.14em] text-ink/60 uppercase">
-                      {c.label}
-                    </span>
-                    <span className="mt-1 block text-[clamp(0.9375rem,0.35vw+0.8rem,1.0625rem)] font-semibold break-words text-ink-900 transition-colors group-hover:text-teal">
-                      {c.value}
-                    </span>
-                    <span className="mt-2 block text-[13px] leading-relaxed text-ink">
-                      {c.note}
-                    </span>
+
+                  <span className="mt-5 block text-[11px] font-semibold tracking-[0.14em] text-teal uppercase">
+                    {c.label}
+                  </span>
+                  <span className="mt-1.5 block text-[clamp(1.0625rem,0.42vw+0.9rem,1.25rem)]/[1.35] font-semibold break-words text-ink-900 transition-colors group-hover:text-teal">
+                    {c.lines.map((line) => (
+                      <span key={line} className="block">
+                        {line}
+                      </span>
+                    ))}
+                  </span>
+
+                  <span className="mt-auto block border-t border-border/70 pt-4 text-[13px]/[1.55] text-ink">
+                    {c.note}
                   </span>
                 </>
               )
 
+              const shell =
+                "surface surface-on-cream group flex h-full flex-col p-[clamp(1.25rem,1.5vw,1.625rem)] pt-[clamp(1.375rem,1.6vw,1.75rem)]"
+
               return (
-                <Reveal key={c.label} delay={i * 70} className="h-full">
+                <Reveal
+                  key={c.label}
+                  delay={i * 70}
+                  className={`h-full${c.href ? "" : " sm:col-span-2 md:col-span-1"}`}
+                >
                   {c.href ? (
-                    <a
-                      href={c.href}
-                      className="surface surface-hover group flex h-full items-start gap-4 p-5"
-                    >
+                    <a href={c.href} className={`${shell} surface-hover`}>
                       {body}
                     </a>
                   ) : (
-                    <div className="surface group flex h-full items-start gap-4 p-5">
-                      {body}
-                    </div>
+                    <div className={shell}>{body}</div>
                   )}
                 </Reveal>
               )
