@@ -20,6 +20,8 @@
     --color-cream: var(--cream);
     --color-ink: var(--ink);
     --color-ink-900: var(--ink-900);
+    --color-nav-ink: var(--nav-ink);
+    --color-nav-lang: var(--nav-lang);
     --color-gold: var(--gold);
 
     --color-sidebar-ring: var(--sidebar-ring);
@@ -90,75 +92,72 @@
     --teal-900: #013b37;
     --cream: #f6f6f6;
     --ink: #707070;
+    /*
+      Header navigation. Measured off the designer's file, 2026-08-07: the main
+      nav is set in a near-black blue, not in the body grey.
+
+      It is the only place on the site that uses it, and that is the point — the
+      bar sits above the content rather than in it, so it wants a colour the
+      running copy does not have. #162e42 is 13,6 : 1 on white; against #707070
+      body copy it reads as darker and cooler without introducing a second
+      accent to compete with the teal.
+    */
+    --nav-ink: #162e42;
+    /*
+      The language switch, likewise measured: a very light grey, deliberately
+      the quietest thing in the bar.
+
+      NOTE — at #e6e6e6 on white this is 1,25 : 1. That is the design's intent
+      (it is a placeholder until a second language exists) but it is below any
+      readable threshold, so „DE" is drawn as a real control instead of as bare
+      text: the swatch is the resting colour and it darkens to --nav-ink on
+      hover and on keyboard focus, which is what makes it findable at all.
+    */
+    --nav-lang: #e6e6e6;
     /* Headline grey. #707070 at display size looks washed out; this keeps the
        family but gives titles the weight they need against a teal accent. */
     --ink-900: #3d4442;
     --gold: #feca24;
 
     /*
-      Gradients live as tokens so the same light falls on every teal surface —
-      buttons, bands, the footer. 135deg throughout, matching the -45deg of the
-      Schraffur, so the sheen runs parallel to the brand's own diagonal.
-    */
-    /*
-      Two teal gradients, split by whether text sits on them.
+      Teal surfaces. FLAT, not graded — designer's instruction, 2026-08-07:
 
-      `--grad-teal` used to start at --teal-500 (#00a89f), against which white
-      reaches only 2.96:1 — below even the 3:1 floor for large text, on every
-      primary button, the newsletter band and the host avatar. It now starts at
-      --teal-600 (5.20:1) and ends at --teal-700 (6.94:1), so every point of it
-      clears AA for body text while staying a lit gradient rather than a flat
-      fill.
-    */
-    --grad-teal: linear-gradient(
-        135deg,
-        var(--teal-600) 0%,
-        var(--teal-600) 40%,
-        var(--teal-700) 100%
-    );
-    /*
-      The bright end of the scale, kept for surfaces that never carry text:
-      3px accent edges, the scroll-progress hairline, the TabHeading border.
-      There it is a highlight, not a background.
-    */
-    --grad-teal-bright: linear-gradient(
-        135deg,
-        var(--teal-500) 0%,
-        var(--teal) 48%,
-        var(--teal-700) 100%
-    );
-    /*
-      Every surface that carries white body text — footer, benefits band, the
-      newsletter card, the CTA bands — is painted with this, so its lightest
-      point decides whether that text is readable.
+        „Ich würde eher von Farbverläufen absehen, das kann schnell fleckig
+         wirken. Lieber clean bleiben mit den hellgrauen Flächen."
 
-      It used to start at `--teal` (#008a84). White on that is 4,23 : 1 and the
-      design layers opacity on top of it: `text-white/85` came out at 3,48 and
-      the footer's copyright at `text-white/70` at 2,85, against the 4,5 : 1 that
-      normal-size text has to clear. Everything above the 45 % stop failed, on
-      all 19 routes.
+      She is right about the failure mode, and it is worse on a brand built on
+      large single-colour bands than it is in general: a 135° sweep across a
+      full-bleed footer has no edge to explain it, so the eye reads the light
+      end as a stain rather than as lighting. Banding on 8-bit panels made the
+      same surfaces look striped. `.grain` stays for exactly that reason — 4,5 %
+      noise is what keeps a flat band from posterising.
 
-      Starting at `--teal-700` fixes the whole family at once and keeps the
-      design's own device intact: white is 6,94, /85 is 5,50, /80 is 5,05 and
-      /75 is 4,67 — so the opacity steps still express hierarchy instead of
-      having to be flattened to solid white everywhere. The band is darker than
-      it was; the lift from the top-left corner comes from `.mesh-dark`, which
-      washes it with white at 16 %, not from the gradient's first stop.
+      The names are kept (`--grad-*`) so the ~12 call sites that paint with them
+      do not have to change; each now resolves to a single colour. Which colour
+      is decided by whether text sits on the surface:
+
+      · `--grad-teal`      primary buttons and small filled marks. --teal-600
+                           rather than flat --teal, because white on #008a84 is
+                           4,23 : 1 — under the 4,5 : 1 a 14–17px semibold label
+                           has to clear. #007a75 is 5,20 : 1 and is not
+                           perceptibly a different teal at button size.
+      · `--grad-teal-bright` 3px accent edges and the scroll hairline. Never
+                           carries text, so it can be the brand teal itself.
+      · `--grad-teal-deep`  the dark-green bands — footer, benefits, CTA. White
+                           is 6,94 : 1 on it and the design's opacity steps
+                           (/85 = 5,50, /80 = 5,05, /75 = 4,67) all still clear
+                           AA, so hierarchy survives without flattening every
+                           line to solid white.
     */
-    --grad-teal-deep: linear-gradient(
-        160deg,
-        var(--teal-700) 0%,
-        var(--teal-700) 45%,
-        var(--teal-900) 100%
-    );
-    /* Hairline that fades out at both ends — replaces flat 1px section rules. */
-    --grad-rule: linear-gradient(
-        90deg,
-        transparent,
-        color-mix(in srgb, var(--teal) 45%, transparent) 18%,
-        color-mix(in srgb, var(--teal) 45%, transparent) 82%,
-        transparent
-    );
+    --grad-teal: var(--teal-600);
+    --grad-teal-bright: var(--teal);
+    --grad-teal-deep: var(--teal-700);
+    /*
+      Section rule. Was a hairline fading out at both ends; a fade is a gradient
+      and falls under the same instruction. A flat 25 % teal rule at full width
+      is the cleaner mark anyway — it reads as a drawn line on a plan.
+    */
+    --grad-rule: color-mix(in srgb, var(--teal) 25%, transparent);
 
     /*
       Elevation. Teal-tinted rather than neutral black, so shadows read as part
@@ -226,29 +225,31 @@
     --chart-4: #4a7c9c;
     --chart-5: #29292a;
     /*
-      Corner radius.
+      Corner radius: none. Every corner on this site is a right angle.
 
-      This was 0px, because the Figma frames are drawn with right angles
-      throughout. On screen the result read as dated rather than as
-      architectural — a page of hard rectangles has no softness anywhere for the
-      eye to rest on, and every surface, button and input announced its bounding
-      box. Rejected by the client on 2026-07-27 („zu kantig … sieht sehr
-      altmodisch aus").
+      History, because this has moved twice. It started at 0 (the Figma frames
+      are drawn square throughout), was raised to a graduated 12–16px on
+      2026-07-27 after „zu kantig … sieht sehr altmodisch aus", and is back at 0
+      on 2026-08-07 on the designer's instruction — with the reason that was
+      missing the first two times:
 
-      So the site has a radius now, and it is deliberately graduated rather than
-      applied at one value everywhere: the larger the surface, the larger the
-      corner. A 16px corner on a card and the same 16px on a 40px chip look like
-      two different design languages.
+        „Ich weiß, abgerundet mag moderner auf dem ersten Blick aussehen, aber
+         das Eckige ist unser Erscheinungsbild. Quasi unser Markenzeichen,
+         welches sich konsequent auf alle anderen Marketingmaterialien streng
+         durchzieht. Durch das Eckige wird die ‚Fläche' deutlich."
 
-      What stays sharp: the Schraffur, the diamonds and the framed heading motif
-      keep their geometry — those carry the brand, and rounding them off would
-      cost the identity that the hard rectangles were only imitating.
+      That is not a taste preference, it is the identity: the product sells
+      Flächen, and a rectangle is what a Fläche looks like on a plan. The print
+      material, the Schraffur and the diamond markers all already worked that
+      way — the screen was the one surface that didn't.
+
+      The three tokens stay as separate names even though all three are 0. They
+      mark WHAT a corner belongs to (surface / control / chip), so the system
+      can be re-pitched from three lines rather than from 60 call sites.
     */
-    --radius: 1rem;
-    /* Controls: smaller than a card, so a button never reads as a pill. */
-    --radius-control: 0.75rem;
-    /* Chips, badges, counters — small enough that only a full round reads. */
-    --radius-pill: 999px;
+    --radius: 0px;
+    --radius-control: 0px;
+    --radius-pill: 0px;
     --sidebar: #ffffff;
     --sidebar-foreground: var(--ink);
     --sidebar-primary: var(--teal);
@@ -482,27 +483,6 @@
   .scroll-progress {
     animation: coarea-progress linear forwards;
     animation-timeline: scroll(root block);
-  }
-}
-
-/* Slow drift of the hero's light blooms. Transform only — no layout, no paint. */
-@keyframes coarea-drift {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(2%, -2.5%, 0) scale(1.06);
-  }
-}
-
-/* Sheen that crosses a surface once on hover. */
-@keyframes coarea-sheen {
-  from {
-    transform: translate3d(-120%, 0, 0) skewX(-18deg);
-  }
-  to {
-    transform: translate3d(320%, 0, 0) skewX(-18deg);
   }
 }
 
@@ -916,75 +896,16 @@
   }
 
   /*
-    Light. Two soft teal blooms behind a section — this is what makes the cream
-    bands read as lit instead of flat grey. Sits on a pseudo-element so the
-    host keeps its own background, and drifts slowly so a long hero is never
-    completely static.
+    `.mesh` / `.mesh-dark` used to sit here: two soft teal blooms on a
+    pseudo-element, drifting slowly, behind every cream band and every teal one.
+    Removed 2026-08-07 with the rest of the gradients — a radial bloom over a
+    flat grey band is precisely the „fleckig" the designer asked us to avoid,
+    and it was the largest offender because it was the least explainable: a
+    light source with no lamp.
+
+    The cream bands carry themselves on `--cream` alone now, which is what the
+    design always specified. `.grain` still runs on them.
   */
-  .mesh::before {
-    content: "";
-    position: absolute;
-    inset: -20%;
-    pointer-events: none;
-    background:
-      radial-gradient(
-        38% 42% at 12% 18%,
-        color-mix(in srgb, var(--teal-300) 46%, transparent),
-        transparent 70%
-      ),
-      radial-gradient(
-        44% 46% at 88% 72%,
-        color-mix(in srgb, var(--teal-500) 30%, transparent),
-        transparent 72%
-      );
-    /*
-      Scroll-bound, not endless.
-
-      This was `coarea-drift 22s infinite`, which kept running on every `.mesh`
-      surface on the page — including the footer, which is present on every
-      route — whether or not any of them was on screen. Measured at idle at the
-      top of the homepage: 46–59ms of style recalculation and ~260ms of
-      main-thread work per 5 seconds, against 0ms and ~67ms with the drift
-      removed. Roughly four times the idle cost, for movement nobody was looking
-      at.
-
-      Where `animation-timeline: view()` is supported the drift is driven by the
-      section's own progress through the viewport: it costs exactly nothing while
-      the page is still, runs only for the section in view, and stays on the
-      compositor because it is transform-only. Everywhere else the bloom simply
-      holds its start position — the gradient is the point, the movement is a
-      bonus.
-    */
-    animation: coarea-drift 22s var(--ease-brand) infinite;
-    animation-play-state: paused;
-  }
-  @supports (animation-timeline: view()) {
-    .mesh::before {
-      animation: coarea-drift linear both;
-      animation-timeline: view();
-      animation-range: cover 0% cover 100%;
-      animation-play-state: running;
-    }
-  }
-  .mesh-dark::before {
-    background:
-      radial-gradient(
-        40% 44% at 8% 10%,
-        rgba(255, 255, 255, 0.16),
-        transparent 70%
-      ),
-      radial-gradient(
-        46% 48% at 92% 88%,
-        color-mix(in srgb, var(--teal-300) 30%, transparent),
-        transparent 72%
-      );
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .mesh::before,
-    .mesh-dark::before {
-      animation: none;
-    }
-  }
 
   /*
     Film grain. A flat teal band at this scale bands visibly on cheap panels and
@@ -1032,18 +953,33 @@
     */
     color: var(--teal-700);
   }
+  /*
+    The lead-in is a „/", not a rule.
+
+    Designer's instruction, 2026-08-07, about the eyebrow over „Acht
+    Flächenkategorien": „Könntest du die Linie oben links durch ein ‚/'
+    ersetzen? Das war zb. in meiner Abschlusspräsentation meine Art etwas neues
+    aufzuzählen."
+
+    Applied to every eyebrow rather than to that one, because it is a piece of
+    the brand's own grammar and it already exists on the site twice over — the
+    „///" menu mark is three of these, and the Schraffur is the same stroke at
+    the same angle, repeated. A slash before a label reads as „next item" the
+    way a bullet does, and it ties the smallest type on the page to the largest
+    graphic device on it.
+
+    Set in the same weight as the label and a size up, so it reads as a mark
+    rather than as a stray character. `line-height: 1` keeps it from stretching
+    the flex row.
+  */
   .eyebrow::before {
-    content: "";
-    width: clamp(1.25rem, 2.2vw, 2.25rem);
-    height: 2px;
-    border-radius: var(--radius-pill);
-    /* Fades away from the label rather than stopping dead — the rule is a lead-in
-       to the words, not a bar of equal weight beside them. */
-    background: linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--teal) 25%, transparent),
-      var(--teal)
-    );
+    content: "/";
+    font-size: 1.35em;
+    font-weight: 700;
+    line-height: 1;
+    /* Optical: the slash leans right, so it needs less air after it than a
+       vertical stroke would, and the caps track already adds some. */
+    margin-right: -0.1em;
   }
   /*
     The eyebrow on a teal band.
@@ -1056,9 +992,6 @@
   */
   .eyebrow-invert {
     color: rgba(255, 255, 255, 0.85);
-  }
-  .eyebrow-invert::before {
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.25), #fff);
   }
 
   /*
@@ -1149,7 +1082,6 @@
     line-height: 1;
     color: #fff;
     background: var(--destructive);
-    border-radius: 50%;
   }
 
   /*
@@ -1208,15 +1140,20 @@
     text-wrap: balance;
   }
 
-  /* One accent word per headline, filled with the brand gradient. */
+  /*
+    One accent word per headline. Was `background-clip: text` over the brand
+    gradient; a gradient inside letterforms is the least readable place to put
+    one, and it goes with the rest. Flat brand teal — at hero size (44px+) it
+    clears contrast comfortably and the accent still lands.
+
+    The class name is kept because the hero refers to it and „the gradient word"
+    is what everyone calls it.
+  */
   .text-gradient {
-    background: var(--grad-teal);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--teal);
   }
 
-  /* Section divider that fades at both ends rather than butting into the gutter. */
+  /* Section divider. Flat 25% teal, full width — see the note on --grad-rule. */
   .rule-fade {
     height: 1px;
     border: 0;
@@ -1418,36 +1355,13 @@
     }
   }
 
-  /* A single sheen crossing a surface on hover — for the two or three hero-level
-     elements only, never for a grid of cards. */
-  .sheen {
-    position: relative;
-    overflow: hidden;
-  }
-  .sheen::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 28%;
-    pointer-events: none;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.42),
-      transparent
-    );
-    transform: translate3d(-120%, 0, 0) skewX(-18deg);
-  }
-  .sheen:hover::after {
-    animation: coarea-sheen 620ms var(--ease-out-expo);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .sheen:hover::after {
-      animation: none;
-    }
-  }
+  /*
+    `.sheen` — a white band that swept across the primary button on hover — is
+    gone with the other gradients. It was a moving highlight painted from a
+    linear-gradient, i.e. the same effect the designer rejected, only animated;
+    and on a square, flat, single-colour button it read as glare on plastic.
+    The button's own colour shift and 2px lift carry the hover.
+  */
 
   /*
     Stars that settle in one after another once their block has been revealed.

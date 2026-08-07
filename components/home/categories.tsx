@@ -47,7 +47,7 @@ export function Categories() {
       </Reveal>
 
       <Reveal delay={160} className="mt-[clamp(1.5rem,2.2vw,2.5rem)] flex flex-wrap items-center gap-x-8 gap-y-4">
-        <Link href="/flaechen" className="btn btn-teal sheen group h-12 px-6 text-sm">
+        <Link href="/flaechen" className="btn btn-teal group h-12 px-6 text-sm">
           Alle Flächen ansehen
           <span className="arrow-nudge inline-flex">
             <ArrowRight className="h-4 w-4" />

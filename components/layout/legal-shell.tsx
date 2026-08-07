@@ -27,7 +27,7 @@ export function LegalShell({
         white — the one place on the site where the text really should be as
         plain and as legible as possible.
       */}
-      <section className="mesh grain relative isolate overflow-hidden border-b border-border/60 bg-cream">
+      <section className="grain relative isolate overflow-hidden border-b border-border/60 bg-cream">
         <div className="relative container-page py-[clamp(2.25rem,3.5vw+0.5rem,4.5rem)]">
           <div className="mx-auto max-w-3xl">
             <span className="eyebrow">Rechtliches</span>

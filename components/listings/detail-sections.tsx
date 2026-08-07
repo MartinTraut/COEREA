@@ -159,7 +159,7 @@ export function DetailSections({
                 <div className="relative flex items-center gap-3.5">
                   <span
                     aria-hidden
-                    className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-teal-50 text-sm font-semibold text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white"
+                    className="grid h-11 w-11 shrink-0 place-items-center bg-teal-50 text-sm font-semibold text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white"
                   >
                     {r.name
                       .split(" ")

@@ -45,7 +45,7 @@ const TESTIMONIALS = [
 */
 export function Testimonials() {
   return (
-    <section className="mesh relative isolate overflow-hidden bg-cream">
+    <section className="relative isolate overflow-hidden bg-cream">
       <div className="relative container-page py-[clamp(2.75rem,3.6vw,4.25rem)]">
         {/*
           One reveal around the whole block, not one per card.

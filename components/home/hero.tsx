@@ -25,10 +25,12 @@ import { TabHeading } from "@/components/brand/tab-heading"
 
     · the site-plan drawing is masked so it dissolves downward instead of being
       cut off by the section edge,
-    · two soft teal blooms (.mesh) and a 4% grain sit over it, which is what
-      turns #F6F6F6 from grey into a lit surface,
-    · the search bar is a raised card with a clipped corner, the one shape move
-      in the system, and it responds as a whole when any field is focused.
+    · a 4% grain sits over it, which keeps #F6F6F6 from banding on cheap
+      panels without lighting it — the band stays the flat grey the design
+      specifies (the teal blooms that used to sit here went with the rest of
+      the gradients on 2026-08-07),
+    · the search bar is a raised card, and it responds as a whole when any
+      field is focused.
 
   Fluid sizes stay in `Xvw + Yrem` form so they scale continuously and survive
   zoom; nothing here is a breakpoint step.
@@ -73,7 +75,7 @@ export function Hero() {
   }
 
   return (
-    <section className="mesh grain relative isolate overflow-hidden bg-cream">
+    <section className="grain relative isolate overflow-hidden bg-cream">
       {/*
         Site plan, reconstructed at the frame's own 1920x894. Masked to fade out
         over the lower third so the drawing reads as a substrate the content
@@ -144,7 +146,7 @@ export function Hero() {
             <div className="mt-[clamp(1.5rem,1.8vw,2.25rem)] flex flex-wrap gap-[clamp(0.75rem,1.1vw,1.25rem)]">
               <Link
                 href="/host-werden"
-                className="btn btn-teal sheen group h-[clamp(2.875rem,2.9vw,3.5rem)] px-[clamp(1.4rem,2vw,2.4rem)] text-[clamp(0.9375rem,0.42vw+0.6rem,1.125rem)]"
+                className="btn btn-teal group h-[clamp(2.875rem,2.9vw,3.5rem)] px-[clamp(1.4rem,2vw,2.4rem)] text-[clamp(0.9375rem,0.42vw+0.6rem,1.125rem)]"
               >
                 Host werden
                 <span className="arrow-nudge inline-flex">
@@ -204,7 +206,7 @@ export function Hero() {
               />
               <button
                 type="submit"
-                className="btn btn-teal sheen group h-[clamp(3rem,3.2vw,3.875rem)] w-full shrink-0 px-[clamp(1.25rem,1.8vw,2.25rem)] text-[clamp(0.9375rem,0.42vw+0.6rem,1.125rem)] sm:ml-[clamp(1rem,1.6vw,2rem)] sm:w-auto"
+                className="btn btn-teal group h-[clamp(3rem,3.2vw,3.875rem)] w-full shrink-0 px-[clamp(1.25rem,1.8vw,2.25rem)] text-[clamp(0.9375rem,0.42vw+0.6rem,1.125rem)] sm:ml-[clamp(1rem,1.6vw,2rem)] sm:w-auto"
               >
                 <Search className="h-4 w-4" />
                 Flächen entdecken

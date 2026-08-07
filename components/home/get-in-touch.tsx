@@ -8,7 +8,7 @@ import { Reveal } from "@/components/brand/reveal"
 export function GetInTouch() {
   const { contact } = SITE
   return (
-    <section className="mesh relative isolate overflow-hidden bg-cream">
+    <section className="relative isolate overflow-hidden bg-cream">
       {/*
         The site plan returns for the closing section, mirrored: in the hero it
         is anchored to the top and dissolves downward, here it is anchored to the
@@ -43,7 +43,7 @@ export function GetInTouch() {
 
           <Link
             href="/kontakt"
-            className="btn btn-teal sheen group mt-7 h-12 px-6 text-sm"
+            className="btn btn-teal group mt-7 h-12 px-6 text-sm"
           >
             jetzt beraten lassen
             <span className="arrow-nudge inline-flex">

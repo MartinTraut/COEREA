@@ -48,7 +48,7 @@ export default function NotFound() {
           <div className="mt-9 flex flex-wrap gap-4">
             <Link
               href="/flaechen"
-              className="btn btn-teal sheen h-[3.25rem] px-7"
+              className="btn btn-teal h-[3.25rem] px-7"
             >
               <Search className="h-4 w-4" />
               Flächen entdecken

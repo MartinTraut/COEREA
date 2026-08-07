@@ -55,7 +55,7 @@ export default function BusinesspartnerPage() {
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {PARTNERS.map((p) => (
             <div key={p.title} className="rounded-xl border border-border bg-card p-7">
-              <span className="grid h-11 w-11 place-items-center rounded-full bg-accent text-teal">
+              <span className="grid h-11 w-11 place-items-center bg-accent text-teal">
                 <p.icon className="h-5 w-5" />
               </span>
               <h3 className="mt-4 text-lg font-semibold text-ink">{p.title}</h3>
@@ -72,7 +72,7 @@ export default function BusinesspartnerPage() {
           <div className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
             {REASONS.map((r) => (
               <div key={r.title} className="flex flex-col gap-3">
-                <span className="grid h-11 w-11 place-items-center rounded-full bg-teal text-white">
+                <span className="grid h-11 w-11 place-items-center bg-teal text-white">
                   <r.icon className="h-5 w-5" />
                 </span>
                 <h3 className="text-base font-semibold text-ink">{r.title}</h3>

@@ -122,8 +122,7 @@ export default function HostWerdenPage() {
       />
 
       {/* Hero */}
-      <section className="mesh mesh-dark grain relative isolate overflow-hidden [background:var(--grad-teal-deep)] text-white">
-        <div className="hatch-white pointer-events-none absolute inset-0 opacity-15" aria-hidden />
+      <section className="grain relative isolate overflow-hidden [background:var(--grad-teal-deep)] text-white">
         <div className="relative container-page py-16 md:py-24">
           <TabHeading as="h1" variant="white" className="text-[clamp(1.8rem,3.5vw+0.5rem,3rem)]">
             Deine Fläche kann mehr!

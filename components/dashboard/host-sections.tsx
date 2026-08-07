@@ -22,7 +22,7 @@ function SectionHead({ title }: { title: string }) {
 export function PotenzialBand() {
   return (
     <section className="grid lg:grid-cols-2">
-      <div className="mesh mesh-dark relative isolate flex flex-col justify-center overflow-hidden [background:var(--grad-teal-deep)] px-6 py-16 sm:px-12 lg:py-20 lg:pr-16 lg:pl-[max(1.25rem,calc((100vw-1520px)/2))]">
+      <div className="relative isolate flex flex-col justify-center overflow-hidden [background:var(--grad-teal-deep)] px-6 py-16 sm:px-12 lg:py-20 lg:pr-16 lg:pl-[max(1.25rem,calc((100vw-1520px)/2))]">
         <TabHeading variant="solid" className="text-[clamp(1.5rem,1.7vw+0.6rem,2.4rem)]/[1.15]">
           Deine Fläche kann mehr!
         </TabHeading>
@@ -68,7 +68,7 @@ export function ListedAreas() {
       <Carousel
         header={<SectionHead title="Deine inserierten Flächen" />}
         action={
-          <Link href="/host-werden" className="btn btn-teal sheen px-6 py-3.5 text-[0.9375rem]">
+          <Link href="/host-werden" className="btn btn-teal px-6 py-3.5 text-[0.9375rem]">
             <Plus className="h-4 w-4" strokeWidth={2.5} /> Fläche inserieren
           </Link>
         }
@@ -110,7 +110,7 @@ export function ContactPerson() {
               alt={HOST_SUPPORT.name}
               width={200}
               height={200}
-              className="h-[200px] w-[200px] rounded-full object-cover"
+              className="h-[200px] w-[200px] object-cover"
             />
             <p className="mt-5 text-[19px] text-ink">{HOST_SUPPORT.name}</p>
             <p className="mt-1 text-[17px] font-semibold text-teal">
@@ -168,7 +168,7 @@ export function ContactPerson() {
             </p>
             <Link
               href="/kontakt"
-              className="btn btn-teal sheen mt-7 px-8 py-4 text-[17px]"
+              className="btn btn-teal mt-7 px-8 py-4 text-[17px]"
             >
               mehr erfahren
             </Link>
@@ -181,8 +181,7 @@ export function ContactPerson() {
 
 export function InsertCta() {
   return (
-    <section className="mesh mesh-dark grain relative isolate overflow-hidden [background:var(--grad-teal-deep)] py-16 lg:py-24">
-      <span aria-hidden className="hatch-white absolute inset-0 opacity-20" />
+    <section className="grain relative isolate overflow-hidden [background:var(--grad-teal-deep)] py-16 lg:py-24">
       <div className="relative container-page">
         <p className="max-w-[820px] text-[clamp(1.5rem,1.7vw+0.6rem,2.4rem)]/[1.25] font-semibold text-white">
           Du hast eine leerstehende Fläche und weißt nicht, was Du mit ihr anfangen
@@ -229,7 +228,7 @@ export function HostReviews() {
               <div className="relative flex items-center gap-3.5">
                 <span
                   aria-hidden
-                  className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-teal-50 text-sm font-semibold text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white"
+                  className="grid h-11 w-11 shrink-0 place-items-center bg-teal-50 text-sm font-semibold text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-white"
                 >
                   {r.author
                     .split(" ")

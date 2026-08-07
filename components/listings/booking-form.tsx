@@ -311,7 +311,7 @@ export function BookingForm({
           */}
           <button
             type="submit"
-            className="btn btn-teal sheen min-h-12 px-7 text-sm"
+            className="btn btn-teal min-h-12 px-7 text-sm"
           >
             Buchungsanfrage senden
           </button>

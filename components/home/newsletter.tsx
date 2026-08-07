@@ -69,7 +69,7 @@ export function Newsletter() {
     <section className="relative bg-cream py-[clamp(2.5rem,4vw,4.5rem)]">
       <div className="container-page">
         <div className="[filter:drop-shadow(0_24px_44px_rgba(0,60,56,0.22))]">
-        <div className="mesh mesh-dark grain notch notch-lg relative isolate flex flex-col items-start gap-[clamp(1.5rem,3vw,3.5rem)] overflow-hidden [background:var(--grad-teal-deep)] p-[clamp(1.5rem,2.8vw,3.25rem)] text-white md:flex-row md:items-center">
+        <div className="grain notch notch-lg relative isolate flex flex-col items-start gap-[clamp(1.5rem,3vw,3.5rem)] overflow-hidden [background:var(--grad-teal-deep)] p-[clamp(1.5rem,2.8vw,3.25rem)] text-white md:flex-row md:items-center">
         <div className="md:w-[min(24rem,40%)]">
         {/* No manual line break: the column is narrower than the old full-width
             card, so a hard break landed mid-phrase („Nichts mehr / verpassen &
@@ -151,7 +151,7 @@ export function Newsletter() {
               <button
                 type="submit"
                 aria-label="Zum Newsletter anmelden"
-                className="btn btn-teal sheen shrink-0 rounded-none px-5 text-sm"
+                className="btn btn-teal shrink-0 rounded-none px-5 text-sm"
               >
                 <Send className="h-4 w-4" />
                 <span className="hidden sm:inline">jetzt anmelden</span>

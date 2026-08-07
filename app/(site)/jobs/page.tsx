@@ -47,7 +47,7 @@ export default function JobsPage() {
         <div className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
           {VALUES.map((v) => (
             <div key={v.title} className="flex flex-col gap-3">
-              <span className="grid h-11 w-11 place-items-center rounded-full bg-accent text-teal">
+              <span className="grid h-11 w-11 place-items-center bg-accent text-teal">
                 <v.icon className="h-5 w-5" />
               </span>
               <h3 className="text-base font-semibold text-ink">{v.title}</h3>
@@ -79,7 +79,7 @@ export default function JobsPage() {
                 </div>
                 <Link
                   href={`mailto:${contact.email}?subject=Bewerbung: ${job.title}`}
-                  className="btn btn-teal sheen px-5 py-2.5 text-sm"
+                  className="btn btn-teal px-5 py-2.5 text-sm"
                 >
                   Jetzt bewerben <ArrowRight className="h-4 w-4" />
                 </Link>

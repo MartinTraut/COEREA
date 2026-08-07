@@ -86,7 +86,7 @@ export function BookingConfirmation({ listing }: { listing: Listing }) {
         </p>
         <Link
           href={`/flaechen/${listing.slug}#verfuegbarkeit`}
-          className="btn btn-teal sheen mt-6 min-h-11 px-6 text-sm"
+          className="btn btn-teal mt-6 min-h-11 px-6 text-sm"
         >
           Zur Verfügbarkeit
         </Link>
@@ -125,7 +125,7 @@ export function BookingConfirmation({ listing }: { listing: Listing }) {
           href={`mailto:${SITE.contact.email}?subject=${encodeURIComponent(
             `Frage zu „${record.title}“ (Host: ${listing.host.name})`,
           )}`}
-          className="btn btn-teal sheen min-h-11 px-5 text-sm"
+          className="btn btn-teal min-h-11 px-5 text-sm"
         >
           <MessageSquare className="h-4 w-4" />
           Nachricht an Host

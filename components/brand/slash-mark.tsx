@@ -19,7 +19,16 @@ export function SlashMark({
       fill="none"
       stroke="currentColor"
       strokeWidth={3}
-      strokeLinecap="round"
+      /*
+        Butt caps, not round. Designer's instruction, 2026-08-07: „Würde den
+        Menü Icon nur eckig machen und nicht mit abgerundeter Kontur."
+
+        It is the same rule as the corners — and here it is also the more
+        faithful mark: the Schraffur these three strokes quote is drawn by a
+        plotter, and a plotted line ends flat. A rounded cap turned the brand's
+        own hatch into three lozenges.
+      */
+      strokeLinecap="butt"
       role={title ? "img" : "presentation"}
       aria-hidden={title ? undefined : true}
       aria-label={title}

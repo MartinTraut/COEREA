@@ -77,7 +77,7 @@ export function ListingCard({
           It gets a white chip because the heart's unsaved grey and its saved
           teal both have to stay legible over an arbitrary photograph.
         */}
-        <div className="absolute top-2 right-2 rounded-full bg-white/92 p-1.5 backdrop-blur-sm">
+        <div className="absolute top-2 right-2 bg-white/92 p-1.5 backdrop-blur-sm">
           <SaveButton
             slug={listing.slug}
             defaultSaved={listing.saved}

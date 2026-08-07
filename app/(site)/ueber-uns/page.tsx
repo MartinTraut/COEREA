@@ -225,9 +225,9 @@ export default function UeberUnsPage() {
         20% — together with the newsletter strip and the footer that made three
         hatched teal blocks stacked on top of each other, and the drawing stopped
         reading as a motif and started reading as noise (client, 2026-07-28:
-        „zu viele Linien, im Footer ist gut"). It survives here as a top edge
-        that dissolves, which is enough to tie the band to the footer; the
-        footer keeps the full-strength version.
+        „zu viele Linien, im Footer ist gut"), then to nothing at all on
+        2026-08-07 — the designer asked for the dark-green bands to carry no
+        Schraffur, the footer included.
 
         And the claim sat alone in the left half of a 1520px column, so half the
         band was empty teal. The three facts that decide whether anybody clicks
@@ -235,11 +235,7 @@ export default function UeberUnsPage() {
         occupy the other half. They are the same numbers the booking calculates,
         not new promises.
       */}
-      <section className="mesh mesh-dark grain relative isolate overflow-hidden [background:var(--grad-teal-deep)] text-white">
-        <span
-          aria-hidden
-          className="hatch-white absolute inset-x-0 top-0 h-48 opacity-25 [mask-image:linear-gradient(to_bottom,black_0,transparent_100%)]"
-        />
+      <section className="grain relative isolate overflow-hidden [background:var(--grad-teal-deep)] text-white">
         <div className="relative container-page grid gap-[clamp(2rem,3.5vw,4rem)] py-[clamp(3rem,5vw,5.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:items-center">
           <div>
             <p className="max-w-[26ch] text-[clamp(1.3rem,2vw+0.5rem,2rem)] leading-snug font-semibold text-balance">

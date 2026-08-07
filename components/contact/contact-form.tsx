@@ -63,10 +63,10 @@ export function ContactForm() {
         className="flex flex-col items-start gap-3 rounded-[var(--radius)] border border-teal/60 bg-accent p-8 outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2"
       >
         {/*
-          Shared plate. This was the only `rounded-full` icon container on the
-          homepage, sitting a few centimetres from three 12px-cornered ones in
-          the same section — it read as an accident rather than as a decision.
-          Full rounds are reserved for avatars, where the shape means "person".
+          Shared plate. This was a `rounded-full` circle sitting a few
+          centimetres from three cornered plates in the same section — an
+          accident rather than a decision. Since 2026-08-07 there are no round
+          shapes on the site at all, avatars included; see the note on --radius.
         */}
         <span className="icon-plate icon-plate-solid">
           <Mail strokeWidth={1.5} aria-hidden />
@@ -128,7 +128,7 @@ export function ContactForm() {
         </label>
         <button
           type="submit"
-          className="btn btn-teal sheen min-h-12 w-fit px-6"
+          className="btn btn-teal min-h-12 w-fit px-6"
         >
           <Send className="h-4 w-4" aria-hidden />
           senden

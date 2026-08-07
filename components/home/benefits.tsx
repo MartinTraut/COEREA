@@ -39,25 +39,19 @@ const BENEFITS = [
 */
 export function Benefits() {
   return (
-    <section className="mesh mesh-dark grain relative isolate overflow-hidden [background:var(--grad-teal-deep)] text-white">
+    <section className="grain relative isolate overflow-hidden [background:var(--grad-teal-deep)] text-white">
       {/*
-        The Schraffur used to run across this entire band at 20% and it was the
-        reason the four benefits disappeared into it.
+        No Schraffur on this band — designer's instruction, 2026-08-07:
+        „Bei den Dunkelgrünen Flächen wie zb beim Footer ganz unten würde ich
+        die Schraffur weglassen, das ist etwas too much."
 
-        Three things were competing at once: the hatch drew white lines at an
-        effective 10% white, the icon plates sat on 12% white — a two-point
-        difference, so they had no edge — and the only structure separating the
-        four items was a 1px rule at 25% white, which was *fainter than the
-        stripes crossing it*. The band's own texture outweighed its content.
-
-        The hatch now marks the top edge and dissolves, so it still announces
-        the band with the brand's diagonal without laying a field of lines
-        behind every word of the argument.
+        It had already been cut back twice for the same reason (full band → top
+        edge → gone), and each round made the same point: the hatch is a legend
+        entry, it means *private ground*, and spending it as wallpaper on the
+        dark bands left the legend pointing at a pattern that was everywhere.
+        It stays where it carries that meaning — the category markers, the
+        image placeholder, and the lighter teal page heros.
       */}
-      <span
-        aria-hidden
-        className="hatch-white absolute inset-0 opacity-30 [mask-image:linear-gradient(to_bottom,black_0,black_11%,transparent_34%)]"
-      />
 
       <div className="relative container-page py-[clamp(4rem,7vw,8.5rem)]">
         <Reveal>

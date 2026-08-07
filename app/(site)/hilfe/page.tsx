@@ -84,12 +84,12 @@ export default function HilfePage() {
         lit thing and the ground is the quiet one, which is the arrangement this
         site uses wherever a row of cards opens a page.
       */}
-      <section className="mesh grain relative isolate overflow-hidden border-b border-border/60 bg-cream">
+      <section className="grain relative isolate overflow-hidden border-b border-border/60 bg-cream">
         {/*
-          The Schraffur under the mesh, at a fraction of its strength.
+          The Schraffur over the cream, at a fraction of its strength.
 
-          Cream plus two soft blooms is a very quiet ground — measured against
-          the white cards on top of it the band was barely a band at all. The
+          Flat cream is a very quiet ground — measured against the white cards
+          on top of it the band was barely a band at all. The
           hatch is the mark this brand already carries (it comes off the city
           plans the identity is drawn from), and at 30% it registers as texture
           rather than as stripes, which is all this needs to stop reading as an
@@ -131,7 +131,7 @@ export default function HilfePage() {
                   >
                     <span
                       aria-hidden
-                      className="absolute inset-x-0 top-0 h-[3px] [background:linear-gradient(90deg,var(--teal-500),var(--teal))]"
+                      className="absolute inset-x-0 top-0 h-[3px] [background:var(--grad-teal-bright)]"
                     />
                     <span className="flex items-center justify-between gap-3">
                       <span className="icon-plate icon-plate-hover">
@@ -203,8 +203,7 @@ export default function HilfePage() {
 
         {/* Kontakt */}
         <Reveal delay={60} className="mt-[clamp(3.5rem,6vw,6rem)]">
-          <div className="mesh mesh-dark grain relative isolate flex flex-col gap-8 overflow-hidden rounded-[var(--radius-lg)] [background:var(--grad-teal-deep)] p-8 text-white md:flex-row md:items-center md:justify-between md:p-12">
-            <span aria-hidden className="hatch-white absolute inset-0 opacity-15" />
+          <div className="grain relative isolate flex flex-col gap-8 overflow-hidden rounded-[var(--radius-lg)] [background:var(--grad-teal-deep)] p-8 text-white md:flex-row md:items-center md:justify-between md:p-12">
             <div className="relative">
               <TabHeading variant="white" className="text-[clamp(1.3rem,2vw+0.5rem,1.85rem)]">
                 Deine Frage steht nicht dabei?

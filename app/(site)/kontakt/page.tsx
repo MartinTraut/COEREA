@@ -82,7 +82,7 @@ export default function KontaktPage() {
         screen. It now opens on the brand's own lit surface, with the three
         channels as the first thing to reach for.
       */}
-      <section className="mesh grain relative isolate overflow-hidden border-b border-border/60 bg-cream">
+      <section className="grain relative isolate overflow-hidden border-b border-border/60 bg-cream">
         <div className="relative container-page py-[clamp(2.75rem,4.5vw+0.5rem,6rem)]">
           <Reveal>
             <span className="eyebrow">Kontakt</span>
@@ -145,7 +145,7 @@ export default function KontaktPage() {
                   */}
                   <span
                     aria-hidden
-                    className="absolute inset-x-0 top-0 h-[3px] [background:linear-gradient(90deg,var(--teal-500),var(--teal))]"
+                    className="absolute inset-x-0 top-0 h-[3px] [background:var(--grad-teal-bright)]"
                   />
                   <span className="flex items-start justify-between gap-3">
                     <span className="icon-plate icon-plate-hover">

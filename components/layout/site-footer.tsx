@@ -66,9 +66,10 @@ export function SiteFooter() {
   const { footer, social } = SITE
   return (
     /*
-      Deep end of the teal scale, lit from the top-left, with the Schraffur
-      running along the top edge — the same treatment as the benefits band, so
-      the page opens and closes on the brand's own surface.
+      Deep end of the teal scale, flat — the same treatment as the benefits
+      band, so the page opens and closes on the brand's own surface. No sheen
+      across it and no Schraffur over it: both were removed on 2026-08-07 (see
+      the note in globals.css on --grad-teal-deep, and the one below).
 
       No top margin: it used to carry `mt-[clamp(4rem,6vw,7rem)]`, which on
       every page inserted a bare white band (86px at 1440) between the last
@@ -83,9 +84,7 @@ export function SiteFooter() {
       hours — is gone; it made the footer a second contact page. Reaching us is
       what /kontakt and the header link are for.
     */
-    <footer className="mesh mesh-dark grain relative isolate overflow-hidden [background:var(--grad-teal-deep)] text-white">
-      <span aria-hidden className="hatch-white absolute inset-0 opacity-20" />
-
+    <footer className="grain relative isolate overflow-hidden [background:var(--grad-teal-deep)] text-white">
       <div className="relative container-page py-[clamp(3rem,4.5vw,5.5rem)]">
         <div className="grid gap-x-[clamp(2rem,3.5vw,4rem)] gap-y-12 sm:grid-cols-2 lg:grid-cols-[minmax(12rem,1fr)_repeat(3,minmax(0,0.9fr))]">
           {/*

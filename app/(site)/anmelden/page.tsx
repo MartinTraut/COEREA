@@ -43,7 +43,7 @@ export default function AnmeldenPage() {
       job beside it. Below `lg` the panel folds away entirely; on a phone the
       only thing anybody wants here is the two fields.
     */
-    <div className="mesh grain relative isolate overflow-hidden bg-cream py-[clamp(2.5rem,5vw,6rem)]">
+    <div className="grain relative isolate overflow-hidden bg-cream py-[clamp(2.5rem,5vw,6rem)]">
       <div className="relative container-page">
         <div className="notch notch-lg mx-auto grid max-w-[64rem] overflow-hidden bg-white [filter:drop-shadow(0_30px_60px_rgba(0,101,95,0.16))] lg:grid-cols-[1.05fr_1fr]">
           {/* Brand panel */}

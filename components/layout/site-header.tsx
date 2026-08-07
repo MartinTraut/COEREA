@@ -228,7 +228,7 @@ export function SiteHeader() {
                 */
                 className={cn(
                   "group relative text-[clamp(0.8125rem,0.604vw+0.4rem,1.125rem)] font-medium whitespace-nowrap transition-colors hover:text-teal",
-                  active ? "text-teal" : "text-ink",
+                  active ? "text-teal" : "text-nav-ink",
                 )}
               >
                 {item.label}
@@ -263,11 +263,11 @@ export function SiteHeader() {
               >
                 <span
                   aria-hidden
-                  className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-teal text-[0.8125rem] font-semibold text-white"
+                  className="grid h-9 w-9 shrink-0 place-items-center bg-teal text-[0.8125rem] font-semibold text-white"
                 >
                   {initials(user.name)}
                 </span>
-                <span className="max-w-[9rem] truncate text-[clamp(0.8125rem,0.604vw+0.4rem,1rem)] font-medium text-ink-900">
+                <span className="max-w-[9rem] truncate text-[clamp(0.8125rem,0.604vw+0.4rem,1rem)] font-medium text-nav-ink">
                   {user.name}
                 </span>
               </Link>
@@ -287,12 +287,25 @@ export function SiteHeader() {
           ) : (
             <Link
               href="/anmelden"
-              className="btn btn-teal sheen px-[clamp(1rem,1.5vw,1.75rem)] py-[clamp(0.5rem,0.75vw,0.85rem)] text-[clamp(0.8125rem,0.604vw+0.4rem,1.0625rem)]"
+              className="btn btn-teal px-[clamp(1rem,1.5vw,1.75rem)] py-[clamp(0.5rem,0.75vw,0.85rem)] text-[clamp(0.8125rem,0.604vw+0.4rem,1.0625rem)]"
             >
               anmelden
             </Link>
           )}
-          <span className="text-[clamp(0.8125rem,0.604vw+0.4rem,1.0625rem)] font-medium text-muted-foreground">
+          {/*
+            The language switch, in the design's own very light grey (see
+            --nav-lang). There is only one language, so this is a marker rather
+            than a control — but at 1,25 : 1 on white it would also be a marker
+            nobody can see, so it darkens to the nav colour on hover and on
+            focus and carries a title. `aria-hidden` would be the alternative;
+            it is not used, because the moment a second language exists this
+            becomes a real switch and the markup should not have to change.
+          */}
+          <span
+            title="Sprache: Deutsch"
+            tabIndex={0}
+            className="text-nav-lang hover:text-nav-ink focus-visible:text-nav-ink text-[clamp(0.8125rem,0.604vw+0.4rem,1.0625rem)] font-medium transition-colors duration-300"
+          >
             DE
           </span>
         </nav>
@@ -356,13 +369,19 @@ export function SiteHeader() {
             aria-label="Hauptnavigation (Menü)"
             className="flex flex-1 flex-col items-center overflow-y-auto overscroll-contain px-6 py-8"
           >
-            <div className="my-auto flex flex-col items-center gap-7">
+            <div className="my-auto flex flex-col items-center gap-2">
+              {/*
+                18px, not 24 — the designer's own size („nutze aktuell
+                Schriftgröße 18"). The links keep a 44px tap target through the
+                padding rather than through the type size, so shrinking the text
+                costs nothing on a thumb.
+              */}
               {SITE.nav.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="text-2xl font-medium"
+                  className="flex min-h-11 items-center px-4 text-[1.125rem] font-medium"
                 >
                   {item.label}
                 </Link>
@@ -372,7 +391,7 @@ export function SiteHeader() {
                   <Link
                     href="/dashboard"
                     onClick={() => setOpen(false)}
-                    className="mt-2 rounded-[var(--radius-control)] bg-white px-8 py-3 text-lg font-semibold text-teal shadow-[0_10px_30px_-14px_rgba(0,0,0,0.5)]"
+                    className="mt-5 bg-white px-8 py-3.5 text-[1.125rem] font-semibold text-teal shadow-[0_10px_30px_-14px_rgba(0,0,0,0.5)]"
                   >
                     Mein Konto
                   </Link>
@@ -392,12 +411,12 @@ export function SiteHeader() {
                 <Link
                   href="/anmelden"
                   onClick={() => setOpen(false)}
-                  className="mt-2 rounded-[var(--radius-control)] bg-white px-8 py-3 text-lg font-semibold text-teal shadow-[0_10px_30px_-14px_rgba(0,0,0,0.5)] transition-colors hover:bg-cream"
+                  className="mt-5 bg-white px-8 py-3.5 text-[1.125rem] font-semibold text-teal shadow-[0_10px_30px_-14px_rgba(0,0,0,0.5)] transition-colors hover:bg-cream"
                 >
                   anmelden
                 </Link>
               )}
-              <span className="mt-2 text-sm text-white/70">DE</span>
+              <span className="mt-4 text-sm text-white/70">DE</span>
             </div>
           </nav>
         </div>

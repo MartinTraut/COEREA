@@ -258,7 +258,7 @@ export function BookingWidget({ listing }: { listing: Listing }) {
               abschließen". Somebody who thinks he is looking something up ends
               up one step from sending a request. It now says where it goes.
             */}
-            <button type="submit" className="btn btn-teal sheen min-h-12 px-7 text-sm">
+            <button type="submit" className="btn btn-teal min-h-12 px-7 text-sm">
               weiter zur Anfrage
             </button>
           </div>

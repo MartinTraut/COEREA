@@ -85,7 +85,7 @@ export function MobileBookingBar({ listing }: { listing: Listing }) {
           */}
           <a
             href="#verfuegbarkeit"
-            className="btn btn-teal sheen group h-12 shrink-0 px-5 text-sm"
+            className="btn btn-teal group h-12 shrink-0 px-5 text-sm"
           >
             Verfügbarkeit
             <span className="arrow-nudge inline-flex">

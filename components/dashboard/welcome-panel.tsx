@@ -42,7 +42,7 @@ export function WelcomePanel() {
                 alt={HOST_PROFILE.name}
                 width={160}
                 height={160}
-                className="h-[clamp(7rem,9vw,10rem)] w-[clamp(7rem,9vw,10rem)] rounded-full object-cover ring-4 ring-teal/15"
+                className="h-[clamp(7rem,9vw,10rem)] w-[clamp(7rem,9vw,10rem)] object-cover ring-4 ring-teal/15"
               />
               <p className="mt-5 text-[clamp(1.0625rem,0.5vw+0.9rem,1.25rem)] leading-tight font-semibold text-ink-900">
                 {HOST_PROFILE.name}
@@ -102,7 +102,7 @@ export function WelcomePanel() {
                   {link.href ? (
                     <>
                       {link.count ? (
-                        <span className="grid h-7 min-w-7 shrink-0 place-items-center rounded-full bg-gold px-2 text-[0.8125rem] font-bold text-ink-900">
+                        <span className="grid h-7 min-w-7 shrink-0 place-items-center bg-gold px-2 text-[0.8125rem] font-bold text-ink-900">
                           {link.count}
                         </span>
                       ) : null}

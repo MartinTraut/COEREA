@@ -51,7 +51,7 @@ export default function Error({
             <button
               type="button"
               onClick={reset}
-              className="btn btn-teal sheen min-h-12 px-7 text-[0.9375rem]"
+              className="btn btn-teal min-h-12 px-7 text-[0.9375rem]"
             >
               <RotateCcw className="h-4 w-4" /> nochmal versuchen
             </button>

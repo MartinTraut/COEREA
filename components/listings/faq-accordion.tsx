@@ -101,7 +101,7 @@ export function FaqAccordion({
                 <span
                   aria-hidden
                   className={cn(
-                    "relative grid h-7 w-7 shrink-0 place-items-center rounded-full transition-colors duration-300",
+                    "relative grid h-7 w-7 shrink-0 place-items-center transition-colors duration-300",
                     isOpen ? "bg-teal text-white" : "bg-teal-50 text-teal",
                   )}
                 >

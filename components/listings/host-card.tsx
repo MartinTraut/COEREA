@@ -39,7 +39,7 @@ export function HostCard({ host }: { host: Host }) {
         <div className="surface mt-7 grid items-center gap-8 px-6 py-8 shadow-[var(--shadow-md)] sm:px-8 lg:grid-cols-[auto_1fr_auto] md:gap-12">
           {/* avatar + identity */}
           <div className="flex flex-col items-center text-center">
-            <span className="grid h-[clamp(4.5rem,5vw,5.5rem)] w-[clamp(4.5rem,5vw,5.5rem)] place-items-center rounded-full text-xl font-semibold text-white [background:var(--grad-teal)] shadow-[var(--shadow-md)]">
+            <span className="grid h-[clamp(4.5rem,5vw,5.5rem)] w-[clamp(4.5rem,5vw,5.5rem)] place-items-center text-xl font-semibold text-white [background:var(--grad-teal)] shadow-[var(--shadow-md)]">
               {initials}
             </span>
             <p className="mt-4 font-semibold text-ink-900">{host.name}</p>
@@ -72,7 +72,7 @@ export function HostCard({ host }: { host: Host }) {
               href={`mailto:info@coarea.de?subject=${encodeURIComponent(
                 `Anfrage an Host ${host.name}`,
               )}`}
-              className="btn btn-teal sheen mt-5 min-h-11 px-5 text-sm"
+              className="btn btn-teal mt-5 min-h-11 px-5 text-sm"
             >
               <MessageSquare className="h-4 w-4" />
               Nachricht an Host

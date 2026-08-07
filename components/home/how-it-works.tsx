@@ -70,7 +70,7 @@ const PATHS = [
 
 export function HowItWorks() {
   return (
-    <section className="mesh grain relative isolate overflow-hidden bg-cream">
+    <section className="grain relative isolate overflow-hidden bg-cream">
       {/*
         The Schraffur used to fill this whole band at 60%, and the band directly
         below it is the teal one that was also fully hatched — two hatched
@@ -83,9 +83,9 @@ export function HowItWorks() {
         longer mark anything — the legend is left pointing at a pattern that is
         simply everywhere.
 
-        So it is gone from here. The band already has `mesh grain bg-cream`,
-        which is what makes the cream read as lit rather than as flat grey; it
-        never needed a third texture.
+        So it is gone from here. The band is `grain bg-cream` — flat cream,
+        grained only so it cannot posterise; it never needed a texture on top
+        of that.
       */}
 
       <div className="relative container-page py-[clamp(3rem,5vw,6rem)]">
@@ -127,7 +127,7 @@ export function HowItWorks() {
                     do that work alone.
                   */
                   p === 1
-                    ? "relative bg-[linear-gradient(180deg,color-mix(in_srgb,var(--teal)_11%,#fff),color-mix(in_srgb,var(--teal)_5%,#fff))] p-[clamp(1.5rem,2.6vw,3rem)]"
+                    ? "relative bg-teal-50 p-[clamp(1.5rem,2.6vw,3rem)]"
                     : "p-[clamp(1.5rem,2.6vw,3rem)]"
                 }
               >
@@ -157,7 +157,7 @@ export function HowItWorks() {
                       {i < path.steps.length - 1 ? (
                         <span
                           aria-hidden
-                          className="absolute top-[3.5rem] bottom-[0.4rem] left-[1.5rem] w-px bg-gradient-to-b from-teal/35 to-teal/5"
+                          className="absolute top-[3.5rem] bottom-[0.4rem] left-[1.5rem] w-px bg-teal/25"
                         />
                       ) : null}
 
@@ -202,7 +202,7 @@ export function HowItWorks() {
                 <Link
                   href={path.cta.href}
                   className={`btn group mt-[clamp(1.75rem,2.4vw,2.5rem)] h-12 px-6 text-sm ${
-                    p === 0 ? "btn-teal sheen" : "btn-outline"
+                    p === 0 ? "btn-teal" : "btn-outline"
                   }`}
                 >
                   {path.cta.label}

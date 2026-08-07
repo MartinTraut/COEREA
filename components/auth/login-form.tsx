@@ -68,7 +68,7 @@ export function LoginForm() {
           <p className="mt-2 text-sm text-ink">{user.email}</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <Link href="/dashboard" className="btn btn-teal sheen min-h-12 px-6 text-sm">
+          <Link href="/dashboard" className="btn btn-teal min-h-12 px-6 text-sm">
             zum Dashboard <ArrowRight className="h-4 w-4" />
           </Link>
           <button
@@ -375,7 +375,7 @@ export function LoginForm() {
           </label>
         )}
 
-        <button type="submit" className="btn btn-teal sheen group mt-1 h-12 px-5 text-sm">
+        <button type="submit" className="btn btn-teal group mt-1 h-12 px-5 text-sm">
           {isRegister ? "Konto erstellen" : "anmelden"}
           <span className="arrow-nudge inline-flex">
             <ArrowRight className="h-4 w-4" />

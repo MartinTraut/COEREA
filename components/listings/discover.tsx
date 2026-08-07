@@ -653,11 +653,11 @@ export function Discover({
           two columns across the full measure, so the block ends level.
         · it sat in the same white container as the card grid, so a narrative
           passage and a list of products shared one surface. It is its own band
-          now: cream, lit by .mesh, opened by a rule — the page changes register
-          when it changes subject.
+          now: flat cream, opened by a rule — the page changes register when it
+          changes subject.
       */}
       {page && cat && !mapView ? (
-        <section className="mesh grain relative isolate overflow-hidden border-t border-border/60 bg-cream">
+        <section className="grain relative isolate overflow-hidden border-t border-border/60 bg-cream">
           <div className="relative container-page py-[clamp(3rem,5vw+0.5rem,6.5rem)]">
             <div className="grid gap-y-10 lg:grid-cols-2 lg:items-start lg:gap-x-[clamp(2rem,4vw,5rem)]">
               <Reveal>
@@ -833,7 +833,7 @@ function EmptyCategory({
           Zeitpunkt, sie einzustellen.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <Link href="/host-werden" className="btn btn-teal sheen min-h-12 px-7">
+          <Link href="/host-werden" className="btn btn-teal min-h-12 px-7">
             Fläche anbieten
           </Link>
           <Link href="/flaechen" className="btn btn-outline group min-h-12 px-7">
